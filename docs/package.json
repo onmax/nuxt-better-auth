@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@nuxt/content": "^3.7.1",
-    "@nuxt/ui-pro": "^3.3.7",
+    "@nuxt/ui": "^4.0.0",
     "nuxt": "^4.2.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-yaml": "^4.1.2",
+    "docus": "^5.4.0"
   }
 }

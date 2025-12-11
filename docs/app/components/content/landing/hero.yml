@@ -1,0 +1,69 @@
+title: 'Nuxt Better Auth'
+description: 'Seamless Better Auth integration for Nuxt. Auto-generated schemas, SSR-safe sessions, and declarative route protection.'
+links:
+  - label: 'Get Started'
+    to: '/getting-started/installation'
+    icon: 'i-lucide-arrow-right'
+    trailing: true
+  - label: 'GitHub'
+    to: 'https://github.com/onmax/nuxt-better-auth'
+    target: '_blank'
+    color: 'neutral'
+    variant: 'outline'
+    icon: 'i-simple-icons-github'
+tabs:
+  - label: 'nuxt.config.ts'
+    code: |
+      ```ts
+      export default defineNuxtConfig({
+        modules: ['@nuxthub/core', '@onmax/nuxt-better-auth'],
+        hub: { database: true },
+        runtimeConfig: {
+          oauth: { github: {}, google: {} },
+        },
+        routeRules: {
+          '/dashboard/**': { auth: 'user' },
+        },
+      })
+      ```
+  - label: 'auth.config.ts'
+    code: |
+      ```ts
+      import { twoFactor } from 'better-auth/plugins'
+
+      export default defineServerAuth(() => ({
+        socialProviders: {
+          github: { clientId: '...', clientSecret: '...' },
+          google: { clientId: '...', clientSecret: '...' },
+          // 33+ providers supported
+        },
+        plugins: [twoFactor()], // 27+ plugins available
+      }))
+      ```
+  - label: 'auth.client.ts'
+    code: |
+      ```ts
+      import { twoFactorClient } from 'better-auth/client/plugins'
+      import { createAuthClient } from 'better-auth/vue'
+
+      export function createAppAuthClient(baseURL: string) {
+        return createAuthClient({
+          baseURL,
+          plugins: [twoFactorClient()],
+        })
+      }
+      ```
+  - label: 'schema.ts'
+    code: |
+      ```ts
+      // .nuxt/better-auth/schema.sqlite.ts (auto-generated)
+      export const user = sqliteTable('user', {
+        id: text('id').primaryKey(),
+        name: text('name').notNull(),
+        email: text('email').notNull().unique(),
+        emailVerified: integer('email_verified', { mode: 'boolean' }),
+        image: text('image'),
+        createdAt: integer('created_at', { mode: 'timestamp' }),
+        updatedAt: integer('updated_at', { mode: 'timestamp' }),
+      })
+      ```

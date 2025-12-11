@@ -1,10 +1,27 @@
 @import "tailwindcss";
-@import "@nuxt/ui-pro";
+@import "@nuxt/ui";
+
+@source "../../content/**/*";
 
 :root {
-  --ui-radius: 0;
+  --ui-radius: 0.125rem;
+  --ui-bg: var(--color-white);
 }
 
 .dark {
-  --ui-bg: #060606;
+  --ui-bg: #000;
+}
+
+@theme {
+  --font-sans: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+}
+
+pre, code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+@utility bg-grid {
+  background-image: linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px);
+  background-size: 32px 32px;
 }
