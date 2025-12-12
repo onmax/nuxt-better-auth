@@ -1,6 +1,6 @@
 import type { BetterAuthOptions } from 'better-auth'
 
-interface FieldAttribute { type: string, required?: boolean, unique?: boolean, defaultValue?: any, references?: { model: string, field: string, onDelete?: string }, index?: boolean }
+interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: any, references?: { model: string, field: string, onDelete?: string }, index?: boolean }
 interface TableSchema { fields: Record<string, FieldAttribute>, modelName?: string }
 
 export function generateDrizzleSchema(tables: Record<string, TableSchema>, dialect: 'sqlite' | 'postgresql' | 'mysql'): string {
@@ -76,14 +76,16 @@ function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlit
   return `${fieldName}: ${fieldDef}`
 }
 
-function getFieldType(type: string, dialect: 'sqlite' | 'postgresql' | 'mysql', fieldName: string): string {
+function getFieldType(type: string | string[], dialect: 'sqlite' | 'postgresql' | 'mysql', fieldName: string): string {
+  // Handle enum types (string[]) - treat as text
+  const normalizedType = Array.isArray(type) ? 'string' : type
   switch (dialect) {
     case 'sqlite':
-      return getSqliteType(type, fieldName)
+      return getSqliteType(normalizedType, fieldName)
     case 'postgresql':
-      return getPostgresType(type, fieldName)
+      return getPostgresType(normalizedType, fieldName)
     case 'mysql':
-      return getMysqlType(type, fieldName)
+      return getMysqlType(normalizedType, fieldName)
   }
 }
 

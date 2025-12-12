@@ -11,6 +11,6 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.vue"],
-  "exclude": ["dist", "node_modules", "playground"]
+  "include": ["src/module.ts", "src/schema-generator.ts", "src/runtime/types.ts", "src/runtime/types/**/*.ts", "src/runtime/config.ts"],
+  "exclude": ["dist", "node_modules", "playground", "src/runtime/app", "src/runtime/server"]
 }

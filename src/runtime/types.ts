@@ -1,4 +1,4 @@
-import type { NitroRouteRules } from 'nitropack'
+import type { NitroRouteRules } from 'nitropack/types'
 
 // Re-export augmentable types
 export type { AuthSession, AuthUser, UserSessionComposable } from './types/augment'
@@ -17,11 +17,4 @@ export type AuthMeta = false | AuthMode | {
 export type AuthRouteRules = NitroRouteRules & {
   auth?: AuthMeta
   role?: RoleName | RoleName[]
-}
-
-declare module 'nitropack' {
-  interface NitroRouteRules {
-    auth?: AuthMeta
-    role?: RoleName | RoleName[]
-  }
 }

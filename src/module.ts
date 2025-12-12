@@ -45,6 +45,20 @@ export type { AuthMeta, AuthMode, AuthRouteRules, RoleName } from '${resolver.re
 `,
     })
 
+    // Add separate type template for nitropack augmentation (must be ambient, no exports)
+    addTypeTemplate({
+      filename: 'types/nuxt-better-auth-nitro.d.ts',
+      getContents: () => `
+// Extend NitroRouteRules with auth options
+declare module 'nitropack/types' {
+  interface NitroRouteRules {
+    auth?: import('${resolver.resolve('./runtime/types')}').AuthMeta
+    role?: import('${resolver.resolve('./runtime/types')}').RoleName | import('${resolver.resolve('./runtime/types')}').RoleName[]
+  }
+}
+`,
+    })
+
     // Auto-import server utils (serverAuth, getUserSession, requireUserSession)
     addServerImportsDir(resolver.resolve('./runtime/server/utils'))
 
