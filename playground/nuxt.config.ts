@@ -3,6 +3,8 @@ export default defineNuxtConfig({
 
   hub: { db: 'sqlite' },
 
+  site: { url: 'https://playground.nuxt-better-auth.onmax.me' },
+
   devtools: { enabled: true },
 
   runtimeConfig: {

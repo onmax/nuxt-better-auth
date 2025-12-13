@@ -1,14 +1,24 @@
-# @onmax/nuxt-better-auth
+<p align="center">
+  <img src="https://raw.githubusercontent.com/onmax/nuxt-better-auth/main/.github/og.png" alt="Nuxt Better Auth" width="100%">
+  <br>
+  <sub>Design inspired by <a href="https://github.com/HugoRCD">HugoRCD</a>'s work</sub>
+</p>
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![License][license-src]][license-href]
-[![Nuxt][nuxt-src]][nuxt-href]
+<h1 align="center">@onmax/nuxt-better-auth</h1>
+
+<p align="center">Nuxt module for <a href="https://better-auth.com">Better Auth</a> with auto schema generation, route protection, and session management.</p>
+
+<p align="center">
+  <a href="https://npmjs.com/package/@onmax/nuxt-better-auth"><img src="https://img.shields.io/npm/v/@onmax/nuxt-better-auth/latest.svg?style=flat&colorA=020420&colorB=00DC82" alt="npm version"></a>
+  <a href="https://npm.chart.dev/@onmax/nuxt-better-auth"><img src="https://img.shields.io/npm/dm/@onmax/nuxt-better-auth.svg?style=flat&colorA=020420&colorB=00DC82" alt="npm downloads"></a>
+  <a href="https://npmjs.com/package/@onmax/nuxt-better-auth"><img src="https://img.shields.io/npm/l/@onmax/nuxt-better-auth.svg?style=flat&colorA=020420&colorB=00DC82" alt="License"></a>
+  <a href="https://nuxt.com"><img src="https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js" alt="Nuxt"></a>
+</p>
 
 > [!WARNING]
 > This library is a work in progress and not ready for production use.
 
-Nuxt module for [Better Auth](https://better-auth.com) with auto schema generation, route protection, and session management. Works with [NuxtHub](https://hub.nuxt.com) and future `@nuxt/db`.
+Works with [NuxtHub](https://hub.nuxt.com) and future `@nuxt/db`.
 
 ## Features
 
@@ -168,16 +178,3 @@ pnpm dev
 ## License
 
 MIT
-
-<!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/@onmax/nuxt-better-auth/latest.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-version-href]: https://npmjs.com/package/@onmax/nuxt-better-auth
-
-[npm-downloads-src]: https://img.shields.io/npm/dm/@onmax/nuxt-better-auth.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-downloads-href]: https://npm.chart.dev/@onmax/nuxt-better-auth
-
-[license-src]: https://img.shields.io/npm/l/@onmax/nuxt-better-auth.svg?style=flat&colorA=020420&colorB=00DC82
-[license-href]: https://npmjs.com/package/@onmax/nuxt-better-auth
-
-[nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js
-[nuxt-href]: https://nuxt.com
