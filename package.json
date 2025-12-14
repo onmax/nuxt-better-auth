@@ -45,8 +45,7 @@
   },
   "peerDependencies": {
     "@nuxthub/core": ">=0.10.0",
-    "better-auth": ">=1.0.0",
-    "drizzle-orm": ">=0.30.0"
+    "better-auth": ">=1.0.0"
   },
   "dependencies": {
     "@nuxt/kit": "^4.2.2",

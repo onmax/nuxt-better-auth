@@ -18,7 +18,9 @@ watch(() => route.path, () => close())
 
       <!-- Main Content Area -->
       <div class="docs-main">
+        <AnnouncementBanner />
         <slot />
+        <AppFooter />
       </div>
     </div>
 
@@ -44,7 +46,7 @@ watch(() => route.path, () => close())
   --fd-sidebar-width: 268px;
   --fd-toc-width: 268px;
   --fd-content-width: 860px;
-  --header-height: var(--ui-header-height, 64px);
+  --header-height: 3.5rem; /* h-14 = 56px */
 }
 
 .docs-grid {

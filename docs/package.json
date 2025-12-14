@@ -20,6 +20,7 @@
   "devDependencies": {
     "@iconify-json/solar": "^1.2.5",
     "@rollup/plugin-yaml": "^4.1.2",
+    "@vueuse/nuxt": "^14.1.0",
     "docus": "^5.4.0"
   }
 }

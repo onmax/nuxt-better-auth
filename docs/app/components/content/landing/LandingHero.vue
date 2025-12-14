@@ -30,6 +30,7 @@ function getCodeBlock(tab: { name: string, code: string }) {
 </script>
 
 <template>
+  <AnnouncementBanner />
   <section class="relative w-full flex md:items-center md:justify-center bg-white/96 dark:bg-black/[0.96] antialiased min-h-[40rem] md:min-h-[50rem] lg:min-h-[40rem]">
     <!-- Spotlight Effect -->
     <LandingSpotlight />
@@ -75,8 +76,8 @@ function getCodeBlock(tab: { name: string, code: string }) {
                     <span class="text-sky-500">git:</span><span class="text-red-400">(main)</span>
                     <span class="italic text-amber-600">x</span>
                   </p>
-                  <p class="relative inline tracking-tight opacity-90 md:text-sm text-xs dark:text-white font-mono text-black">
-                    pnpm add <span class="relative dark:text-fuchsia-300 text-fuchsia-800">@onmax/nuxt-better-auth</span>
+                  <p class="relative inline tracking-tight opacity-90 md:text-sm text-xs dark:text-white font-mono text-black select-all">
+                    npx nuxi module add <span class="relative dark:text-fuchsia-300 text-fuchsia-800">@onmax/nuxt-better-auth</span>
                   </p>
                 </div>
                 <div class="flex gap-2 items-center">
@@ -94,19 +95,33 @@ function getCodeBlock(tab: { name: string, code: string }) {
             <div class="mt-4 flex w-fit flex-col gap-4 font-sans md:flex-row md:justify-center lg:justify-start items-center">
               <NuxtLink
                 to="/getting-started/installation"
-                class="border-2 border-black bg-white px-4 py-1.5 text-sm uppercase text-black shadow-brutalist transition duration-200 md:px-8 dark:border-stone-100 dark:text-black hover:shadow-sm dark:hover:shadow-sm"
+                class="border-2 border-black bg-white px-4 py-1.5 text-sm uppercase text-black shadow-[1px_1px_rgba(0,0,0),2px_2px_rgba(0,0,0),3px_3px_rgba(0,0,0),4px_4px_rgba(0,0,0),5px_5px_0px_0px_rgba(0,0,0)] transition duration-200 md:px-8 hover:shadow-sm dark:border-stone-100 dark:hover:shadow-sm dark:shadow-[1px_1px_rgba(255,255,255),2px_2px_rgba(255,255,255),3px_3px_rgba(255,255,255),4px_4px_rgba(255,255,255),5px_5px_0px_0px_rgba(255,255,255)]"
               >
                 Get Started
               </NuxtLink>
-              <UButton
+              <NuxtLink
                 to="https://github.com/onmax/nuxt-better-auth"
                 target="_blank"
-                color="neutral"
-                variant="outline"
-                icon="i-simple-icons-github"
+                class="group relative hidden p-px text-xs font-semibold leading-6 text-white no-underline md:inline-block"
               >
-                GitHub
-              </UButton>
+                <span class="absolute inset-0 overflow-hidden rounded-sm">
+                  <span class="absolute inset-0 rounded-sm bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                </span>
+                <span class="relative z-10 flex items-center gap-2 rounded-none bg-zinc-950 px-4 py-2 ring-1 ring-white/10 md:px-8">
+                  <UIcon name="i-simple-icons-github" class="size-4" />
+                  <span>GitHub</span>
+                </span>
+                <span class="absolute bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-stone-800/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+              </NuxtLink>
+              <!-- Mobile GitHub button -->
+              <NuxtLink
+                to="https://github.com/onmax/nuxt-better-auth"
+                target="_blank"
+                class="flex items-center gap-2 rounded-none bg-zinc-950 px-4 py-2 text-xs font-semibold text-white ring-1 ring-white/10 md:hidden"
+              >
+                <UIcon name="i-simple-icons-github" class="size-4" />
+                <span>GitHub</span>
+              </NuxtLink>
             </div>
           </div>
         </div>

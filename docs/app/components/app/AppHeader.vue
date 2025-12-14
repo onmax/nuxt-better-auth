@@ -7,7 +7,7 @@ const { sidebarOpen, toggle: toggleSidebar } = useDocusSidebar()
 const isDocsPage = computed(() => route.path.startsWith('/getting-started') || route.path.startsWith('/core-concepts') || route.path.startsWith('/guides') || route.path.startsWith('/api') || route.path.startsWith('/troubleshooting') || route.path.startsWith('/better-auth'))
 
 const navLinks = [
-  { name: 'docs', path: '/getting-started/quickstart' },
+  { name: 'docs', path: '/getting-started' },
   { name: 'demo', path: 'https://demo.nuxt-better-auth.onmax.me', external: true },
   { name: 'nuxthub', path: 'https://hub.nuxt.com', external: true },
   { name: 'better-auth', path: 'https://www.better-auth.com', external: true },
@@ -15,7 +15,7 @@ const navLinks = [
 </script>
 
 <template>
-  <UHeader :ui="{ container: 'max-w-full !px-0 h-14', root: 'border-b border-[var(--ui-border)] h-max', left: 'gap-0 h-full', right: 'gap-0 h-full' }" to="/" :title="appConfig.header?.title || site.name">
+  <UHeader :ui="{ container: 'max-w-full !px-0 h-14', root: 'border-b border-[var(--ui-border)] h-14', left: 'gap-0 h-full', right: 'gap-0 h-full', title: 'h-full items-center' }" to="/" :title="appConfig.header?.title || site.name">
     <template #title>
       <div class="header-logo">
         <!-- NuxtHub -->
@@ -40,6 +40,12 @@ const navLinks = [
     <template #right>
       <!-- Nav Links (desktop) -->
       <nav class="hidden md:flex items-center h-full">
+        <li class="relative group list-none h-full">
+          <NuxtLink to="/" class="flex items-center h-full px-5 text-sm text-muted transition-colors group-hover:text-[var(--ui-text)]">
+            _hello
+          </NuxtLink>
+          <div class="absolute bottom-0 left-0 h-0.5 w-0 bg-[var(--ui-text-muted)] opacity-0 transition-all duration-500 group-hover:w-full group-hover:opacity-100" />
+        </li>
         <template v-for="link in navLinks" :key="link.name">
           <li class="relative group list-none h-full">
             <NuxtLink
@@ -71,7 +77,7 @@ const navLinks = [
       <UContentSearchButton class="lg:hidden" />
 
       <ClientOnly>
-        <UColorModeButton class="border-l border-[var(--ui-border)] h-full aspect-square rounded-none" />
+        <UColorModeButton class="flex items-center justify-center border-l border-[var(--ui-border)] h-full aspect-square rounded-none text-muted hover:text-[var(--ui-text)] transition-colors" :ui="{ leadingIcon: 'size-4' }" />
         <template #fallback>
           <div class="h-full aspect-square animate-pulse bg-[var(--ui-bg-elevated)] border-l border-[var(--ui-border)]" />
         </template>

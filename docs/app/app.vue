@@ -3,12 +3,14 @@ import type { ContentNavigationItem, PageCollections } from '@nuxt/content'
 import { Analytics } from '@vercel/analytics/nuxt'
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
 
+const route = useRoute()
 const { locale, isEnabled } = useDocusI18n()
 const collectionName = computed(() => isEnabled.value ? `docs_${locale.value}` : 'docs')
+const isDocsPage = computed(() => route.meta.layout === 'docs')
 
 const { data: navigation } = await useAsyncData(() => `navigation_${collectionName.value}`, () => queryCollectionNavigation(collectionName.value as keyof PageCollections), {
   transform: (data: ContentNavigationItem[]) => {
-    const rootResult = data.find(item => item.path === '/docs')?.children || data || []
+    const rootResult = data.find(item => item.path === '/')?.children || data || []
     return rootResult.find(item => item.path === `/${locale.value}`)?.children || rootResult
   },
   watch: [locale],
@@ -19,18 +21,26 @@ provide('navigation', navigation)
 </script>
 
 <template>
-  <NuxtLoadingIndicator color="var(--ui-primary)" />
-  <UBanner icon="i-lucide-construction" title="This library is in early development. Expect breaking changes." color="warning" />
-  <AppHeader />
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
-  <AppFooter />
+  <div class="app-root">
+    <NuxtLoadingIndicator color="var(--ui-primary)" />
+    <AppHeader />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+    <AppFooter v-if="!isDocsPage" />
 
-  <ClientOnly>
-    <LazyUContentSearch :files="files" :navigation="navigation" />
-  </ClientOnly>
+    <ClientOnly>
+      <LazyUContentSearch :files="files" :navigation="navigation" />
+    </ClientOnly>
 
-  <Analytics />
-  <SpeedInsights />
+    <UToaster />
+    <Analytics />
+    <SpeedInsights />
+  </div>
 </template>
+
+<style>
+.app-root {
+  --header-height: var(--ui-header-height, 56px);
+}
+</style>

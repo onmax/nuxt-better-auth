@@ -18,7 +18,7 @@ export function useSidebarConfig() {
       title: 'Getting Started',
       icon: 'i-solar-play-circle-bold',
       items: [
-        { title: 'Quickstart', href: '/getting-started/quickstart', icon: 'i-solar-play-bold' },
+        { title: 'Introduction', href: '/getting-started', icon: 'i-solar-play-bold' },
         { title: 'Installation', href: '/getting-started/installation', icon: 'i-solar-download-square-bold' },
         { title: 'Configuration', href: '/getting-started/configuration', icon: 'i-solar-settings-bold' },
         { title: 'Client Setup', href: '/getting-started/client-setup', icon: 'i-solar-monitor-bold' },
@@ -44,32 +44,25 @@ export function useSidebarConfig() {
       items: [
         { title: 'Role-Based Access', href: '/guides/role-based-access', icon: 'i-solar-users-group-rounded-bold' },
         { title: 'API Protection', href: '/guides/api-protection', icon: 'i-solar-lock-bold' },
-        { title: 'Custom Dialects', href: '/guides/custom-dialects', icon: 'i-solar-database-bold' },
+        { title: 'Database-less Mode', href: '/guides/database-less-mode', icon: 'i-solar-cloud-bold' },
+        { title: 'Migrate from nuxt-auth-utils', href: '/guides/migrate-from-nuxt-auth-utils', icon: 'i-solar-transfer-horizontal-bold' },
       ],
     },
     {
       title: 'API',
       icon: 'i-solar-code-square-bold',
       items: [
-        { title: 'Server', href: '/api/server', icon: 'i-solar-server-square-bold' },
-        { title: 'Client', href: '/api/client', icon: 'i-solar-monitor-smartphone-bold' },
-      ],
-    },
-    {
-      title: 'Troubleshooting',
-      icon: 'i-solar-bug-bold',
-      items: [
-        { title: 'Common Issues', href: '/troubleshooting/common-issues', icon: 'i-solar-question-circle-bold' },
-      ],
-    },
-    {
-      title: 'Better Auth',
-      icon: 'i-solar-link-round-angle-bold',
-      items: [
-        { title: 'Documentation', href: 'https://www.better-auth.com/docs', icon: 'i-solar-book-2-bold' },
+        { title: 'Composables', href: '/api/composables', icon: 'i-solar-monitor-smartphone-bold' },
+        { title: 'Server Utilities', href: '/api/server-utils', icon: 'i-solar-server-square-bold' },
+        { title: 'Components', href: '/api/components', icon: 'i-solar-widget-bold' },
+        { title: 'Types', href: '/api/types', icon: 'i-solar-code-file-bold' },
       ],
     },
   ]
 
-  return { sections }
+  const standaloneLinks: SidebarItem[] = [
+    { title: 'FAQ', href: '/troubleshooting/faq', icon: 'i-solar-question-circle-bold' },
+  ]
+
+  return { sections, standaloneLinks }
 }

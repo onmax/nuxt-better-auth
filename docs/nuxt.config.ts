@@ -2,7 +2,7 @@ import yaml from '@rollup/plugin-yaml'
 
 export default defineNuxtConfig({
   extends: ['docus'],
-  modules: ['motion-v/nuxt'],
+  modules: ['@vueuse/nuxt', 'motion-v/nuxt'],
 
   css: ['~/assets/css/main.css'],
 

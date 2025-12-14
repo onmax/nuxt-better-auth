@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const route = useRoute()
-const { sections } = useSidebarConfig()
+const { sections, standaloneLinks } = useSidebarConfig()
 
 const openSection = ref<string>('')
 
 function isActive(href: string) {
   if (href.startsWith('http'))
     return false
-  return route.path === href || route.path.startsWith(`${href}/`)
+  return route.path === href
 }
 
 function isSectionActive(sectionIndex: number) {
@@ -89,6 +89,40 @@ watch(() => route.path, () => {
         </div>
       </template>
     </UAccordion>
+
+    <!-- Standalone links (no accordion) -->
+    <div class="standalone-links">
+      <NuxtLink
+        v-for="item in standaloneLinks"
+        :key="item.href"
+        :to="item.href"
+        class="standalone-item"
+        :class="{ active: isActive(item.href) }"
+      >
+        <UIcon v-if="item.icon" :name="item.icon" class="size-5" />
+        <span>{{ item.title }}</span>
+      </NuxtLink>
+    </div>
+
+    <!-- Better Auth docs link -->
+    <div class="better-auth-link">
+      <UButton
+        to="https://www.better-auth.com/docs"
+        target="_blank"
+        variant="soft"
+        block
+        trailing-icon="i-lucide-external-link"
+        :ui="{ trailingIcon: 'size-3' }"
+      >
+        <svg width="60" height="45" viewBox="0 0 60 45" fill="none" class="size-3.5" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H15V15H30V30H15V45H0V30V15V0ZM45 30V15H30V0H45H60V15V30V45H45H30V30H45Z" fill="currentColor" />
+        </svg>
+        Better Auth Docs
+      </UButton>
+      <p class="better-auth-hint">
+        Full Better Auth documentation
+      </p>
+    </div>
   </nav>
 </template>
 
@@ -96,6 +130,7 @@ watch(() => route.path, () => {
 .docs-sidebar-nav {
   display: flex;
   flex-direction: column;
+  min-height: 100%;
 }
 
 /* Add top border to first accordion item */
@@ -136,5 +171,43 @@ watch(() => route.path, () => {
   height: 0.75rem;
   margin-left: auto;
   opacity: 0.5;
+}
+
+/* Standalone links section */
+.standalone-links {
+  border-top: 1px solid var(--ui-border);
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.standalone-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  color: var(--ui-text);
+  transition: all 0.15s;
+}
+
+.standalone-item:hover {
+  text-decoration: underline;
+}
+
+.standalone-item.active {
+  background-color: color-mix(in srgb, var(--ui-primary) 10%, transparent);
+}
+
+/* Better Auth link section */
+.better-auth-link {
+  margin-top: auto;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--ui-border);
+}
+
+.better-auth-hint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ui-text-muted);
+  text-align: center;
 }
 </style>
