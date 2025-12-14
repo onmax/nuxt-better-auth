@@ -1,4 +1,4 @@
-name: lint
+name: ci
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  lint:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,3 +19,5 @@ jobs:
 
       - run: pnpm install
       - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test

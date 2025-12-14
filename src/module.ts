@@ -32,7 +32,7 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     // Validate KV is enabled if secondaryStorage requested
     let secondaryStorageEnabled = options.secondaryStorage ?? false
     if (secondaryStorageEnabled) {
-      const hub = nuxt.options.hub as { kv?: boolean } | undefined
+      const hub = (nuxt.options as unknown as Record<string, unknown>).hub as { kv?: boolean } | undefined
       if (!hub?.kv) {
         console.warn('[nuxt-better-auth] secondaryStorage requires hub.kv: true in nuxt.config.ts. Disabling.')
         secondaryStorageEnabled = false

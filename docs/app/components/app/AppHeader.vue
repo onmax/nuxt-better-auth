@@ -33,10 +33,6 @@ const navLinks = [
       </div>
     </template>
 
-    <template #center>
-      <UNavigationMenu :items="[]" class="hidden lg:flex" />
-    </template>
-
     <template #right>
       <!-- Nav Links (desktop) -->
       <nav class="hidden md:flex items-center h-full">
