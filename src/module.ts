@@ -62,6 +62,35 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
+    // Generate secondary storage virtual module (conditional hub:kv)
+    const secondaryStorageCode = secondaryStorageEnabled
+      ? `import { kv } from 'hub:kv'
+export function createSecondaryStorage() {
+  return {
+    get: async (key) => kv.get(\`_auth:\${key}\`),
+    set: async (key, value, ttl) => kv.set(\`_auth:\${key}\`, value, { ttl }),
+    delete: async (key) => kv.del(\`_auth:\${key}\`),
+  }
+}`
+      : `export function createSecondaryStorage() { return undefined }`
+
+    const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
+    nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
+
+    addTypeTemplate({
+      filename: 'types/auth-secondary-storage.d.ts',
+      getContents: () => `
+declare module '#auth/secondary-storage' {
+  interface SecondaryStorage {
+    get: (key: string) => Promise<string | null>
+    set: (key: string, value: unknown, ttl?: number) => Promise<void>
+    delete: (key: string) => Promise<void>
+  }
+  export function createSecondaryStorage(): SecondaryStorage | undefined
+}
+`,
+    })
+
     // Add type template for #nuxt-better-auth module augmentation
     addTypeTemplate({
       filename: 'types/nuxt-better-auth.d.ts',

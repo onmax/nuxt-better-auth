@@ -1,3 +1,4 @@
+import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
 import { useEvent, useRuntimeConfig } from '#imports'
 import { betterAuth } from 'better-auth'
@@ -18,24 +19,6 @@ function getBaseURL(siteUrl?: string): string {
   }
   catch {
     return ''
-  }
-}
-
-let _kv: typeof import('hub:kv').kv | undefined
-
-async function getKV() {
-  if (!_kv) {
-    const { kv } = await import('hub:kv')
-    _kv = kv
-  }
-  return _kv
-}
-
-function createSecondaryStorage() {
-  return {
-    get: async (key: string) => (await getKV()).get(`_auth:${key}`),
-    set: async (key: string, value: unknown, ttl?: number) => (await getKV()).set(`_auth:${key}`, value, { ttl }),
-    delete: async (key: string) => (await getKV()).del(`_auth:${key}`),
   }
 }
 
@@ -64,7 +47,7 @@ export async function serverAuth(): Promise<AuthInstance> {
   _auth = betterAuth({
     ...userConfig,
     ...(database && { database }),
-    secondaryStorage: authConfig?.secondaryStorage ? createSecondaryStorage() : undefined,
+    secondaryStorage: createSecondaryStorage(),
     secret: runtimeConfig.betterAuthSecret,
     baseURL: getBaseURL(runtimeConfig.public.siteUrl as string | undefined),
   })
