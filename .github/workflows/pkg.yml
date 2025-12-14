@@ -19,4 +19,4 @@ jobs:
 
       - run: pnpm install
       - run: pnpm prepack
-      - uses: pkg-pr-new/action@v1
+      - uses: stackblitz-labs/pkg.pr.new@main
