@@ -153,9 +153,11 @@ declare module 'nitropack/types' {
 
     if (nuxt.options.dev) {
       setupDevTools(nuxt)
-      addServerHandler({ route: '/api/_better-auth/sessions', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.get') })
-      addServerHandler({ route: '/api/_better-auth/users', handler: resolver.resolve('./runtime/server/api/_better-auth/users.get') })
-      addServerHandler({ route: '/api/_better-auth/config', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
+      addServerHandler({ route: '/api/_better-auth/sessions', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.get') })
+      addServerHandler({ route: '/api/_better-auth/sessions', method: 'delete', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.delete') })
+      addServerHandler({ route: '/api/_better-auth/users', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/users.get') })
+      addServerHandler({ route: '/api/_better-auth/accounts', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/accounts.get') })
+      addServerHandler({ route: '/api/_better-auth/config', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
       extendPages((pages) => {
         pages.push({ name: 'better-auth-devtools', path: '/__better-auth-devtools', file: resolver.resolve('./runtime/app/pages/__better-auth-devtools.vue') })
       })
