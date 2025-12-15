@@ -21,16 +21,16 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    const serverConfigPath = resolver.resolve(nuxt.options.rootDir, 'server/auth.config')
-    const clientConfigPath = resolver.resolve(nuxt.options.rootDir, 'app/auth.client')
+    const serverConfigPath = resolver.resolve(nuxt.options.serverDir, 'auth.config')
+    const clientConfigPath = resolver.resolve(nuxt.options.srcDir, 'auth.client')
 
     const serverConfigExists = existsSync(`${serverConfigPath}.ts`) || existsSync(`${serverConfigPath}.js`)
     const clientConfigExists = existsSync(`${clientConfigPath}.ts`) || existsSync(`${clientConfigPath}.js`)
 
     if (!serverConfigExists)
-      throw new Error('[@onmax/nuxt-better-auth] Missing server/auth.config.ts - create with defineServerAuth()')
+      throw new Error(`[@onmax/nuxt-better-auth] Missing ${serverConfigPath}.ts - create with defineServerAuth()`)
     if (!clientConfigExists)
-      throw new Error('[@onmax/nuxt-better-auth] Missing app/auth.client.ts - export createAppAuthClient()')
+      throw new Error(`[@onmax/nuxt-better-auth] Missing ${clientConfigPath}.ts - export createAppAuthClient()`)
 
     const hub = (nuxt.options as unknown as Record<string, unknown>).hub as { db?: boolean | string | object, kv?: boolean } | undefined
     const hasDb = !!hub?.db
