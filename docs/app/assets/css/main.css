@@ -88,12 +88,9 @@ pre, code {
 /* Hero code block styling */
 .hero-code pre {
   background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  padding: 0.5rem 1rem;
+  margin: 0;
   font-size: 0.75rem;
-  border-radius: 0 !important;
-  line-height: 1.5rem !important;
 }
 
 @media (min-width: 640px) {
@@ -108,14 +105,4 @@ pre, code {
 
 .hero-code .shiki {
   background: transparent !important;
-}
-
-/* Hide MDC's copy button in hero */
-.hero-code .group > button {
-  display: none !important;
-}
-
-/* Remove wrapper margin */
-.hero-code > div > div {
-  margin: 0 !important;
 }

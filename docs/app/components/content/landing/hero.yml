@@ -15,7 +15,7 @@ tabs:
           '/admin/**': { auth: 'admin' },
         },
       })
-  - name: server/auth.config.ts
+  - name: auth.config.ts
     code: |
       import { admin, twoFactor } from 'better-auth/plugins'
 
@@ -26,20 +26,7 @@ tabs:
         },
         plugins: [admin(), twoFactor()],
       }))
-  - name: app/auth.client.ts
-    code: |
-      import { adminClient, twoFactorClient } from 'better-auth/client/plugins'
-      import { createAuthClient } from 'better-auth/vue'
-
-      export function createAppAuthClient(baseURL: string) {
-        return createAuthClient({
-          baseURL,
-          plugins: [adminClient(), twoFactorClient()],
-        })
-      }
-
-      export type AppAuthClient = ReturnType<typeof createAppAuthClient>
-  - name: app/pages/login.vue
+  - name: login.vue
     code: |
       <script setup lang="ts">
       const { signIn } = useUserSession()
