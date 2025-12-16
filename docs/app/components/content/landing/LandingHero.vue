@@ -197,7 +197,7 @@ function getCodeBlock(tab: { name: string, code: string }) {
                       <!-- Demo CTA (bottom-right) -->
                       <motion.div layout class="self-end mt-3">
                         <NuxtLink
-                          to="http://demo.nuxt-better-auth.onmax.me/"
+                          to="https://demo-nuxt-better-auth.onmax.me/"
                           target="_blank"
                           class="shadow-md border dark:border-stone-700 border-stone-300 mb-4 ml-auto mr-4 mt-auto flex cursor-pointer items-center gap-2 px-3 py-1 transition-all ease-in-out hover:opacity-70"
                         >
