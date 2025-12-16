@@ -1,6 +1,6 @@
 import type { AppAuthClient, AuthSession, AuthUser } from '#nuxt-better-auth'
 import { createAppAuthClient } from '#auth/client'
-import { computed, useRequestHeaders, useRuntimeConfig, useState, watch } from '#imports'
+import { computed, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
 import { consola } from 'consola'
 
 // Singleton client instance to ensure consistent state across all useUserSession calls
@@ -13,10 +13,11 @@ function getClient(baseURL: string): AppAuthClient {
 
 export function useUserSession() {
   const runtimeConfig = useRuntimeConfig()
+  const requestURL = useRequestURL()
 
   // Client only - create better-auth client for client-side operations (singleton)
   const client: AppAuthClient | null = import.meta.client
-    ? getClient(runtimeConfig.public.siteUrl || window.location.origin)
+    ? getClient(runtimeConfig.public.siteUrl || requestURL.origin)
     : null
 
   // Shared state via useState for SSR hydration
@@ -86,21 +87,41 @@ export function useUserSession() {
   function wrapAuthMethod<T extends (...args: unknown[]) => Promise<unknown>>(method: T): T {
     return (async (...args: unknown[]) => {
       const [data, options] = args as [unknown, { onSuccess?: (ctx: unknown) => void } | undefined]
-      const originalOnSuccess = options?.onSuccess
 
-      // If no onSuccess callback, pass options through unchanged
-      if (!originalOnSuccess)
+      // Check for nested fetchOptions.onSuccess (passkey pattern)
+      const dataWithFetch = data as { fetchOptions?: { onSuccess?: (ctx: unknown) => void } } | undefined
+      const nestedOnSuccess = dataWithFetch?.fetchOptions?.onSuccess
+
+      // Check for top-level options.onSuccess (email/social pattern)
+      const topLevelOnSuccess = options?.onSuccess
+
+      // If no onSuccess callback anywhere, pass through unchanged
+      if (!topLevelOnSuccess && !nestedOnSuccess)
         return method(data, options)
 
-      // Wrap onSuccess to wait for session sync before calling
+      // Wrap nested fetchOptions.onSuccess (passkey)
+      if (nestedOnSuccess) {
+        const wrappedData = {
+          ...dataWithFetch,
+          fetchOptions: {
+            ...dataWithFetch?.fetchOptions,
+            onSuccess: async (ctx: unknown) => {
+              await waitForSession()
+              await nestedOnSuccess(ctx)
+            },
+          },
+        }
+        return method(wrappedData, options)
+      }
+
+      // Wrap top-level options.onSuccess (email/social)
       const wrappedOptions = {
         ...options,
         onSuccess: async (ctx: unknown) => {
           await waitForSession()
-          await originalOnSuccess(ctx)
+          await topLevelOnSuccess!(ctx)
         },
       }
-
       return method(data, wrappedOptions)
     }) as T
   }
@@ -109,9 +130,10 @@ export function useUserSession() {
     ? new Proxy(client.signIn, {
         get(target, prop) {
           const method = (target as any)[prop]
-          if (typeof method === 'function')
-            return wrapAuthMethod(method.bind(target))
-          return method
+          if (typeof method !== 'function')
+            return method
+          // Don't bind - call through target to preserve better-auth's Proxy context
+          return wrapAuthMethod((...args: unknown[]) => (target as any)[prop](...args))
         },
       })
     : new Proxy({} as SignIn, {
@@ -122,9 +144,10 @@ export function useUserSession() {
     ? new Proxy(client.signUp, {
         get(target, prop) {
           const method = (target as any)[prop]
-          if (typeof method === 'function')
-            return wrapAuthMethod(method.bind(target))
-          return method
+          if (typeof method !== 'function')
+            return method
+          // Don't bind - call through target to preserve better-auth's Proxy context
+          return wrapAuthMethod((...args: unknown[]) => (target as any)[prop](...args))
         },
       })
     : new Proxy({} as SignUp, {
@@ -166,11 +189,15 @@ export function useUserSession() {
     }
   }
 
-  async function signOut(...args: Parameters<NonNullable<typeof client>['signOut']>) {
+  interface SignOutOptions { onSuccess?: () => void | Promise<void> }
+
+  async function signOut(options?: SignOutOptions) {
     if (!client)
       throw new Error('signOut can only be called on client-side')
-    const response = await client.signOut(...args)
+    const response = await client.signOut()
     clearSession()
+    if (options?.onSuccess)
+      await options.onSuccess()
     return response
   }
 

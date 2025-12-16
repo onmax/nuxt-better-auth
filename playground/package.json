@@ -1,11 +1,13 @@
 {
-  "name": "my-module-playground",
+  "name": "better-auth-playground",
   "type": "module",
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "generate": "nuxi generate"
+    "generate": "nuxi generate",
+    "db:generate": "nuxt db generate",
+    "db:migrate": "nuxt db migrate"
   },
   "dependencies": {
     "@better-auth/passkey": "^1.4.7",
@@ -13,7 +15,8 @@
     "@nuxt/ui": "^4.2.1",
     "@nuxthub/core": "^0.10.1",
     "nuxt": "^4.2.2",
-    "nuxt-qrcode": "^0.4.8"
+    "nuxt-qrcode": "^0.4.8",
+    "resend": "^6.6.0"
   },
   "devDependencies": {
     "@libsql/client": "^0.15.15",

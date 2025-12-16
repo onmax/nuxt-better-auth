@@ -8,6 +8,13 @@
       "when": 1765467191162,
       "tag": "0000_tiny_slyde",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1765894540326,
+      "tag": "0001_next_wilson_fisk",
+      "breakpoints": true
     }
   ]
 }

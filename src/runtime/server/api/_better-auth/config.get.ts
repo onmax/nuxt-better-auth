@@ -7,7 +7,8 @@ export default defineEventHandler(async () => {
     const auth = await serverAuth()
     const options = auth.options
     const runtimeConfig = useRuntimeConfig()
-    const publicAuth = runtimeConfig.public?.auth as { redirects?: { login?: string, guest?: string } } | undefined
+    const publicAuth = runtimeConfig.public?.auth as { redirects?: { login?: string, guest?: string }, useDatabase?: boolean } | undefined
+    const privateAuth = runtimeConfig.auth as { secondaryStorage?: boolean } | undefined
 
     // Session config with sensible defaults display
     const sessionConfig = options.session || {}
@@ -16,7 +17,13 @@ export default defineEventHandler(async () => {
 
     return {
       config: {
-        // Server config
+        // Module config (nuxt.config.ts)
+        module: {
+          redirects: publicAuth?.redirects || { login: '/login', guest: '/' },
+          secondaryStorage: privateAuth?.secondaryStorage ?? false,
+          useDatabase: publicAuth?.useDatabase ?? false,
+        },
+        // Server config (server/auth.config.ts)
         server: {
           baseURL: options.baseURL,
           basePath: options.basePath || '/api/auth',
@@ -34,10 +41,6 @@ export default defineEventHandler(async () => {
             useSecureCookies: options.advanced?.useSecureCookies ?? 'auto',
             disableCSRFCheck: options.advanced?.disableCSRFCheck ?? false,
           },
-        },
-        // Client/module config
-        client: {
-          redirects: publicAuth?.redirects || { login: '/login', guest: '/' },
         },
       },
     }

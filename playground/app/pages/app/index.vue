@@ -2,10 +2,10 @@
 const { user, session, client, signOut } = useUserSession()
 const toast = useToast()
 
-// Type assertion for plugin methods not in generated types
+type AsyncFn = (...args: unknown[]) => Promise<unknown>
 const authClient = client as typeof client & {
-  twoFactor: { enable: Function, disable: Function, verifyTotp: Function }
-  passkey: { listPasskeys: Function, addPasskey: Function, deletePasskey: Function }
+  twoFactor: { enable: AsyncFn, disable: AsyncFn, verifyTotp: AsyncFn }
+  passkey: { addPasskey: AsyncFn, deletePasskey: AsyncFn }
 }
 
 // Profile editing
@@ -125,19 +125,11 @@ async function disable2FA() {
   twoFaLoading.value = false
 }
 
-// Passkeys
-const passkeys = ref<any[]>([])
+const passkeysRef = client?.useListPasskeys()
+const passkeys = computed(() => passkeysRef?.value?.data || [])
 const passkeyOpen = ref(false)
 const passkeyName = ref('')
 const passkeyLoading = ref(false)
-
-async function loadPasskeys() {
-  try {
-    const res = await authClient?.passkey.listPasskeys()
-    passkeys.value = res?.data || []
-  }
-  catch { passkeys.value = [] }
-}
 
 async function addPasskey() {
   passkeyLoading.value = true
@@ -146,7 +138,6 @@ async function addPasskey() {
     toast.add({ title: 'Passkey added', color: 'success' })
     passkeyOpen.value = false
     passkeyName.value = ''
-    await loadPasskeys()
   }
   catch (e: any) {
     toast.add({ title: 'Error', description: e.message, color: 'error' })
@@ -156,7 +147,6 @@ async function addPasskey() {
 
 async function deletePasskey(id: string) {
   await authClient?.passkey.deletePasskey({ id })
-  passkeys.value = passkeys.value.filter(p => p.id !== id)
   toast.add({ title: 'Passkey deleted', color: 'success' })
 }
 
@@ -200,7 +190,6 @@ async function handleSignOut() {
 
 onMounted(() => {
   loadSessions()
-  loadPasskeys()
 })
 </script>
 
@@ -210,7 +199,9 @@ onMounted(() => {
     <UCard>
       <template #header>
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold">Profile</h2>
+          <h2 class="text-lg font-semibold">
+            Profile
+          </h2>
           <UButton size="sm" variant="soft" @click="openEdit">
             <UIcon name="i-lucide-pencil" />
             Edit
@@ -221,8 +212,12 @@ onMounted(() => {
       <div class="flex items-center gap-4">
         <UAvatar :src="user?.image ?? undefined" :alt="user?.name ?? undefined" size="lg" />
         <div>
-          <p class="font-medium">{{ user?.name || 'No name' }}</p>
-          <p class="text-sm text-muted-foreground">{{ user?.email }}</p>
+          <p class="font-medium">
+            {{ user?.name || 'No name' }}
+          </p>
+          <p class="text-sm text-muted-foreground">
+            {{ user?.email }}
+          </p>
         </div>
       </div>
 
@@ -239,7 +234,9 @@ onMounted(() => {
     <UCard>
       <template #header>
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold">Active Sessions</h2>
+          <h2 class="text-lg font-semibold">
+            Active Sessions
+          </h2>
           <UButton size="sm" variant="ghost" @click="loadSessions">
             <UIcon name="i-lucide-refresh-cw" />
           </UButton>
@@ -251,7 +248,9 @@ onMounted(() => {
           <div class="flex items-center gap-2 max-w-xs">
             <UIcon :name="row.original.userAgent?.includes('Mobile') ? 'i-lucide-smartphone' : 'i-lucide-monitor'" />
             <span class="text-sm truncate">{{ row.original.userAgent?.substring(0, 40) }}...</span>
-            <UBadge v-if="row.original.id === session?.id" size="xs" color="primary">Current</UBadge>
+            <UBadge v-if="row.original.id === session?.id" size="xs" color="primary">
+              Current
+            </UBadge>
           </div>
         </template>
         <template #createdAt-cell="{ row }">
@@ -268,15 +267,21 @@ onMounted(() => {
     <!-- Security -->
     <UCard>
       <template #header>
-        <h2 class="text-lg font-semibold">Security</h2>
+        <h2 class="text-lg font-semibold">
+          Security
+        </h2>
       </template>
 
       <div class="space-y-4">
         <!-- 2FA -->
         <div class="flex justify-between items-center">
           <div>
-            <p class="font-medium">Two-Factor Authentication</p>
-            <p class="text-sm text-muted-foreground">{{ user?.twoFactorEnabled ? 'Enabled' : 'Not enabled' }}</p>
+            <p class="font-medium">
+              Two-Factor Authentication
+            </p>
+            <p class="text-sm text-muted-foreground">
+              {{ user?.twoFactorEnabled ? 'Enabled' : 'Not enabled' }}
+            </p>
           </div>
           <UButton :color="user?.twoFactorEnabled ? 'error' : 'primary'" variant="soft" @click="twoFaOpen = true">
             {{ user?.twoFactorEnabled ? 'Disable' : 'Enable' }} 2FA
@@ -288,10 +293,16 @@ onMounted(() => {
         <!-- Passkeys -->
         <div class="flex justify-between items-center">
           <div>
-            <p class="font-medium">Passkeys</p>
-            <p class="text-sm text-muted-foreground">{{ passkeys.length }} registered</p>
+            <p class="font-medium">
+              Passkeys
+            </p>
+            <p class="text-sm text-muted-foreground">
+              {{ passkeys.length }} registered
+            </p>
           </div>
-          <UButton variant="soft" @click="passkeyOpen = true">Add Passkey</UButton>
+          <UButton variant="soft" @click="passkeyOpen = true">
+            Add Passkey
+          </UButton>
         </div>
 
         <div v-if="passkeys.length" class="space-y-2">
@@ -322,31 +333,41 @@ onMounted(() => {
 
     <!-- Edit Profile Modal -->
     <UModal v-model:open="editOpen">
-      <template #header>Edit Profile</template>
+      <template #header>
+        Edit Profile
+      </template>
       <template #body>
         <div class="space-y-4 p-4">
           <UFormField label="Name">
             <UInput v-model="editForm.name" />
           </UFormField>
-          <UButton block :loading="editLoading" @click="saveProfile">Save</UButton>
+          <UButton block :loading="editLoading" @click="saveProfile">
+            Save
+          </UButton>
         </div>
       </template>
     </UModal>
 
     <!-- 2FA Modal -->
     <UModal v-model:open="twoFaOpen">
-      <template #header>{{ user?.twoFactorEnabled ? 'Disable' : 'Enable' }} Two-Factor Authentication</template>
+      <template #header>
+        {{ user?.twoFactorEnabled ? 'Disable' : 'Enable' }} Two-Factor Authentication
+      </template>
       <template #body>
         <div class="space-y-4 p-4">
           <template v-if="twoFaUri">
             <div class="flex justify-center">
               <QRCode :value="twoFaUri" :size="200" />
             </div>
-            <p class="text-sm text-center text-muted-foreground">Scan with your authenticator app</p>
+            <p class="text-sm text-center text-muted-foreground">
+              Scan with your authenticator app
+            </p>
             <UFormField label="Verification Code">
               <UInput v-model="twoFaCode" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code" />
             </UFormField>
-            <UButton block :loading="twoFaLoading" @click="enable2FA">Verify & Enable</UButton>
+            <UButton block :loading="twoFaLoading" @click="enable2FA">
+              Verify & Enable
+            </UButton>
           </template>
           <template v-else>
             <UFormField label="Password">
@@ -362,20 +383,26 @@ onMounted(() => {
 
     <!-- Passkey Modal -->
     <UModal v-model:open="passkeyOpen">
-      <template #header>Add Passkey</template>
+      <template #header>
+        Add Passkey
+      </template>
       <template #body>
         <div class="space-y-4 p-4">
           <UFormField label="Passkey Name (optional)">
             <UInput v-model="passkeyName" placeholder="My Passkey" />
           </UFormField>
-          <UButton block :loading="passkeyLoading" @click="addPasskey">Create Passkey</UButton>
+          <UButton block :loading="passkeyLoading" @click="addPasskey">
+            Create Passkey
+          </UButton>
         </div>
       </template>
     </UModal>
 
     <!-- Change Password Modal -->
     <UModal v-model:open="passwordOpen">
-      <template #header>Change Password</template>
+      <template #header>
+        Change Password
+      </template>
       <template #body>
         <div class="space-y-4 p-4">
           <UFormField label="Current Password">
@@ -388,7 +415,9 @@ onMounted(() => {
             <UInput v-model="passwordForm.confirm" type="password" />
           </UFormField>
           <UCheckbox v-model="passwordForm.revokeOthers" label="Sign out from other devices" />
-          <UButton block :loading="passwordLoading" @click="changePassword">Change Password</UButton>
+          <UButton block :loading="passwordLoading" @click="changePassword">
+            Change Password
+          </UButton>
         </div>
       </template>
     </UModal>

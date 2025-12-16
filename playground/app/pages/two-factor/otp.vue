@@ -5,8 +5,9 @@ const { client } = useUserSession()
 const toast = useToast()
 
 // Type assertion for twoFactor plugin
+type AsyncFn = (...args: unknown[]) => Promise<unknown>
 const authClient = client as typeof client & {
-  twoFactor: { sendOtp: Function, verifyOtp: Function }
+  twoFactor: { sendOtp: AsyncFn, verifyOtp: AsyncFn }
 }
 
 const otp = ref('')
@@ -52,8 +53,12 @@ async function verifyOTP() {
 <template>
   <UCard class="max-w-sm">
     <template #header>
-      <h3 class="text-lg font-semibold">Email Verification</h3>
-      <p class="text-sm text-muted-foreground">Verify with a one-time password sent to your email</p>
+      <h3 class="text-lg font-semibold">
+        Email Verification
+      </h3>
+      <p class="text-sm text-muted-foreground">
+        Verify with a one-time password sent to your email
+      </p>
     </template>
 
     <div class="grid gap-4">
@@ -69,16 +74,24 @@ async function verifyOTP() {
           <UInput v-model="otp" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit OTP" class="text-center tracking-widest" />
         </UFormField>
 
-        <UButton block :loading="loading" :disabled="otp.length !== 6" @click="verifyOTP">Verify OTP</UButton>
+        <UButton block :loading="loading" :disabled="otp.length !== 6" @click="verifyOTP">
+          Verify OTP
+        </UButton>
 
-        <UButton variant="ghost" block @click="sendOTP" :loading="loading">Resend OTP</UButton>
+        <UButton variant="ghost" block :loading="loading" @click="sendOTP">
+          Resend OTP
+        </UButton>
       </template>
     </div>
 
     <template #footer>
       <div class="flex justify-between items-center w-full">
-        <NuxtLink to="/two-factor" class="text-sm underline">Use TOTP instead</NuxtLink>
-        <NuxtLink to="/login" class="text-sm underline">Back to login</NuxtLink>
+        <NuxtLink to="/two-factor" class="text-sm underline">
+          Use TOTP instead
+        </NuxtLink>
+        <NuxtLink to="/login" class="text-sm underline">
+          Back to login
+        </NuxtLink>
       </div>
     </template>
   </UCard>

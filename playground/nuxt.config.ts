@@ -3,15 +3,18 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    },
+  },
+
   hub: { db: 'sqlite' },
 
   devtools: { enabled: true },
 
   runtimeConfig: {
     betterAuthSecret: 'dev-secret-change-in-production-32+',
-    public: {
-      siteUrl: 'http://localhost:3000',
-    },
   },
 
   auth: {

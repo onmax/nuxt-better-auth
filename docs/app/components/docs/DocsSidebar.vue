@@ -2,8 +2,6 @@
 const route = useRoute()
 const { sections, standaloneLinks } = useSidebarConfig()
 
-const openSection = ref<string>('')
-
 function isActive(href: string) {
   if (href.startsWith('http'))
     return false
@@ -13,6 +11,16 @@ function isActive(href: string) {
 function isSectionActive(sectionIndex: number) {
   return sections[sectionIndex]?.items.some(item => isActive(item.href)) ?? false
 }
+
+const openSection = ref<string>('')
+
+// Update open section when route changes (immediate: fires on mount + navigation)
+watch(() => route.path, () => {
+  const activeIndex = sections.findIndex((_, index) => isSectionActive(index))
+  if (activeIndex !== -1) {
+    openSection.value = String(activeIndex)
+  }
+}, { immediate: true })
 
 // Build accordion items from sections
 const accordionItems = computed(() =>
@@ -25,22 +33,6 @@ const accordionItems = computed(() =>
     slot: `item-${index}` as const,
   })),
 )
-
-// Set initial open section based on current route
-onMounted(() => {
-  const activeIndex = sections.findIndex((_, index) => isSectionActive(index))
-  if (activeIndex !== -1) {
-    openSection.value = String(activeIndex)
-  }
-})
-
-// Update open section when route changes
-watch(() => route.path, () => {
-  const activeIndex = sections.findIndex((_, index) => isSectionActive(index))
-  if (activeIndex !== -1) {
-    openSection.value = String(activeIndex)
-  }
-})
 </script>
 
 <template>

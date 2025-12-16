@@ -44,17 +44,14 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
     nuxt.options.runtimeConfig.public = nuxt.options.runtimeConfig.public || {}
     nuxt.options.runtimeConfig.public.auth = defu(nuxt.options.runtimeConfig.public.auth as Record<string, unknown>, {
-      redirects: {
-        login: options.redirects?.login ?? '/login',
-        guest: options.redirects?.guest ?? '/',
-      },
-    }) as { redirects: { login: string, guest: string } }
+      redirects: { login: options.redirects?.login ?? '/login', guest: options.redirects?.guest ?? '/' },
+      useDatabase: hasDb,
+    }) as { redirects: { login: string, guest: string }, useDatabase: boolean }
 
     // server-only
     nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
       secondaryStorage: secondaryStorageEnabled,
-      useDatabase: hasDb,
-    }) as { secondaryStorage: boolean, useDatabase: boolean }
+    }) as { secondaryStorage: boolean }
 
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
     nuxt.options.alias['#auth/server'] = serverConfigPath

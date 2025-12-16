@@ -3,11 +3,9 @@ const { client } = useUserSession()
 const toast = useToast()
 
 // Type assertion for admin plugin methods
+type AsyncFn = (...args: unknown[]) => Promise<unknown>
 const adminClient = client as typeof client & {
-  admin: {
-    listUsers: Function, createUser: Function, banUser: Function
-    unbanUser: Function, impersonateUser: Function, removeUser: Function
-  }
+  admin: { listUsers: AsyncFn, createUser: AsyncFn, banUser: AsyncFn, unbanUser: AsyncFn, impersonateUser: AsyncFn, removeUser: AsyncFn }
 }
 
 // Users
@@ -28,7 +26,8 @@ async function loadUsers() {
 }
 
 const filteredUsers = computed(() => {
-  if (!search.value) return users.value
+  if (!search.value)
+    return users.value
   const s = search.value.toLowerCase()
   return users.value.filter(u => u.email?.toLowerCase().includes(s) || u.name?.toLowerCase().includes(s))
 })
@@ -125,7 +124,9 @@ async function impersonate(userId: string) {
 
 // Delete user
 async function deleteUser(userId: string) {
-  if (!confirm('Are you sure you want to delete this user?')) return
+  // eslint-disable-next-line no-alert
+  if (!confirm('Are you sure you want to delete this user?'))
+    return
   try {
     await adminClient?.admin.removeUser({ userId })
     toast.add({ title: 'User deleted', color: 'success' })
@@ -144,7 +145,9 @@ onMounted(loadUsers)
     <UCard>
       <template #header>
         <div class="flex justify-between items-center gap-4">
-          <h1 class="text-xl font-semibold">Admin Dashboard</h1>
+          <h1 class="text-xl font-semibold">
+            Admin Dashboard
+          </h1>
           <div class="flex gap-2">
             <UInput v-model="search" placeholder="Search users..." class="w-48" />
             <UButton @click="createOpen = true">
@@ -193,7 +196,9 @@ onMounted(loadUsers)
 
     <!-- Create User Modal -->
     <UModal v-model:open="createOpen">
-      <template #header>Create New User</template>
+      <template #header>
+        Create New User
+      </template>
       <template #body>
         <div class="space-y-4 p-4">
           <UFormField label="Email">
@@ -208,14 +213,18 @@ onMounted(loadUsers)
           <UFormField label="Role">
             <USelect v-model="createForm.role" :options="['user', 'admin']" />
           </UFormField>
-          <UButton block :loading="createLoading" @click="createUser">Create User</UButton>
+          <UButton block :loading="createLoading" @click="createUser">
+            Create User
+          </UButton>
         </div>
       </template>
     </UModal>
 
     <!-- Ban User Modal -->
     <UModal v-model:open="banOpen">
-      <template #header>Ban User</template>
+      <template #header>
+        Ban User
+      </template>
       <template #body>
         <div class="space-y-4 p-4">
           <UFormField label="Reason (optional)">
@@ -224,7 +233,9 @@ onMounted(loadUsers)
           <UFormField label="Duration (hours, leave empty for permanent)">
             <UInput v-model="banForm.expiresIn" type="number" placeholder="e.g. 24" />
           </UFormField>
-          <UButton block color="error" :loading="banLoading" @click="banUser">Ban User</UButton>
+          <UButton block color="error" :loading="banLoading" @click="banUser">
+            Ban User
+          </UButton>
         </div>
       </template>
     </UModal>

@@ -8,7 +8,7 @@ definePageMeta({ layout: false })
 const toast = useToast()
 const devtoolsClient = useDevtoolsClient()
 const runtimeConfig = useRuntimeConfig()
-const hasDb = computed(() => (runtimeConfig.auth as { useDatabase?: boolean } | undefined)?.useDatabase ?? false)
+const hasDb = computed(() => (runtimeConfig.public.auth as { useDatabase?: boolean } | undefined)?.useDatabase ?? false)
 
 // Sync color mode with host app
 const isDark = computed(() => devtoolsClient.value?.host?.app?.colorMode?.value === 'dark')
@@ -93,19 +93,19 @@ function generateConfigMarkdown() {
   if (!config)
     return ''
 
+  const moduleJson = JSON.stringify(config.module, null, 2)
   const serverJson = JSON.stringify(config.server, null, 2)
-  const clientJson = JSON.stringify(config.client, null, 2)
 
-  return `## Server Config (\`server/auth.config.ts\`)
+  return `## Module Config (\`nuxt.config.ts\`)
+
+\`\`\`json
+${moduleJson}
+\`\`\`
+
+## Server Config (\`server/auth.config.ts\`)
 
 \`\`\`json
 ${serverJson}
-\`\`\`
-
-## Client Config (\`nuxt.config.ts\`)
-
-\`\`\`json
-${clientJson}
 \`\`\`
 `
 }
@@ -127,16 +127,16 @@ interface UserRow { id: string, name: string | null, email: string, emailVerifie
 interface AccountRow { id: string, providerId: string, accountId: string, userId: string, createdAt: string }
 
 const sessionColumns: TableColumn<SessionRow>[] = [
-  { accessorKey: 'id', header: 'ID', cell: ({ row }) => h('span', { class: 'font-mono text-xs' }, truncate(row.original.id)) },
+  { accessorKey: 'id', header: 'ID', cell: ({ row }) => h('span', { class: 'font-mono text-sm' }, truncate(row.original.id)) },
   {
     accessorKey: 'userId',
     header: 'User',
     cell: ({ row }) => h('div', { class: 'min-w-0' }, [
-      h('p', { class: 'font-mono text-xs truncate' }, truncate(row.original.userId)),
-      h('p', { class: 'text-xs text-muted-foreground font-mono' }, row.original.ipAddress || 'No IP'),
+      h('p', { class: 'font-mono text-sm truncate' }, truncate(row.original.userId)),
+      h('p', { class: 'text-sm text-muted-foreground font-mono' }, row.original.ipAddress || 'No IP'),
     ]),
   },
-  { accessorKey: 'userAgent', header: 'User Agent', cell: ({ row }) => h('span', { class: 'text-xs text-muted-foreground max-w-48 truncate block' }, truncate(row.original.userAgent, 30)) },
+  { accessorKey: 'userAgent', header: 'User Agent', cell: ({ row }) => h('span', { class: 'text-sm text-muted-foreground max-w-48 truncate block' }, truncate(row.original.userAgent, 30)) },
   {
     accessorKey: 'expiresAt',
     header: 'Status',
@@ -145,17 +145,17 @@ const sessionColumns: TableColumn<SessionRow>[] = [
       return h(resolveComponent('UBadge'), { color: expired ? 'error' : 'success', variant: 'subtle', size: 'sm' }, () => expired ? 'Expired' : 'Active')
     },
   },
-  { accessorKey: 'createdAt', header: 'Created', cell: ({ row }) => h('span', { class: 'text-xs text-muted-foreground' }, formatDate(row.original.createdAt)) },
+  { accessorKey: 'createdAt', header: 'Created', cell: ({ row }) => h('span', { class: 'text-sm text-muted-foreground' }, formatDate(row.original.createdAt)) },
 ]
 
 const userColumns: TableColumn<UserRow>[] = [
-  { accessorKey: 'id', header: 'ID', cell: ({ row }) => h('span', { class: 'font-mono text-xs' }, truncate(row.original.id)) },
+  { accessorKey: 'id', header: 'ID', cell: ({ row }) => h('span', { class: 'font-mono text-sm' }, truncate(row.original.id)) },
   {
     accessorKey: 'name',
     header: 'User',
     cell: ({ row }) => h('div', { class: 'min-w-0' }, [
       h('p', { class: 'font-medium truncate' }, row.original.name || 'Unnamed'),
-      h('p', { class: 'text-xs text-muted-foreground font-mono truncate' }, row.original.email),
+      h('p', { class: 'text-sm text-muted-foreground font-mono truncate' }, row.original.email),
     ]),
   },
   {
@@ -163,11 +163,11 @@ const userColumns: TableColumn<UserRow>[] = [
     header: 'Verified',
     cell: ({ row }) => h(resolveComponent('UBadge'), { color: row.original.emailVerified ? 'success' : 'neutral', variant: 'subtle', size: 'sm' }, () => row.original.emailVerified ? 'Yes' : 'No'),
   },
-  { accessorKey: 'createdAt', header: 'Created', cell: ({ row }) => h('span', { class: 'text-xs text-muted-foreground' }, formatDate(row.original.createdAt)) },
+  { accessorKey: 'createdAt', header: 'Created', cell: ({ row }) => h('span', { class: 'text-sm text-muted-foreground' }, formatDate(row.original.createdAt)) },
 ]
 
 const accountColumns: TableColumn<AccountRow>[] = [
-  { accessorKey: 'id', header: 'ID', cell: ({ row }) => h('span', { class: 'font-mono text-xs' }, truncate(row.original.id)) },
+  { accessorKey: 'id', header: 'ID', cell: ({ row }) => h('span', { class: 'font-mono text-sm' }, truncate(row.original.id)) },
   {
     accessorKey: 'providerId',
     header: 'Provider',
@@ -178,13 +178,13 @@ const accountColumns: TableColumn<AccountRow>[] = [
         h(resolveComponent('UIcon'), { name: iconMap[provider] || 'i-lucide-key', class: 'size-4' }),
         h('div', { class: 'min-w-0' }, [
           h('p', { class: 'capitalize font-medium' }, provider),
-          h('p', { class: 'text-xs text-muted-foreground font-mono truncate' }, truncate(row.original.accountId, 16)),
+          h('p', { class: 'text-sm text-muted-foreground font-mono truncate' }, truncate(row.original.accountId, 16)),
         ]),
       ])
     },
   },
-  { accessorKey: 'userId', header: 'User ID', cell: ({ row }) => h('span', { class: 'font-mono text-xs' }, truncate(row.original.userId)) },
-  { accessorKey: 'createdAt', header: 'Created', cell: ({ row }) => h('span', { class: 'text-xs text-muted-foreground' }, formatDate(row.original.createdAt)) },
+  { accessorKey: 'userId', header: 'User ID', cell: ({ row }) => h('span', { class: 'font-mono text-sm' }, truncate(row.original.userId)) },
+  { accessorKey: 'createdAt', header: 'Created', cell: ({ row }) => h('span', { class: 'text-sm text-muted-foreground' }, formatDate(row.original.createdAt)) },
 ]
 
 function getSessionActions(row: SessionRow) {
@@ -225,7 +225,7 @@ function getAccountActions(row: AccountRow) {
     </header>
 
     <!-- Tabs -->
-    <UTabs :items="tabs" class="w-full" :ui="{ list: 'border-b border-border rounded-none bg-transparent', trigger: 'rounded-none data-[state=active]:shadow-none' }">
+    <UTabs :items="tabs" class="w-full" :ui="{ list: 'border-b border-border rounded-none bg-transparent justify-start', trigger: 'rounded-none data-[state=active]:shadow-none flex-none' }">
       <!-- Sessions Tab -->
       <template #sessions>
         <div class="p-4 space-y-4">
@@ -323,10 +323,10 @@ function getAccountActions(row: AccountRow) {
 
       <!-- Config Tab -->
       <template #config>
-        <div class="p-4 space-y-4">
+        <div class="p-3 space-y-3">
           <div class="flex items-center justify-end">
             <UButton variant="ghost" size="xs" icon="i-lucide-copy" @click="copyToClipboard(generateConfigMarkdown(), 'Config')">
-              Copy Config
+              Copy
             </UButton>
           </div>
 
@@ -335,190 +335,115 @@ function getAccountActions(row: AccountRow) {
           </p>
 
           <template v-else-if="configData?.config?.server">
-            <div class="grid gap-4 md:grid-cols-2">
-              <!-- Endpoints -->
-              <UCard :ui="{ root: 'rounded-none border border-border shadow-none', header: 'p-4 border-b border-border', body: 'p-4' }">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-globe" class="size-4 text-muted-foreground" />
-                    <span class="font-medium text-sm">Endpoints</span>
-                  </div>
-                </template>
-                <dl class="space-y-3 text-sm">
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Base URL
-                    </dt>
-                    <dd class="font-mono text-xs mt-0.5">
-                      {{ configData.config.server.baseURL || 'auto-detect' }}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Base Path
-                    </dt>
-                    <dd class="font-mono text-xs mt-0.5">
-                      {{ configData.config.server.basePath }}
-                    </dd>
-                  </div>
-                </dl>
-              </UCard>
-
-              <!-- Session -->
-              <UCard :ui="{ root: 'rounded-none border border-border shadow-none', header: 'p-4 border-b border-border', body: 'p-4' }">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-clock" class="size-4 text-muted-foreground" />
-                    <span class="font-medium text-sm">Session</span>
-                  </div>
-                </template>
-                <dl class="space-y-3 text-sm">
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Expires In
-                    </dt>
-                    <dd class="font-mono text-xs mt-0.5">
-                      {{ configData.config.server.session?.expiresIn }}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Update Age
-                    </dt>
-                    <dd class="font-mono text-xs mt-0.5">
-                      {{ configData.config.server.session?.updateAge }}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Cookie Cache
-                    </dt>
-                    <dd class="mt-0.5">
-                      <UBadge :color="configData.config.server.session?.cookieCache ? 'success' : 'neutral'" variant="subtle" size="sm">
-                        {{ configData.config.server.session?.cookieCache ? 'Enabled' : 'Disabled' }}
-                      </UBadge>
-                    </dd>
-                  </div>
-                </dl>
-              </UCard>
-
-              <!-- Auth Methods -->
-              <UCard :ui="{ root: 'rounded-none border border-border shadow-none', header: 'p-4 border-b border-border', body: 'p-4' }">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-key-round" class="size-4 text-muted-foreground" />
-                    <span class="font-medium text-sm">Auth Methods</span>
-                  </div>
-                </template>
-                <div class="flex flex-wrap gap-2">
-                  <UBadge v-if="configData.config.server.emailAndPassword" variant="subtle" color="success">
-                    Email/Password
+            <!-- Row 1: Endpoints + Session + Auth Methods -->
+            <div class="grid gap-3 md:grid-cols-3">
+              <div class="config-section">
+                <div class="config-header">
+                  <UIcon name="i-lucide-globe" class="size-4" /><span>Endpoints</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Base URL</span><span class="font-mono">{{ configData.config.server.baseURL || 'auto' }}</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Path</span><span class="font-mono">{{ configData.config.server.basePath }}</span>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-header">
+                  <UIcon name="i-lucide-clock" class="size-4" /><span>Session</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Expires</span><span class="font-mono">{{ configData.config.server.session?.expiresIn }}</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Update</span><span class="font-mono">{{ configData.config.server.session?.updateAge }}</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Cache</span><UBadge :color="configData.config.server.session?.cookieCache ? 'success' : 'neutral'" variant="subtle" size="sm">
+                    {{ configData.config.server.session?.cookieCache ? 'On' : 'Off' }}
                   </UBadge>
-                  <UBadge v-for="provider in configData.config.server.socialProviders" :key="provider" variant="subtle" color="neutral" class="capitalize">
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-header">
+                  <UIcon name="i-lucide-key-round" class="size-4" /><span>Auth</span>
+                </div>
+                <div class="flex flex-wrap gap-1">
+                  <UBadge v-if="configData.config.server.emailAndPassword" variant="subtle" color="success" size="sm">
+                    Email
+                  </UBadge>
+                  <UBadge v-for="provider in configData.config.server.socialProviders" :key="provider" variant="subtle" color="neutral" size="sm" class="capitalize">
                     {{ provider }}
                   </UBadge>
-                  <span v-if="!configData.config.server.emailAndPassword && !configData.config.server.socialProviders?.length" class="text-muted-foreground text-sm">None configured</span>
+                  <span v-if="!configData.config.server.emailAndPassword && !configData.config.server.socialProviders?.length" class="text-muted-foreground text-sm">None</span>
                 </div>
-              </UCard>
+              </div>
+            </div>
 
-              <!-- Plugins -->
-              <UCard :ui="{ root: 'rounded-none border border-border shadow-none', header: 'p-4 border-b border-border', body: 'p-4' }">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-puzzle" class="size-4 text-muted-foreground" />
-                    <span class="font-medium text-sm">Plugins</span>
-                  </div>
-                </template>
-                <div class="flex flex-wrap gap-2">
-                  <UBadge v-for="plugin in configData.config.server.plugins" :key="plugin" variant="subtle" color="neutral">
+            <!-- Row 2: Security + Module + Plugins -->
+            <div class="grid gap-3 md:grid-cols-3">
+              <div class="config-section">
+                <div class="config-header">
+                  <UIcon name="i-lucide-shield" class="size-4" /><span>Security</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Cookies</span><span class="font-mono">{{ configData.config.server.advanced?.useSecureCookies }}</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">CSRF</span><UBadge :color="configData.config.server.advanced?.disableCSRFCheck ? 'error' : 'success'" variant="subtle" size="sm">
+                    {{ configData.config.server.advanced?.disableCSRFCheck ? 'Off' : 'On' }}
+                  </UBadge>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Rate Limit</span><UBadge :color="configData.config.server.rateLimit ? 'success' : 'neutral'" variant="subtle" size="sm">
+                    {{ configData.config.server.rateLimit ? 'On' : 'Off' }}
+                  </UBadge>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-header">
+                  <UIcon name="i-lucide-settings-2" class="size-4" /><span>Module</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Login</span><span class="font-mono">{{ configData.config.module?.redirects?.login }}</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">Guest</span><span class="font-mono">{{ configData.config.module?.redirects?.guest }}</span>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">DB</span><UBadge :color="configData.config.module?.useDatabase ? 'success' : 'neutral'" variant="subtle" size="sm">
+                    {{ configData.config.module?.useDatabase ? 'Hub' : 'Off' }}
+                  </UBadge>
+                </div>
+                <div class="config-row">
+                  <span class="config-label">KV</span><UBadge :color="configData.config.module?.secondaryStorage ? 'success' : 'neutral'" variant="subtle" size="sm">
+                    {{ configData.config.module?.secondaryStorage ? 'On' : 'Off' }}
+                  </UBadge>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-header">
+                  <UIcon name="i-lucide-puzzle" class="size-4" /><span>Plugins</span>
+                </div>
+                <div class="flex flex-wrap gap-1">
+                  <UBadge v-for="plugin in configData.config.server.plugins" :key="plugin" variant="subtle" color="neutral" size="sm">
                     {{ plugin }}
                   </UBadge>
-                  <span v-if="!configData.config.server.plugins?.length" class="text-muted-foreground text-sm">None configured</span>
+                  <span v-if="!configData.config.server.plugins?.length" class="text-muted-foreground text-sm">None</span>
                 </div>
-              </UCard>
+              </div>
+            </div>
 
-              <!-- Security -->
-              <UCard :ui="{ root: 'rounded-none border border-border shadow-none', header: 'p-4 border-b border-border', body: 'p-4' }">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-shield" class="size-4 text-muted-foreground" />
-                    <span class="font-medium text-sm">Security</span>
-                  </div>
-                </template>
-                <dl class="space-y-3 text-sm">
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Secure Cookies
-                    </dt>
-                    <dd class="font-mono text-xs mt-0.5">
-                      {{ configData.config.server.advanced?.useSecureCookies }}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      CSRF Check
-                    </dt>
-                    <dd class="mt-0.5">
-                      <UBadge :color="configData.config.server.advanced?.disableCSRFCheck ? 'error' : 'success'" variant="subtle" size="sm">
-                        {{ configData.config.server.advanced?.disableCSRFCheck ? 'Disabled' : 'Enabled' }}
-                      </UBadge>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Rate Limiting
-                    </dt>
-                    <dd class="mt-0.5">
-                      <UBadge :color="configData.config.server.rateLimit ? 'success' : 'neutral'" variant="subtle" size="sm">
-                        {{ configData.config.server.rateLimit ? 'Enabled' : 'Disabled' }}
-                      </UBadge>
-                    </dd>
-                  </div>
-                </dl>
-              </UCard>
-
-              <!-- Redirects (Client) -->
-              <UCard :ui="{ root: 'rounded-none border border-border shadow-none', header: 'p-4 border-b border-border', body: 'p-4' }">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-arrow-right-left" class="size-4 text-muted-foreground" />
-                    <span class="font-medium text-sm">Redirects</span>
-                  </div>
-                </template>
-                <dl class="space-y-3 text-sm">
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Login Page
-                    </dt>
-                    <dd class="font-mono text-xs mt-0.5">
-                      {{ configData.config.client?.redirects?.login }}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt class="text-xs text-muted-foreground uppercase tracking-wide">
-                      Guest Page
-                    </dt>
-                    <dd class="font-mono text-xs mt-0.5">
-                      {{ configData.config.client?.redirects?.guest }}
-                    </dd>
-                  </div>
-                </dl>
-              </UCard>
-
-              <!-- Trusted Origins -->
-              <UCard v-if="configData.config.server.trustedOrigins?.length" :ui="{ root: 'rounded-none border border-border shadow-none md:col-span-2', header: 'p-4 border-b border-border', body: 'p-4' }">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-shield-check" class="size-4 text-muted-foreground" />
-                    <span class="font-medium text-sm">Trusted Origins</span>
-                  </div>
-                </template>
-                <div class="flex flex-wrap gap-2">
-                  <UBadge v-for="origin in configData.config.server.trustedOrigins" :key="origin" variant="subtle" color="neutral" class="font-mono text-xs">
-                    {{ origin }}
-                  </UBadge>
-                </div>
-              </UCard>
+            <!-- Trusted Origins (if any) -->
+            <div v-if="configData.config.server.trustedOrigins?.length" class="config-section">
+              <div class="config-header">
+                <UIcon name="i-lucide-shield-check" class="size-4" /><span>Trusted Origins</span>
+              </div>
+              <div class="flex flex-wrap gap-1">
+                <UBadge v-for="origin in configData.config.server.trustedOrigins" :key="origin" variant="subtle" color="neutral" size="sm" class="font-mono">
+                  {{ origin }}
+                </UBadge>
+              </div>
             </div>
           </template>
         </div>
@@ -583,5 +508,32 @@ function getAccountActions(row: AccountRow) {
 
 .header-link:hover::after {
   transform: scaleX(1);
+}
+
+.config-section {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+.config-header {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+  color: var(--muted-foreground);
+}
+
+.config-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  padding: 0.125rem 0;
+}
+
+.config-label {
+  color: var(--muted-foreground);
 }
 </style>
