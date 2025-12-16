@@ -3,6 +3,8 @@ import { createAppAuthClient } from '#auth/client'
 import { computed, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
 import { consola } from 'consola'
 
+export interface SignOutOptions { onSuccess?: () => void | Promise<void> }
+
 // Singleton client instance to ensure consistent state across all useUserSession calls
 let _client: AppAuthClient | null = null
 function getClient(baseURL: string): AppAuthClient {
@@ -188,8 +190,6 @@ export function useUserSession() {
       }
     }
   }
-
-  interface SignOutOptions { onSuccess?: () => void | Promise<void> }
 
   async function signOut(options?: SignOutOptions) {
     if (!client)
