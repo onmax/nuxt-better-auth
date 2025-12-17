@@ -130,6 +130,12 @@ const accordionItems = computed(() =>
   border-top: 1px solid var(--ui-border);
 }
 
+/* Inset focus ring to prevent clipping by borders/overflow */
+.docs-sidebar-nav :deep([data-accordion-item] button:focus-visible) {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: -2px;
+}
+
 /* Sidebar item - matches Better Auth: px-5 py-1 gap-x-2.5 */
 .sidebar-item {
   display: flex;

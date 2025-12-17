@@ -74,6 +74,20 @@ export function createSecondaryStorage() {
     const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
     nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
 
+    // conditional hub:db
+    const databaseCode = hasDb
+      ? `import { db, schema } from 'hub:db'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+const rawDialect = '${(hub as any)?.db?.dialect ?? 'sqlite'}'
+const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
+export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }
+export { db }`
+      : `export function createDatabase() { return undefined }
+export const db = undefined`
+
+    const databaseTemplate = addTemplate({ filename: 'better-auth/database.mjs', getContents: () => databaseCode, write: true })
+    nuxt.options.alias['#auth/database'] = databaseTemplate.dst
+
     addTypeTemplate({
       filename: 'types/auth-secondary-storage.d.ts',
       getContents: () => `
@@ -84,6 +98,17 @@ declare module '#auth/secondary-storage' {
     delete: (key: string) => Promise<void>
   }
   export function createSecondaryStorage(): SecondaryStorage | undefined
+}
+`,
+    })
+
+    addTypeTemplate({
+      filename: 'types/auth-database.d.ts',
+      getContents: () => `
+declare module '#auth/database' {
+  import type { drizzleAdapter } from 'better-auth/adapters/drizzle'
+  export function createDatabase(): ReturnType<typeof drizzleAdapter> | undefined
+  export const db: unknown
 }
 `,
     })

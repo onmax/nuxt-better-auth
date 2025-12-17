@@ -27,6 +27,11 @@ const { open } = useContentSearch()
   color: var(--ui-text);
 }
 
+.docs-search-button:focus-visible {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: -2px;
+}
+
 .search-icon {
   width: 1rem;
   height: 1rem;

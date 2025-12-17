@@ -11,17 +11,14 @@
     "url": "https://github.com/onmax/nuxt-better-auth"
   },
   "exports": {
-    ".": {
-      "types": "./dist/types.d.mts",
-      "import": "./dist/module.mjs"
-    }
+    ".": { "types": "./dist/types.d.mts", "import": "./dist/module.mjs" },
+    "./config": { "types": "./dist/runtime/config.d.ts", "import": "./dist/runtime/config.js" }
   },
   "main": "./dist/module.mjs",
   "typesVersions": {
     "*": {
-      ".": [
-        "./dist/types.d.mts"
-      ]
+      ".": ["./dist/types.d.mts"],
+      "config": ["./dist/runtime/config.d.ts"]
     }
   },
   "files": [
