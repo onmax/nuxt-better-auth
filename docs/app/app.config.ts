@@ -15,7 +15,7 @@ export default defineAppConfig({
       },
       callout: {
         slots: {
-          base: 'border-s-2 border-dashed rounded-none bg-muted',
+          base: 'border-0 border-s-2 border-dashed rounded-none bg-muted',
         },
         variants: {
           color: {
