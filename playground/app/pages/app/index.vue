@@ -221,7 +221,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <UAlert v-if="!user?.emailVerified" title="Email not verified" color="warning" class="mt-4">
+      <UAlert v-if="!user?.emailVerified" title="Email not verified" icon="i-lucide-triangle-alert" color="neutral" variant="outline" class="mt-4 border-s-2 border-s-orange-500/50 border-dashed rounded-none [&_svg]:fill-orange-500 [&_svg]:text-transparent">
         <template #description>
           <UButton size="xs" variant="soft" :loading="verifyLoading" @click="resendVerification">
             Resend verification email

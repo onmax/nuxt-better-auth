@@ -158,7 +158,7 @@ onMounted(loadUsers)
 <template>
   <div class="max-w-4xl mx-auto py-8 px-4">
     <!-- Unauthorized Error -->
-    <UAlert v-if="authError" color="error" variant="soft" icon="i-lucide-shield-x" :title="authError" class="mb-4">
+    <UAlert v-if="authError" color="neutral" variant="outline" icon="i-lucide-circle-x" :title="authError" class="mb-4 border-s-2 border-s-red-500/50 border-dashed rounded-none [&_svg]:fill-red-500 [&_svg]:text-transparent">
       <template #description>
         Please sign in with an admin account to access the admin dashboard.
       </template>
