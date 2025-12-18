@@ -1,0 +1,25 @@
+diff --git a/dist/context-DblZrIwO.mjs b/dist/context-DblZrIwO.mjs
+index 1234567..abcdefg 100644
+--- a/dist/context-DblZrIwO.mjs
++++ b/dist/context-DblZrIwO.mjs
+@@ -26,6 +26,7 @@ async function runWithEndpointContext(context, fn) {
+ //#endregion
+ //#region src/context/request-state.ts
+ let requestStateAsyncStorage = null;
++let fallbackRequestState = null;
+ const ensureAsyncStorage$1 = async () => {
+ 	if (!requestStateAsyncStorage) requestStateAsyncStorage = new (await (getAsyncLocalStorage()))();
+ 	return requestStateAsyncStorage;
+@@ -38,7 +39,11 @@ async function hasRequestState() {
+ }
+ async function getCurrentRequestState() {
+ 	const store = (await ensureAsyncStorage$1()).getStore();
+-	if (!store) throw new Error("No request state found. Please make sure you are calling this function within a `runWithRequestState` callback.");
++	if (!store) {
++		// Fallback for Cloudflare Workers where ALS context may be lost
++		if (!fallbackRequestState) fallbackRequestState = new WeakMap();
++		return fallbackRequestState;
++	}
+ 	return store;
+ }
+ async function runWithRequestState(store, fn) {
