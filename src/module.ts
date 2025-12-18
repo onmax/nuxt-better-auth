@@ -19,7 +19,10 @@ export type { BetterAuthModuleOptions } from './runtime/config'
 
 export default defineNuxtModule<BetterAuthModuleOptions>({
   meta: { name: '@onmax/nuxt-better-auth', configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
-  defaults: { redirects: { login: '/login', guest: '/' }, secondaryStorage: false },
+  defaults: {
+    redirects: { login: '/login', guest: '/' },
+    secondaryStorage: false,
+  },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
@@ -50,7 +53,8 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
       useDatabase: hasHubDb,
     }) as { redirects: { login: string, guest: string }, useDatabase: boolean }
 
-    nuxt.options.runtimeConfig.betterAuthSecret ||= process.env.NUXT_BETTER_AUTH_SECRET || ''
+    nuxt.options.runtimeConfig.betterAuthSecret ||= process.env.BETTER_AUTH_SECRET || process.env.NUXT_BETTER_AUTH_SECRET || ''
+
     nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
       secondaryStorage: secondaryStorageEnabled,
     }) as { secondaryStorage: boolean }
