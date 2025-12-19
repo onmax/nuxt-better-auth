@@ -78,9 +78,10 @@ export function createSecondaryStorage() {
     const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
     nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
 
-    // conditional hub:db
-    const databaseCode = hasHubDb
-      ? `import { db, schema } from 'hub:db'
+    // conditional hub:db - use resolved path instead of hub:db alias to avoid ESM loader issues
+    const hubDbPath = nuxt.options.alias['hub:db'] as string | undefined
+    const databaseCode = hasHubDb && hubDbPath
+      ? `import { db, schema } from '${hubDbPath}'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${(hub as any)?.db?.dialect ?? 'sqlite'}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
