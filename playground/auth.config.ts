@@ -1,5 +1,5 @@
 import { passkey } from '@better-auth/passkey'
-import { admin, multiSession, twoFactor } from 'better-auth/plugins'
+import { admin, lastLoginMethod, multiSession, twoFactor } from 'better-auth/plugins'
 import { Resend } from 'resend'
 import { defineServerAuth } from '../src/runtime/config'
 
@@ -19,6 +19,7 @@ export default defineServerAuth(() => ({
     admin(),
     passkey(),
     multiSession(),
+    lastLoginMethod(),
     twoFactor({
       otpOptions: {
         async sendOTP({ user, otp }) {

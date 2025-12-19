@@ -6,7 +6,10 @@ type AsyncFn = (...args: unknown[]) => Promise<unknown>
 const authClient = client as typeof client & {
   twoFactor: { enable: AsyncFn, disable: AsyncFn, verifyTotp: AsyncFn }
   passkey: { addPasskey: AsyncFn, deletePasskey: AsyncFn }
+  getLastUsedLoginMethod: () => string | null
 }
+
+const lastLoginMethod = computed(() => authClient?.getLastUsedLoginMethod?.() || null)
 
 // Profile editing
 const editOpen = ref(false)
@@ -215,9 +218,14 @@ onMounted(() => {
           <p class="font-medium">
             {{ user?.name || 'No name' }}
           </p>
-          <p class="text-sm text-muted-foreground">
-            {{ user?.email }}
-          </p>
+          <div class="flex items-center gap-2">
+            <p class="text-sm text-muted-foreground">
+              {{ user?.email }}
+            </p>
+            <UBadge v-if="lastLoginMethod" size="xs" variant="subtle" color="neutral">
+              via {{ lastLoginMethod }}
+            </UBadge>
+          </div>
         </div>
       </div>
 

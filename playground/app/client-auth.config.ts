@@ -1,6 +1,6 @@
 import { navigateTo } from '#imports'
 import { passkeyClient } from '@better-auth/passkey/client'
-import { adminClient, multiSessionClient, twoFactorClient } from 'better-auth/client/plugins'
+import { adminClient, lastLoginMethodClient, multiSessionClient, twoFactorClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
 
 export function createAppAuthClient(baseURL: string) {
@@ -10,6 +10,7 @@ export function createAppAuthClient(baseURL: string) {
       adminClient(),
       passkeyClient(),
       multiSessionClient(),
+      lastLoginMethodClient(),
       twoFactorClient({
         onTwoFactorRedirect() {
           navigateTo('/two-factor')
