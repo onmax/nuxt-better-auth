@@ -86,10 +86,10 @@ export function useUserSession() {
   type SignIn = NonNullable<AppAuthClient>['signIn']
   type SignUp = NonNullable<AppAuthClient>['signUp']
 
-  // Wraps onSuccess callback to wait for session before executing
+  // Wraps onSuccess callback to sync session before executing
   function wrapOnSuccess(cb: (ctx: unknown) => void | Promise<void>) {
     return async (ctx: unknown) => {
-      await waitForSession()
+      await fetchSession({ force: true })
       await cb(ctx)
     }
   }
