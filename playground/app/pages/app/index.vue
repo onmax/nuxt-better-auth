@@ -9,7 +9,7 @@ const authClient = client as typeof client & {
   getLastUsedLoginMethod: () => string | null
 }
 
-const lastLoginMethod = computed(() => authClient?.getLastUsedLoginMethod?.() || null)
+const lastLoginMethod = ref<string | null>(null)
 
 // Profile editing
 const editOpen = ref(false)
@@ -193,6 +193,7 @@ async function handleSignOut() {
 
 onMounted(() => {
   loadSessions()
+  lastLoginMethod.value = authClient?.getLastUsedLoginMethod?.() || null
 })
 </script>
 

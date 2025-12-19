@@ -8,6 +8,7 @@ const email = ref('')
 const password = ref('')
 const rememberMe = ref(false)
 const loading = ref(false)
+const passkeyLoading = ref(false)
 
 async function handleSignIn() {
   loading.value = true
@@ -36,17 +37,19 @@ async function handleSocialSignIn(provider: string) {
 }
 
 async function handlePasskeySignIn() {
+  passkeyLoading.value = true
   await signIn.passkey({
     fetchOptions: {
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.add({ title: 'Success', description: 'Successfully signed in', color: 'success' })
-        navigateTo('/app')
+        await navigateTo('/app')
       },
       onError: (ctx) => {
         toast.add({ title: 'Error', description: ctx.error.message || 'Passkey sign in failed', color: 'error' })
       },
     },
   })
+  passkeyLoading.value = false
 }
 </script>
 
@@ -89,7 +92,7 @@ async function handlePasskeySignIn() {
           <span>Sign in with GitHub</span>
         </UButton>
 
-        <UButton variant="outline" block @click="handlePasskeySignIn">
+        <UButton variant="outline" block :loading="passkeyLoading" @click="handlePasskeySignIn">
           <UIcon name="i-lucide-key-round" />
           <span>Sign in with Passkey</span>
         </UButton>
