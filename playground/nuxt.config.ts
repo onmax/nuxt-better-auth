@@ -17,9 +17,7 @@ export default defineNuxtConfig({
     },
   },
 
-  hub: {
-    db: { dialect: 'sqlite', driver: 'd1', connection: { databaseId: '19843a99-07d8-4c3b-b479-b48ba3792ce3' } },
-  },
+  hub: { db: { dialect: 'sqlite', driver: 'd1', connection: { databaseId: '19843a99-07d8-4c3b-b479-b48ba3792ce3' } } },
 
   devtools: { enabled: true },
 
@@ -51,10 +49,10 @@ export default defineNuxtConfig({
     virtual: { '#react-email-mock': 'export const render = () => ""' },
     alias: { '@react-email/render': '#react-email-mock' },
     cloudflare: {
+      nodeCompat: true,
       wrangler: {
         name: 'nuxt-better-auth-demo',
         routes: [{ pattern: 'demo-nuxt-better-auth.onmax.me', zone_name: 'onmax.me', custom_domain: true }],
-        compatibility_flags: ['nodejs_compat'],
         observability: { enabled: true, logs: { enabled: true, invocation_logs: true } },
       },
     },

@@ -40,7 +40,7 @@ importers:
         version: 4.19.0(@vue/compiler-sfc@3.5.25)(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@better-auth/cli':
         specifier: ^1.4.6
-        version: 1.4.6(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+        version: 1.4.6(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@libsql/client':
         specifier: ^0.15.15
         version: 0.15.15
@@ -61,7 +61,7 @@ importers:
         version: 3.21.0(magicast@0.5.1)(playwright-core@1.57.0)(typescript@5.9.3)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxthub/core':
         specifier: ^0.10.3
-        version: 0.10.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
+        version: 0.10.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
       '@types/better-sqlite3':
         specifier: ^7.6.13
         version: 7.6.13
@@ -70,7 +70,7 @@ importers:
         version: 25.0.3
       better-auth:
         specifier: ^1.4.7
-        version: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@11.10.0)(drizzle-kit@0.31.8)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+        version: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@11.10.0)(drizzle-kit@0.31.8)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       better-sqlite3:
         specifier: ^11.9.1
         version: 11.10.0
@@ -88,13 +88,13 @@ importers:
         version: 0.31.8
       drizzle-orm:
         specifier: ^0.38.4
-        version: 0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+        version: 0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
       eslint:
         specifier: ^9.39.1
         version: 9.39.1(jiti@2.6.1)
       nuxt:
         specifier: ^4.2.2
-        version: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+        version: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       tinyexec:
         specifier: ^1.0.2
         version: 1.0.2
@@ -118,13 +118,13 @@ importers:
     dependencies:
       '@nuxt/content':
         specifier: ^3.7.1
-        version: 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
+        version: 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
       '@nuxt/fonts':
         specifier: ^0.12.1
-        version: 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+        version: 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/ui':
         specifier: ^4.2.1
-        version: 4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@3.25.76)
+        version: 4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@3.25.76)
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
@@ -139,7 +139,7 @@ importers:
         version: 1.7.4(@vueuse/core@14.1.0(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       nuxt:
         specifier: ^4.2.2
-        version: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+        version: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
     devDependencies:
       '@iconify-json/solar':
         specifier: ^1.2.5
@@ -149,31 +149,31 @@ importers:
         version: 4.1.2(rollup@4.53.3)
       '@vueuse/nuxt':
         specifier: ^14.1.0
-        version: 14.1.0(19e66c1330d86bd3ecac9b83916b5ead)
+        version: 14.1.0(4ae8fa0f09b1e770c40f889903c738c4)
       docus:
         specifier: ^5.4.0
-        version: 5.4.0(187b68be1382b9bb4de112bdba81a703)
+        version: 5.4.0(be435e78130a8591ac4ad35ceb08d387)
 
   playground:
     dependencies:
       '@better-auth/passkey':
         specifier: 1.4.7
-        version: 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)))(better-call@1.1.5(zod@4.2.1))(nanostores@1.1.0)
+        version: 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)))(better-call@1.1.5(zod@4.2.1))(nanostores@1.1.0)
       '@nuxt/fonts':
         specifier: ^0.12.1
-        version: 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+        version: 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/ui':
         specifier: ^4.2.1
-        version: 4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.2.1)
+        version: 4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.2.1)
       '@nuxthub/core':
-        specifier: ^0.10.3
-        version: 0.10.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
+        specifier: ^0.10.4
+        version: 0.10.4(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
       better-auth:
         specifier: 1.4.7
-        version: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+        version: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       nuxt:
         specifier: ^4.2.2
-        version: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+        version: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       nuxt-qrcode:
         specifier: ^0.4.8
         version: 0.4.8(@types/emscripten@1.41.5)(magicast@0.5.1)(vue@3.5.25(typescript@5.9.3))
@@ -183,7 +183,7 @@ importers:
     devDependencies:
       '@better-auth/cli':
         specifier: 1.4.7
-        version: 1.4.7(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+        version: 1.4.7(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@libsql/client':
         specifier: ^0.15.15
         version: 0.15.15
@@ -192,13 +192,13 @@ importers:
         version: 0.31.8
       drizzle-orm:
         specifier: ^0.45.1
-        version: 0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+        version: 0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
       nitro-cloudflare-dev:
         specifier: ^0.2.2
         version: 0.2.2
       wrangler:
         specifier: ^4.56.0
-        version: 4.56.0(@cloudflare/workers-types@4.20251219.0)
+        version: 4.56.0(@cloudflare/workers-types@4.20251230.0)
 
 packages:
 
@@ -573,6 +573,9 @@ packages:
 
   '@cloudflare/workers-types@4.20251219.0':
     resolution: {integrity: sha512-qwuvc3ZDdCfcK9dJrBSFHOsX8kL72sypfBilzEWbbb+slB2NiggjsHeGMV2ZQiQc1zyBMQPjIvsVeE7Apxp7hw==}
+
+  '@cloudflare/workers-types@4.20251230.0':
+    resolution: {integrity: sha512-mTpeOLyC088fqC0hDMFFErq0C/4tLFTDgYgkBhpbM7YeoASVErhnR5irvnHFarvJ5NWXa8jY08bSaRIG8V8PAA==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1800,6 +1803,9 @@ packages:
   '@napi-rs/wasm-runtime@1.1.0':
     resolution: {integrity: sha512-Fq6DJW+Bb5jaWE69/qOE0D1TUN9+6uWhCeZpdnSBk14pjLcCWR7Q8n49PTSPHazM37JqrsdpEthXy2xn6jWWiA==}
 
+  '@napi-rs/wasm-runtime@1.1.1':
+    resolution: {integrity: sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A==}
+
   '@neon-rs/load@0.0.4':
     resolution: {integrity: sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw==}
 
@@ -2000,6 +2006,10 @@ packages:
 
   '@nuxthub/core@0.10.3':
     resolution: {integrity: sha512-G0oA1KRItX9u+pT6h0qXKAnP1YpcBJODYg93Tilti9Ym7dZsdY67OAgDBtD9DaBg6+ryLlxGv/sOJiA/0me3MQ==}
+    hasBin: true
+
+  '@nuxthub/core@0.10.4':
+    resolution: {integrity: sha512-X/tu4r12KTNimDFK9FICKPqVhX+EFkJ8uOuUq6BkGP8kxIQiahDWQQ6H9zJcTdcks4JeuN0UQP+hVwszrfFOaA==}
     hasBin: true
 
   '@nuxtjs/color-mode@3.5.2':
@@ -2735,8 +2745,20 @@ packages:
     cpu: [arm64]
     os: [android]
 
+  '@rolldown/binding-android-arm64@1.0.0-beta.57':
+    resolution: {integrity: sha512-GoOVDy8bjw9z1K30Oo803nSzXJS/vWhFijFsW3kzvZCO8IZwFnNa6pGctmbbJstKl3Fv6UBwyjJQN6msejW0IQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [android]
+
   '@rolldown/binding-darwin-arm64@1.0.0-beta.55':
     resolution: {integrity: sha512-l0887CGU2SXZr0UJmeEcXSvtDCOhDTTYXuoWbhrEJ58YQhQk24EVhDhHMTyjJb1PBRniUgNc1G0T51eF8z+TWw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@rolldown/binding-darwin-arm64@1.0.0-beta.57':
+    resolution: {integrity: sha512-9c4FOhRGpl+PX7zBK5p17c5efpF9aSpTPgyigv57hXf5NjQUaJOOiejPLAtFiKNBIfm5Uu6yFkvLKzOafNvlTw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [darwin]
@@ -2747,8 +2769,20 @@ packages:
     cpu: [x64]
     os: [darwin]
 
+  '@rolldown/binding-darwin-x64@1.0.0-beta.57':
+    resolution: {integrity: sha512-6RsB8Qy4LnGqNGJJC/8uWeLWGOvbRL/KG5aJ8XXpSEupg/KQtlBEiFaYU/Ma5Usj1s+bt3ItkqZYAI50kSplBA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [darwin]
+
   '@rolldown/binding-freebsd-x64@1.0.0-beta.55':
     resolution: {integrity: sha512-j311E4NOB0VMmXHoDDZhrWidUf7L/Sa6bu/+i2cskvHKU40zcUNPSYeD2YiO2MX+hhDFa5bJwhliYfs+bTrSZw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@rolldown/binding-freebsd-x64@1.0.0-beta.57':
+    resolution: {integrity: sha512-uA9kG7+MYkHTbqwv67Tx+5GV5YcKd33HCJIi0311iYBd25yuwyIqvJfBdt1VVB8tdOlyTb9cPAgfCki8nhwTQg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [freebsd]
@@ -2759,8 +2793,20 @@ packages:
     cpu: [arm]
     os: [linux]
 
+  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.57':
+    resolution: {integrity: sha512-3KkS0cHsllT2T+Te+VZMKHNw6FPQihYsQh+8J4jkzwgvAQpbsbXmrqhkw3YU/QGRrD8qgcOvBr6z5y6Jid+rmw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm]
+    os: [linux]
+
   '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.55':
     resolution: {integrity: sha512-2x6ffiVLZrQv7Xii9+JdtyT1U3bQhKj59K3eRnYlrXsKyjkjfmiDUVx2n+zSyijisUqD62fcegmx2oLLfeTkCA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [linux]
+
+  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.57':
+    resolution: {integrity: sha512-A3/wu1RgsHhqP3rVH2+sM81bpk+Qd2XaHTl8LtX5/1LNR7QVBFBCpAoiXwjTdGnI5cMdBVi7Z1pi52euW760Fw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
@@ -2771,8 +2817,20 @@ packages:
     cpu: [arm64]
     os: [linux]
 
+  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.57':
+    resolution: {integrity: sha512-d0kIVezTQtazpyWjiJIn5to8JlwfKITDqwsFv0Xc6s31N16CD2PC/Pl2OtKgS7n8WLOJbfqgIp5ixYzTAxCqMg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [linux]
+
   '@rolldown/binding-linux-x64-gnu@1.0.0-beta.55':
     resolution: {integrity: sha512-YZCTZZM+rujxwVc6A+QZaNMJXVtmabmFYLG2VGQTKaBfYGvBKUgtbMEttnp/oZ88BMi2DzadBVhOmfQV8SuHhw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [linux]
+
+  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.57':
+    resolution: {integrity: sha512-E199LPijo98yrLjPCmETx8EF43sZf9t3guSrLee/ej1rCCc3zDVTR4xFfN9BRAapGVl7/8hYqbbiQPTkv73kUg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
@@ -2783,8 +2841,20 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@rolldown/binding-linux-x64-musl@1.0.0-beta.57':
+    resolution: {integrity: sha512-++EQDpk/UJ33kY/BNsh7A7/P1sr/jbMuQ8cE554ZIy+tCUWCivo9zfyjDUoiMdnxqX6HLJEqqGnbGQOvzm2OMQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [linux]
+
   '@rolldown/binding-openharmony-arm64@1.0.0-beta.55':
     resolution: {integrity: sha512-LiCA4BjCnm49B+j1lFzUtlC+4ZphBv0d0g5VqrEJua/uyv9Ey1v9tiaMql1C8c0TVSNDUmrkfHQ71vuQC7YfpQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [openharmony]
+
+  '@rolldown/binding-openharmony-arm64@1.0.0-beta.57':
+    resolution: {integrity: sha512-voDEBcNqxbUv/GeXKFtxXVWA+H45P/8Dec4Ii/SbyJyGvCqV1j+nNHfnFUIiRQ2Q40DwPe/djvgYBs9PpETiMA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [openharmony]
@@ -2794,14 +2864,31 @@ packages:
     engines: {node: '>=14.0.0'}
     cpu: [wasm32]
 
+  '@rolldown/binding-wasm32-wasi@1.0.0-beta.57':
+    resolution: {integrity: sha512-bRhcF7NLlCnpkzLVlVhrDEd0KH22VbTPkPTbMjlYvqhSmarxNIq5vtlQS8qmV7LkPKHrNLWyJW/V/sOyFba26Q==}
+    engines: {node: '>=14.0.0'}
+    cpu: [wasm32]
+
   '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.55':
     resolution: {integrity: sha512-TFVVfLfhL1G+pWspYAgPK/FSqjiBtRKYX9hixfs508QVEZPQlubYAepHPA7kEa6lZXYj5ntzF87KC6RNhxo+ew==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [win32]
 
+  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.57':
+    resolution: {integrity: sha512-rnDVGRks2FQ2hgJ2g15pHtfxqkGFGjJQUDWzYznEkE8Ra2+Vag9OffxdbJMZqBWXHVM0iS4dv8qSiEn7bO+n1Q==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [win32]
+
   '@rolldown/binding-win32-x64-msvc@1.0.0-beta.55':
     resolution: {integrity: sha512-j1WBlk0p+ISgLzMIgl0xHp1aBGXenoK2+qWYc/wil2Vse7kVOdFq9aeQ8ahK6/oxX2teQ5+eDvgjdywqTL+daA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [win32]
+
+  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.57':
+    resolution: {integrity: sha512-OqIUyNid1M4xTj6VRXp/Lht/qIP8fo25QyAZlCP+p6D2ATCEhyW4ZIFLnC9zAGN/HMbXoCzvwfa8Jjg/8J4YEg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [win32]
@@ -2814,6 +2901,9 @@ packages:
 
   '@rolldown/pluginutils@1.0.0-beta.55':
     resolution: {integrity: sha512-vajw/B3qoi7aYnnD4BQ4VoCcXQWnF0roSwE2iynbNxgW4l9mFwtLmLmUhpDdcTBfKyZm1p/T0D13qG94XBLohA==}
+
+  '@rolldown/pluginutils@1.0.0-beta.57':
+    resolution: {integrity: sha512-aQNelgx14tGA+n2tNSa9x6/jeoCL9fkDeCei7nOKnHx0fEFRRMu5ReiITo+zZD5TzWDGGRjbSYCs93IfRIyTuQ==}
 
   '@rollup/plugin-alias@5.1.1':
     resolution: {integrity: sha512-PR9zDb+rOzkRb2VD+EuKB7UC41vU5DIwZ5qqCpk0KJudcWAyi8rvYOhS7+L5aZCspw1stTViLgN5v6FF1p5cgQ==}
@@ -3972,6 +4062,14 @@ packages:
 
   c12@3.3.2:
     resolution: {integrity: sha512-QkikB2X5voO1okL3QsES0N690Sn/K9WokXqUsDQsWy5SnYb+psYQFGA10iy1bZHj3fjISKsI67Q90gruvWWM3A==}
+    peerDependencies:
+      magicast: '*'
+    peerDependenciesMeta:
+      magicast:
+        optional: true
+
+  c12@3.3.3:
+    resolution: {integrity: sha512-750hTRvgBy5kcMNPdh95Qo+XUBeGo8C7nsKSmedDmaQI+E0r82DwHeM6vBewDe4rGFbnxoa4V9pw+sPh5+Iz8Q==}
     peerDependencies:
       magicast: '*'
     peerDependenciesMeta:
@@ -5545,6 +5643,9 @@ packages:
   hookable@6.0.0-rc.1:
     resolution: {integrity: sha512-HTdlk761/7uL1OuzvMicnj5F5pGq+iITNCYuKVXakQGn95zyYl5b8u/t407RrU34Jv0vYMiqtkFXEJKHYSFViQ==}
 
+  hookable@6.0.1:
+    resolution: {integrity: sha512-uKGyY8BuzN/a5gvzvA+3FVWo0+wUjgtfSdnmjtrOVwQCZPHpHDH2WRO3VZSOeluYrHoDCiXFffZXs8Dj1ULWtw==}
+
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
 
@@ -5607,6 +5708,10 @@ packages:
 
   import-without-cache@0.2.4:
     resolution: {integrity: sha512-b/Ke0y4n26ffQhkLvgBxV/NVO/QEE6AZlrMj8DYuxBWNAAu4iMQWZTFWzKcCTEmv7VQ0ae0j8KwrlGzSy8sYQQ==}
+    engines: {node: '>=20.19.0'}
+
+  import-without-cache@0.2.5:
+    resolution: {integrity: sha512-B6Lc2s6yApwnD2/pMzFh/d5AVjdsDXjgkeJ766FmFuJELIGHNycKRj+l3A39yZPM4CchqNCB4RITEAYB1KUM6A==}
     engines: {node: '>=20.19.0'}
 
   impound@1.0.0:
@@ -7192,8 +7297,32 @@ packages:
       vue-tsc:
         optional: true
 
+  rolldown-plugin-dts@0.20.0:
+    resolution: {integrity: sha512-cLAY1kN2ilTYMfZcFlGWbXnu6Nb+8uwUBsi+Mjbh4uIx7IN8uMOmJ7RxrrRgPsO4H7eSz3E+JwGoL1gyugiyUA==}
+    engines: {node: '>=20.19.0'}
+    peerDependencies:
+      '@ts-macro/tsc': ^0.3.6
+      '@typescript/native-preview': '>=7.0.0-dev.20250601.1'
+      rolldown: ^1.0.0-beta.57
+      typescript: ^5.0.0
+      vue-tsc: ~3.2.0
+    peerDependenciesMeta:
+      '@ts-macro/tsc':
+        optional: true
+      '@typescript/native-preview':
+        optional: true
+      typescript:
+        optional: true
+      vue-tsc:
+        optional: true
+
   rolldown@1.0.0-beta.55:
     resolution: {integrity: sha512-r8Ws43aYCnfO07ao0SvQRz4TBAtZJjGWNvScRBOHuiNHvjfECOJBIqJv0nUkL1GYcltjvvHswRilDF1ocsC0+g==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    hasBin: true
+
+  rolldown@1.0.0-beta.57:
+    resolution: {integrity: sha512-lMMxcNN71GMsSko8RyeTaFoATHkCh4IWU7pYF73ziMYjhHZWfVesC6GQ+iaJCvZmVjvgSks9Ks1aaqEkBd8udg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -7696,6 +7825,31 @@ packages:
       unplugin-unused:
         optional: true
 
+  tsdown@0.18.3:
+    resolution: {integrity: sha512-OVFzktKDTglFAUh/WO8WamBUbZoBlJ9m7NgZZrVyIKe32BfXBeRZ+soFFpuOGVP8g8OU4tOLOpTyPTELWvcTFw==}
+    engines: {node: '>=20.19.0'}
+    hasBin: true
+    peerDependencies:
+      '@arethetypeswrong/core': ^0.18.1
+      '@vitejs/devtools': '*'
+      publint: ^0.3.0
+      typescript: ^5.0.0
+      unplugin-lightningcss: ^0.4.0
+      unplugin-unused: ^0.5.0
+    peerDependenciesMeta:
+      '@arethetypeswrong/core':
+        optional: true
+      '@vitejs/devtools':
+        optional: true
+      publint:
+        optional: true
+      typescript:
+        optional: true
+      unplugin-lightningcss:
+        optional: true
+      unplugin-unused:
+        optional: true
+
   tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
 
@@ -7875,6 +8029,16 @@ packages:
 
   unrun@0.2.20:
     resolution: {integrity: sha512-YhobStTk93HYRN/4iBs3q3/sd7knvju1XrzwwrVVfRujyTG1K88hGONIxCoJN0PWBuO+BX7fFiHH0sVDfE3MWw==}
+    engines: {node: '>=20.19.0'}
+    hasBin: true
+    peerDependencies:
+      synckit: ^0.11.11
+    peerDependenciesMeta:
+      synckit:
+        optional: true
+
+  unrun@0.2.21:
+    resolution: {integrity: sha512-VuwI4YKtwBpDvM7hCEop2Im/ezS82dliqJpkh9pvS6ve8HcUsBDvESHxMmUfImXR03GkmfdDynyrh/pUJnlguw==}
     engines: {node: '>=20.19.0'}
     hasBin: true
     peerDependencies:
@@ -8723,7 +8887,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@better-auth/cli@1.4.6(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
+  '@better-auth/cli@1.4.6(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/preset-react': 7.28.5(@babel/core@7.28.5)
@@ -8735,13 +8899,13 @@ snapshots:
       '@mrleebo/prisma-ast': 0.13.1
       '@prisma/client': 5.22.0(prisma@5.22.0)
       '@types/pg': 8.16.0
-      better-auth: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      better-auth: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       better-sqlite3: 12.5.0
       c12: 3.3.2(magicast@0.5.1)
       chalk: 5.6.2
       commander: 12.1.0
       dotenv: 17.2.3
-      drizzle-orm: 0.33.0(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.33.0(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
       open: 10.2.0
       pg: 8.16.3
       prettier: 3.7.4
@@ -8793,7 +8957,7 @@ snapshots:
       - vitest
       - vue
 
-  '@better-auth/cli@1.4.7(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
+  '@better-auth/cli@1.4.7(@better-fetch/fetch@1.1.21)(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@types/better-sqlite3@7.6.13)(better-call@1.1.5(zod@4.2.1))(drizzle-kit@0.31.8)(jose@6.1.3)(kysely@0.28.9)(magicast@0.5.1)(nanostores@1.1.0)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/preset-react': 7.28.5(@babel/core@7.28.5)
@@ -8805,13 +8969,13 @@ snapshots:
       '@mrleebo/prisma-ast': 0.13.1
       '@prisma/client': 5.22.0(prisma@5.22.0)
       '@types/pg': 8.16.0
-      better-auth: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      better-auth: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       better-sqlite3: 12.5.0
       c12: 3.3.2(magicast@0.5.1)
       chalk: 5.6.2
       commander: 12.1.0
       dotenv: 17.2.3
-      drizzle-orm: 0.33.0(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.33.0(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
       open: 10.2.0
       pg: 8.16.3
       prettier: 3.7.4
@@ -8872,7 +9036,7 @@ snapshots:
       jose: 6.1.3
       kysely: 0.28.9
       nanostores: 1.1.0
-      zod: 4.2.1
+      zod: 4.1.13
 
   '@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0)':
     dependencies:
@@ -8885,14 +9049,14 @@ snapshots:
       nanostores: 1.1.0
       zod: 4.2.1
 
-  '@better-auth/passkey@1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)))(better-call@1.1.5(zod@4.2.1))(nanostores@1.1.0)':
+  '@better-auth/passkey@1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)))(better-call@1.1.5(zod@4.2.1))(nanostores@1.1.0)':
     dependencies:
       '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0)
       '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.21
       '@simplewebauthn/browser': 13.2.2
       '@simplewebauthn/server': 13.2.2
-      better-auth: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      better-auth: 1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       better-call: 1.1.5(zod@4.2.1)
       nanostores: 1.1.0
       zod: 4.2.1
@@ -8987,6 +9151,8 @@ snapshots:
     optional: true
 
   '@cloudflare/workers-types@4.20251219.0': {}
+
+  '@cloudflare/workers-types@4.20251230.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -9932,6 +10098,13 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
+  '@napi-rs/wasm-runtime@1.1.1':
+    dependencies:
+      '@emnapi/core': 1.7.1
+      '@emnapi/runtime': 1.7.1
+      '@tybys/wasm-util': 0.10.1
+    optional: true
+
   '@neon-rs/load@0.0.4': {}
 
   '@noble/ciphers@2.1.1': {}
@@ -9985,7 +10158,7 @@ snapshots:
       - magicast
       - supports-color
 
-  '@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)':
+  '@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@nuxtjs/mdc': 0.19.1(magicast@0.5.1)
@@ -9996,7 +10169,7 @@ snapshots:
       c12: 3.3.2(magicast@0.5.1)
       chokidar: 5.0.0
       consola: 3.4.2
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       defu: 6.1.4
       destr: 2.0.5
       git-url-parse: 16.1.0
@@ -10046,7 +10219,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)':
+  '@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@nuxtjs/mdc': 0.19.1(magicast@0.5.1)
@@ -10057,7 +10230,7 @@ snapshots:
       c12: 3.3.2(magicast@0.5.1)
       chokidar: 5.0.0
       consola: 3.4.2
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       defu: 6.1.4
       destr: 2.0.5
       git-url-parse: 16.1.0
@@ -10178,7 +10351,7 @@ snapshots:
       - utf-8-validate
       - vue
 
-  '@nuxt/fonts@0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))':
+  '@nuxt/fonts@0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))':
     dependencies:
       '@nuxt/devtools-kit': 3.1.1(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -10187,7 +10360,7 @@ snapshots:
       defu: 6.1.4
       esbuild: 0.25.12
       fontaine: 0.7.0
-      fontless: 0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+      fontless: 0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       h3: 1.15.4
       jiti: 2.6.1
       magic-regexp: 0.10.0
@@ -10200,7 +10373,7 @@ snapshots:
       ufo: 1.6.1
       unifont: 0.6.0
       unplugin: 2.3.11
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -10224,7 +10397,7 @@ snapshots:
       - uploadthing
       - vite
 
-  '@nuxt/fonts@0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))':
+  '@nuxt/fonts@0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))':
     dependencies:
       '@nuxt/devtools-kit': 3.1.1(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -10233,7 +10406,7 @@ snapshots:
       defu: 6.1.4
       esbuild: 0.25.12
       fontaine: 0.7.0
-      fontless: 0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+      fontless: 0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       h3: 1.15.4
       jiti: 2.6.1
       magic-regexp: 0.10.0
@@ -10246,7 +10419,7 @@ snapshots:
       ufo: 1.6.1
       unifont: 0.6.0
       unplugin: 2.3.11
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -10291,7 +10464,7 @@ snapshots:
       - vite
       - vue
 
-  '@nuxt/image@2.0.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)':
+  '@nuxt/image@2.0.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       consola: 3.4.2
@@ -10304,7 +10477,7 @@ snapshots:
       std-env: 3.10.0
       ufo: 1.6.1
     optionalDependencies:
-      ipx: 3.1.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      ipx: 3.1.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -10401,7 +10574,7 @@ snapshots:
       - vue
       - vue-tsc
 
-  '@nuxt/nitro-server@4.2.2(49e8f93a683f214c55ea8349711ec06e)':
+  '@nuxt/nitro-server@4.2.2(4aec410c94555d47699f1b50f76c99d5)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -10418,15 +10591,15 @@ snapshots:
       impound: 1.0.0
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.12.9(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55)
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      nitropack: 2.12.9(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.57)
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       pathe: 2.0.3
       pkg-types: 2.3.0
       radix3: 1.1.2
       std-env: 3.10.0
       ufo: 1.6.1
       unctx: 2.4.1
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       vue: 3.5.25(typescript@5.9.3)
       vue-bundle-renderer: 2.2.0
       vue-devtools-stub: 0.1.0
@@ -10465,7 +10638,7 @@ snapshots:
       - uploadthing
       - xml2js
 
-  '@nuxt/nitro-server@4.2.2(81835cb3e0996a8e8dbd8e3172750e0d)':
+  '@nuxt/nitro-server@4.2.2(90f8c6841b9c9c309396052d6e02eedb)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -10482,15 +10655,15 @@ snapshots:
       impound: 1.0.0
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55)
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      nitropack: 2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.57)
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       pathe: 2.0.3
       pkg-types: 2.3.0
       radix3: 1.1.2
       std-env: 3.10.0
       ufo: 1.6.1
       unctx: 2.4.1
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       vue: 3.5.25(typescript@5.9.3)
       vue-bundle-renderer: 2.2.0
       vue-devtools-stub: 0.1.0
@@ -10529,7 +10702,7 @@ snapshots:
       - uploadthing
       - xml2js
 
-  '@nuxt/nitro-server@4.2.2(81bcaced177787f89aa295df1a9a8807)':
+  '@nuxt/nitro-server@4.2.2(d7dc459337baab974bbccf9924bea7f7)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -10546,15 +10719,15 @@ snapshots:
       impound: 1.0.0
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55)
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      nitropack: 2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55)
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       pathe: 2.0.3
       pkg-types: 2.3.0
       radix3: 1.1.2
       std-env: 3.10.0
       ufo: 1.6.1
       unctx: 2.4.1
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       vue: 3.5.25(typescript@5.9.3)
       vue-bundle-renderer: 2.2.0
       vue-devtools-stub: 0.1.0
@@ -10652,12 +10825,12 @@ snapshots:
       - magicast
       - typescript
 
-  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@3.25.76)':
+  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@3.25.76)':
     dependencies:
       '@iconify/vue': 5.0.0(vue@3.5.25(typescript@5.9.3))
       '@internationalized/date': 3.10.0
       '@internationalized/number': 3.6.5
-      '@nuxt/fonts': 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+      '@nuxt/fonts': 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/icon': 2.1.0(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@nuxt/schema': 4.2.2
@@ -10701,7 +10874,7 @@ snapshots:
       vaul-vue: 0.4.1(reka-ui@2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vue-component-type-helpers: 3.1.8
     optionalDependencies:
-      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
+      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
       vue-router: 4.6.3(vue@3.5.25(typescript@5.9.3))
       zod: 3.25.76
     transitivePeerDependencies:
@@ -10745,12 +10918,12 @@ snapshots:
       - vite
       - vue
 
-  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.13)':
+  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.13)':
     dependencies:
       '@iconify/vue': 5.0.0(vue@3.5.25(typescript@5.9.3))
       '@internationalized/date': 3.10.0
       '@internationalized/number': 3.6.5
-      '@nuxt/fonts': 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+      '@nuxt/fonts': 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/icon': 2.1.0(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@nuxt/schema': 4.2.2
@@ -10794,7 +10967,7 @@ snapshots:
       vaul-vue: 0.4.1(reka-ui@2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vue-component-type-helpers: 3.1.8
     optionalDependencies:
-      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
+      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
       vue-router: 4.6.3(vue@3.5.25(typescript@5.9.3))
       zod: 4.1.13
     transitivePeerDependencies:
@@ -10838,12 +11011,12 @@ snapshots:
       - vite
       - vue
 
-  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.2.1)':
+  '@nuxt/ui@4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.2.1)':
     dependencies:
       '@iconify/vue': 5.0.0(vue@3.5.25(typescript@5.9.3))
       '@internationalized/date': 3.10.0
       '@internationalized/number': 3.6.5
-      '@nuxt/fonts': 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+      '@nuxt/fonts': 0.12.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/icon': 2.1.0(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@nuxt/schema': 4.2.2
@@ -10887,7 +11060,7 @@ snapshots:
       vaul-vue: 0.4.1(reka-ui@2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vue-component-type-helpers: 3.1.8
     optionalDependencies:
-      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
+      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
       vue-router: 4.6.3(vue@3.5.25(typescript@5.9.3))
       zod: 4.2.1
     transitivePeerDependencies:
@@ -10931,7 +11104,7 @@ snapshots:
       - vite
       - vue
 
-  '@nuxt/vite-builder@4.2.2(3270097fc3075c602a965a095e87d7d1)':
+  '@nuxt/vite-builder@4.2.2(5094d8ebf30b8162905bb94b8abccefd)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@rollup/plugin-replace': 6.0.3(rollup@4.53.3)
@@ -10951,133 +11124,11 @@ snapshots:
       magic-string: 0.30.21
       mlly: 1.8.0
       mocked-exports: 0.1.1
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       pathe: 2.0.3
       pkg-types: 2.3.0
       postcss: 8.5.6
-      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.55)(rollup@4.53.3)
-      seroval: 1.4.0
-      std-env: 3.10.0
-      ufo: 1.6.1
-      unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
-      vite: 7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
-      vite-node: 5.2.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
-      vite-plugin-checker: 0.12.0(eslint@9.39.1(jiti@2.6.1))(optionator@0.9.4)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))
-      vue: 3.5.25(typescript@5.9.3)
-      vue-bundle-renderer: 2.2.0
-    optionalDependencies:
-      rolldown: 1.0.0-beta.55
-    transitivePeerDependencies:
-      - '@biomejs/biome'
-      - '@types/node'
-      - eslint
-      - less
-      - lightningcss
-      - magicast
-      - meow
-      - optionator
-      - oxlint
-      - rollup
-      - sass
-      - sass-embedded
-      - stylelint
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - typescript
-      - vls
-      - vti
-      - vue-tsc
-      - yaml
-
-  '@nuxt/vite-builder@4.2.2(8fce3dee11b8e120f7a1a8029ddde0aa)':
-    dependencies:
-      '@nuxt/kit': 4.2.2(magicast@0.5.1)
-      '@rollup/plugin-replace': 6.0.3(rollup@4.53.3)
-      '@vitejs/plugin-vue': 6.0.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
-      '@vitejs/plugin-vue-jsx': 5.1.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
-      autoprefixer: 10.4.22(postcss@8.5.6)
-      consola: 3.4.2
-      cssnano: 7.1.2(postcss@8.5.6)
-      defu: 6.1.4
-      esbuild: 0.27.1
-      escape-string-regexp: 5.0.0
-      exsolve: 1.0.8
-      get-port-please: 3.2.0
-      h3: 1.15.4
-      jiti: 2.6.1
-      knitwork: 1.3.0
-      magic-string: 0.30.21
-      mlly: 1.8.0
-      mocked-exports: 0.1.1
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
-      pathe: 2.0.3
-      pkg-types: 2.3.0
-      postcss: 8.5.6
-      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.55)(rollup@4.53.3)
-      seroval: 1.4.0
-      std-env: 3.10.0
-      ufo: 1.6.1
-      unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
-      vite: 7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
-      vite-node: 5.2.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
-      vite-plugin-checker: 0.12.0(eslint@9.39.1(jiti@2.6.1))(optionator@0.9.4)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))
-      vue: 3.5.25(typescript@5.9.3)
-      vue-bundle-renderer: 2.2.0
-    optionalDependencies:
-      rolldown: 1.0.0-beta.55
-    transitivePeerDependencies:
-      - '@biomejs/biome'
-      - '@types/node'
-      - eslint
-      - less
-      - lightningcss
-      - magicast
-      - meow
-      - optionator
-      - oxlint
-      - rollup
-      - sass
-      - sass-embedded
-      - stylelint
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - typescript
-      - vls
-      - vti
-      - vue-tsc
-      - yaml
-
-  '@nuxt/vite-builder@4.2.2(ae09309da1f144fd7414be3d76785c6d)':
-    dependencies:
-      '@nuxt/kit': 4.2.2(magicast@0.5.1)
-      '@rollup/plugin-replace': 6.0.3(rollup@4.53.3)
-      '@vitejs/plugin-vue': 6.0.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
-      '@vitejs/plugin-vue-jsx': 5.1.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
-      autoprefixer: 10.4.22(postcss@8.5.6)
-      consola: 3.4.2
-      cssnano: 7.1.2(postcss@8.5.6)
-      defu: 6.1.4
-      esbuild: 0.27.1
-      escape-string-regexp: 5.0.0
-      exsolve: 1.0.8
-      get-port-please: 3.2.0
-      h3: 1.15.4
-      jiti: 2.6.1
-      knitwork: 1.3.0
-      magic-string: 0.30.21
-      mlly: 1.8.0
-      mocked-exports: 0.1.1
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
-      pathe: 2.0.3
-      pkg-types: 2.3.0
-      postcss: 8.5.6
-      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.55)(rollup@4.53.3)
+      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.57)(rollup@4.53.3)
       seroval: 1.4.0
       std-env: 3.10.0
       ufo: 1.6.1
@@ -11088,6 +11139,67 @@ snapshots:
       vue: 3.5.25(typescript@5.9.3)
       vue-bundle-renderer: 2.2.0
     optionalDependencies:
+      rolldown: 1.0.0-beta.57
+    transitivePeerDependencies:
+      - '@biomejs/biome'
+      - '@types/node'
+      - eslint
+      - less
+      - lightningcss
+      - magicast
+      - meow
+      - optionator
+      - oxlint
+      - rollup
+      - sass
+      - sass-embedded
+      - stylelint
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - typescript
+      - vls
+      - vti
+      - vue-tsc
+      - yaml
+
+  '@nuxt/vite-builder@4.2.2(7e7a673d58958416255b934a10416be0)':
+    dependencies:
+      '@nuxt/kit': 4.2.2(magicast@0.5.1)
+      '@rollup/plugin-replace': 6.0.3(rollup@4.53.3)
+      '@vitejs/plugin-vue': 6.0.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      '@vitejs/plugin-vue-jsx': 5.1.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      autoprefixer: 10.4.22(postcss@8.5.6)
+      consola: 3.4.2
+      cssnano: 7.1.2(postcss@8.5.6)
+      defu: 6.1.4
+      esbuild: 0.27.1
+      escape-string-regexp: 5.0.0
+      exsolve: 1.0.8
+      get-port-please: 3.2.0
+      h3: 1.15.4
+      jiti: 2.6.1
+      knitwork: 1.3.0
+      magic-string: 0.30.21
+      mlly: 1.8.0
+      mocked-exports: 0.1.1
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      pathe: 2.0.3
+      pkg-types: 2.3.0
+      postcss: 8.5.6
+      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.55)(rollup@4.53.3)
+      seroval: 1.4.0
+      std-env: 3.10.0
+      ufo: 1.6.1
+      unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
+      vite: 7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
+      vite-node: 5.2.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
+      vite-plugin-checker: 0.12.0(eslint@9.39.1(jiti@2.6.1))(optionator@0.9.4)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))
+      vue: 3.5.25(typescript@5.9.3)
+      vue-bundle-renderer: 2.2.0
+    optionalDependencies:
       rolldown: 1.0.0-beta.55
     transitivePeerDependencies:
       - '@biomejs/biome'
@@ -11114,7 +11226,68 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))':
+  '@nuxt/vite-builder@4.2.2(f1701707d608bc44986b75114588b8d6)':
+    dependencies:
+      '@nuxt/kit': 4.2.2(magicast@0.5.1)
+      '@rollup/plugin-replace': 6.0.3(rollup@4.53.3)
+      '@vitejs/plugin-vue': 6.0.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      '@vitejs/plugin-vue-jsx': 5.1.2(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      autoprefixer: 10.4.22(postcss@8.5.6)
+      consola: 3.4.2
+      cssnano: 7.1.2(postcss@8.5.6)
+      defu: 6.1.4
+      esbuild: 0.27.1
+      escape-string-regexp: 5.0.0
+      exsolve: 1.0.8
+      get-port-please: 3.2.0
+      h3: 1.15.4
+      jiti: 2.6.1
+      knitwork: 1.3.0
+      magic-string: 0.30.21
+      mlly: 1.8.0
+      mocked-exports: 0.1.1
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      pathe: 2.0.3
+      pkg-types: 2.3.0
+      postcss: 8.5.6
+      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.57)(rollup@4.53.3)
+      seroval: 1.4.0
+      std-env: 3.10.0
+      ufo: 1.6.1
+      unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
+      vite: 7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
+      vite-node: 5.2.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
+      vite-plugin-checker: 0.12.0(eslint@9.39.2(jiti@2.6.1))(optionator@0.9.4)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))
+      vue: 3.5.25(typescript@5.9.3)
+      vue-bundle-renderer: 2.2.0
+    optionalDependencies:
+      rolldown: 1.0.0-beta.57
+    transitivePeerDependencies:
+      - '@biomejs/biome'
+      - '@types/node'
+      - eslint
+      - less
+      - lightningcss
+      - magicast
+      - meow
+      - optionator
+      - oxlint
+      - rollup
+      - sass
+      - sass-embedded
+      - stylelint
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - typescript
+      - vls
+      - vti
+      - vue-tsc
+      - yaml
+
+  '@nuxthub/core@0.10.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))':
     dependencies:
       '@cloudflare/workers-types': 4.20251219.0
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -11139,7 +11312,7 @@ snapshots:
       tsdown: 0.18.1(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
       ufo: 1.6.1
       uncrypto: 0.1.3
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       zod: 4.2.1
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
@@ -11174,12 +11347,12 @@ snapshots:
       - uploadthing
       - vue-tsc
 
-  '@nuxthub/core@0.10.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))':
+  '@nuxthub/core@0.10.4(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))':
     dependencies:
-      '@cloudflare/workers-types': 4.20251219.0
+      '@cloudflare/workers-types': 4.20251230.0
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@uploadthing/mime-types': 0.3.6
-      c12: 3.3.2(magicast@0.5.1)
+      c12: 3.3.3(magicast@0.5.1)
       chokidar: 5.0.0
       citty: 0.1.6
       consola: 3.4.2
@@ -11187,7 +11360,7 @@ snapshots:
       execa: 9.6.1
       get-port-please: 3.2.0
       h3: 1.15.4
-      hookable: 6.0.0-rc.1
+      hookable: 6.0.1
       mime: 4.1.0
       nypm: 0.6.2
       ofetch: 1.5.1
@@ -11196,10 +11369,10 @@ snapshots:
       scule: 1.3.0
       std-env: 3.10.0
       tinyglobby: 0.2.15
-      tsdown: 0.18.1(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
+      tsdown: 0.18.3(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
       ufo: 1.6.1
       uncrypto: 0.1.3
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       zod: 4.2.1
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
@@ -11243,7 +11416,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxtjs/i18n@10.2.1(@vue/compiler-dom@3.5.25)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(rollup@4.53.3)(vue@3.5.25(typescript@5.9.3))':
+  '@nuxtjs/i18n@10.2.1(@vue/compiler-dom@3.5.25)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(rollup@4.53.3)(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       '@intlify/core': 11.2.2
       '@intlify/h3': 0.7.4
@@ -11270,7 +11443,7 @@ snapshots:
       ufo: 1.6.1
       unplugin: 2.3.11
       unplugin-vue-router: 0.16.2(@vue/compiler-sfc@3.5.25)(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       vue-i18n: 11.2.2(vue@3.5.25(typescript@5.9.3))
       vue-router: 4.6.3(vue@3.5.25(typescript@5.9.3))
     transitivePeerDependencies:
@@ -11946,31 +12119,61 @@ snapshots:
   '@rolldown/binding-android-arm64@1.0.0-beta.55':
     optional: true
 
+  '@rolldown/binding-android-arm64@1.0.0-beta.57':
+    optional: true
+
   '@rolldown/binding-darwin-arm64@1.0.0-beta.55':
+    optional: true
+
+  '@rolldown/binding-darwin-arm64@1.0.0-beta.57':
     optional: true
 
   '@rolldown/binding-darwin-x64@1.0.0-beta.55':
     optional: true
 
+  '@rolldown/binding-darwin-x64@1.0.0-beta.57':
+    optional: true
+
   '@rolldown/binding-freebsd-x64@1.0.0-beta.55':
+    optional: true
+
+  '@rolldown/binding-freebsd-x64@1.0.0-beta.57':
     optional: true
 
   '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.55':
     optional: true
 
+  '@rolldown/binding-linux-arm-gnueabihf@1.0.0-beta.57':
+    optional: true
+
   '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.55':
+    optional: true
+
+  '@rolldown/binding-linux-arm64-gnu@1.0.0-beta.57':
     optional: true
 
   '@rolldown/binding-linux-arm64-musl@1.0.0-beta.55':
     optional: true
 
+  '@rolldown/binding-linux-arm64-musl@1.0.0-beta.57':
+    optional: true
+
   '@rolldown/binding-linux-x64-gnu@1.0.0-beta.55':
+    optional: true
+
+  '@rolldown/binding-linux-x64-gnu@1.0.0-beta.57':
     optional: true
 
   '@rolldown/binding-linux-x64-musl@1.0.0-beta.55':
     optional: true
 
+  '@rolldown/binding-linux-x64-musl@1.0.0-beta.57':
+    optional: true
+
   '@rolldown/binding-openharmony-arm64@1.0.0-beta.55':
+    optional: true
+
+  '@rolldown/binding-openharmony-arm64@1.0.0-beta.57':
     optional: true
 
   '@rolldown/binding-wasm32-wasi@1.0.0-beta.55':
@@ -11978,10 +12181,21 @@ snapshots:
       '@napi-rs/wasm-runtime': 1.1.0
     optional: true
 
+  '@rolldown/binding-wasm32-wasi@1.0.0-beta.57':
+    dependencies:
+      '@napi-rs/wasm-runtime': 1.1.1
+    optional: true
+
   '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.55':
     optional: true
 
+  '@rolldown/binding-win32-arm64-msvc@1.0.0-beta.57':
+    optional: true
+
   '@rolldown/binding-win32-x64-msvc@1.0.0-beta.55':
+    optional: true
+
+  '@rolldown/binding-win32-x64-msvc@1.0.0-beta.57':
     optional: true
 
   '@rolldown/pluginutils@1.0.0-beta.50': {}
@@ -11989,6 +12203,8 @@ snapshots:
   '@rolldown/pluginutils@1.0.0-beta.54': {}
 
   '@rolldown/pluginutils@1.0.0-beta.55': {}
+
+  '@rolldown/pluginutils@1.0.0-beta.57': {}
 
   '@rollup/plugin-alias@5.1.1(rollup@4.53.3)':
     optionalDependencies:
@@ -12813,13 +13029,13 @@ snapshots:
 
   '@vueuse/metadata@14.1.0': {}
 
-  '@vueuse/nuxt@14.1.0(19e66c1330d86bd3ecac9b83916b5ead)':
+  '@vueuse/nuxt@14.1.0(4ae8fa0f09b1e770c40f889903c738c4)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@vueuse/core': 14.1.0(vue@3.5.25(typescript@5.9.3))
       '@vueuse/metadata': 14.1.0
       local-pkg: 1.1.2
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       vue: 3.5.25(typescript@5.9.3)
     transitivePeerDependencies:
       - magicast
@@ -12969,7 +13185,7 @@ snapshots:
   automd@0.4.2(magicast@0.5.1):
     dependencies:
       '@parcel/watcher': 2.5.1
-      c12: 3.3.2(magicast@0.5.1)
+      c12: 3.3.3(magicast@0.5.1)
       citty: 0.1.6
       consola: 3.4.2
       defu: 6.1.4
@@ -13023,7 +13239,7 @@ snapshots:
 
   baseline-browser-mapping@2.9.6: {}
 
-  better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@11.10.0)(drizzle-kit@0.31.8)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
+  better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@11.10.0)(drizzle-kit@0.31.8)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
     dependencies:
       '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0)
       '@better-auth/telemetry': 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))
@@ -13041,13 +13257,13 @@ snapshots:
       '@prisma/client': 5.22.0(prisma@5.22.0)
       better-sqlite3: 11.10.0
       drizzle-kit: 0.31.8
-      drizzle-orm: 0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
       pg: 8.16.3
       prisma: 5.22.0
       vitest: 4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
       vue: 3.5.25(typescript@5.9.3)
 
-  better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
+  better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
     dependencies:
       '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0)
       '@better-auth/telemetry': 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))
@@ -13065,13 +13281,13 @@ snapshots:
       '@prisma/client': 5.22.0(prisma@5.22.0)
       better-sqlite3: 12.5.0
       drizzle-kit: 0.31.8
-      drizzle-orm: 0.33.0(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.33.0(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
       pg: 8.16.3
       prisma: 5.22.0
       vitest: 4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
       vue: 3.5.25(typescript@5.9.3)
 
-  better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
+  better-auth@1.4.7(@prisma/client@5.22.0(prisma@5.22.0))(better-sqlite3@12.5.0)(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(pg@8.16.3)(prisma@5.22.0)(vitest@4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
     dependencies:
       '@better-auth/core': 1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0)
       '@better-auth/telemetry': 1.4.7(@better-auth/core@1.4.7(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.5(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))
@@ -13089,7 +13305,7 @@ snapshots:
       '@prisma/client': 5.22.0(prisma@5.22.0)
       better-sqlite3: 12.5.0
       drizzle-kit: 0.31.8
-      drizzle-orm: 0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
       pg: 8.16.3
       prisma: 5.22.0
       vitest: 4.0.15(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
@@ -13212,6 +13428,23 @@ snapshots:
   c12@3.3.2(magicast@0.5.1):
     dependencies:
       chokidar: 4.0.3
+      confbox: 0.2.2
+      defu: 6.1.4
+      dotenv: 17.2.3
+      exsolve: 1.0.8
+      giget: 2.0.0
+      jiti: 2.6.1
+      ohash: 2.0.11
+      pathe: 2.0.3
+      perfect-debounce: 2.0.0
+      pkg-types: 2.3.0
+      rc9: 2.1.2
+    optionalDependencies:
+      magicast: 0.5.1
+
+  c12@3.3.3(magicast@0.5.1):
+    dependencies:
+      chokidar: 5.0.0
       confbox: 0.2.2
       defu: 6.1.4
       dotenv: 17.2.3
@@ -13551,23 +13784,23 @@ snapshots:
 
   data-uri-to-buffer@4.0.1: {}
 
-  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)):
+  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)):
     optionalDependencies:
       '@libsql/client': 0.15.15
       better-sqlite3: 11.10.0
-      drizzle-orm: 0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
 
-  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)):
+  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)):
     optionalDependencies:
       '@libsql/client': 0.15.15
       better-sqlite3: 11.10.0
-      drizzle-orm: 0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
 
-  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)):
+  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)):
     optionalDependencies:
       '@libsql/client': 0.15.15
       better-sqlite3: 12.5.0
-      drizzle-orm: 0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
+      drizzle-orm: 0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)
 
   debug@4.3.7:
     dependencies:
@@ -13638,16 +13871,16 @@ snapshots:
 
   diff@8.0.2: {}
 
-  docus@5.4.0(187b68be1382b9bb4de112bdba81a703):
+  docus@5.4.0(be435e78130a8591ac4ad35ceb08d387):
     dependencies:
       '@iconify-json/lucide': 1.2.80
       '@iconify-json/simple-icons': 1.2.62
       '@iconify-json/vscode-icons': 1.2.37
-      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
-      '@nuxt/image': 2.0.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)
+      '@nuxt/content': 3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1)
+      '@nuxt/image': 2.0.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(magicast@0.5.1)
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
-      '@nuxt/ui': 4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.13)
-      '@nuxtjs/i18n': 10.2.1(@vue/compiler-dom@3.5.25)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(rollup@4.53.3)(vue@3.5.25(typescript@5.9.3))
+      '@nuxt/ui': 4.2.1(@babel/parser@7.28.5)(@nuxt/content@3.9.0(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(magicast@0.5.1))(change-case@5.4.4)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.13)
+      '@nuxtjs/i18n': 10.2.1(@vue/compiler-dom@3.5.25)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(rollup@4.53.3)(vue@3.5.25(typescript@5.9.3))
       '@nuxtjs/mcp-toolkit': 0.5.2(magicast@0.5.1)(zod@4.1.13)
       '@nuxtjs/mdc': 0.18.4(magicast@0.5.1)
       '@nuxtjs/robots': 5.6.3(h3@1.15.4)(magicast@0.5.1)(vue@3.5.25(typescript@5.9.3))
@@ -13658,9 +13891,9 @@ snapshots:
       git-url-parse: 16.1.0
       minimark: 0.2.0
       motion-v: 1.7.4(@vueuse/core@13.9.0(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
-      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
+      nuxt: 4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2)
       nuxt-llms: 0.1.3(magicast@0.5.1)
-      nuxt-og-image: 5.1.12(@unhead/vue@2.0.19(vue@3.5.25(typescript@5.9.3)))(h3@1.15.4)(magicast@0.5.1)(unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2))(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
+      nuxt-og-image: 5.1.12(@unhead/vue@2.0.19(vue@3.5.25(typescript@5.9.3)))(h3@1.15.4)(magicast@0.5.1)(unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2))(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       pkg-types: 2.3.0
       scule: 1.3.0
       tailwindcss: 4.1.18
@@ -13765,9 +13998,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
+  drizzle-orm@0.33.0(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251219.0
+      '@cloudflare/workers-types': 4.20251230.0
       '@libsql/client': 0.15.15
       '@prisma/client': 5.22.0(prisma@5.22.0)
       '@types/better-sqlite3': 7.6.13
@@ -13777,9 +14010,9 @@ snapshots:
       pg: 8.16.3
       prisma: 5.22.0
 
-  drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
+  drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251219.0
+      '@cloudflare/workers-types': 4.20251230.0
       '@libsql/client': 0.15.15
       '@prisma/client': 5.22.0(prisma@5.22.0)
       '@types/better-sqlite3': 7.6.13
@@ -13789,9 +14022,9 @@ snapshots:
       pg: 8.16.3
       prisma: 5.22.0
 
-  drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
+  drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251219.0
+      '@cloudflare/workers-types': 4.20251230.0
       '@libsql/client': 0.15.15
       '@prisma/client': 5.22.0(prisma@5.22.0)
       '@types/better-sqlite3': 7.6.13
@@ -13802,9 +14035,9 @@ snapshots:
       prisma: 5.22.0
     optional: true
 
-  drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
+  drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0):
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251219.0
+      '@cloudflare/workers-types': 4.20251230.0
       '@libsql/client': 0.15.15
       '@prisma/client': 5.22.0(prisma@5.22.0)
       '@types/better-sqlite3': 7.6.13
@@ -14592,7 +14825,7 @@ snapshots:
       unicode-properties: 1.4.1
       unicode-trie: 2.0.0
 
-  fontless@0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)):
+  fontless@0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)):
     dependencies:
       consola: 3.4.2
       css-tree: 3.1.0
@@ -14606,7 +14839,7 @@ snapshots:
       pathe: 2.0.3
       ufo: 1.6.1
       unifont: 0.6.0
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
     optionalDependencies:
       vite: 7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
     transitivePeerDependencies:
@@ -14630,7 +14863,7 @@ snapshots:
       - ioredis
       - uploadthing
 
-  fontless@0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)):
+  fontless@0.1.0(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)):
     dependencies:
       consola: 3.4.2
       css-tree: 3.1.0
@@ -14644,7 +14877,7 @@ snapshots:
       pathe: 2.0.3
       ufo: 1.6.1
       unifont: 0.6.0
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
     optionalDependencies:
       vite: 7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2)
     transitivePeerDependencies:
@@ -14977,6 +15210,8 @@ snapshots:
 
   hookable@6.0.0-rc.1: {}
 
+  hookable@6.0.1: {}
+
   html-void-elements@3.0.0: {}
 
   html-whitespace-sensitive-tag-names@3.0.1: {}
@@ -15029,6 +15264,8 @@ snapshots:
 
   import-without-cache@0.2.4: {}
 
+  import-without-cache@0.2.5: {}
+
   impound@1.0.0:
     dependencies:
       exsolve: 1.0.8
@@ -15063,7 +15300,7 @@ snapshots:
 
   ipaddr.js@1.9.1: {}
 
-  ipx@3.1.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
+  ipx@3.1.1(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
     dependencies:
       '@fastify/accept-negotiator': 2.0.1
       citty: 0.1.6
@@ -15079,7 +15316,7 @@ snapshots:
       sharp: 0.34.5
       svgo: 4.0.0
       ufo: 1.6.1
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       xss: 1.0.15
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -15951,7 +16188,7 @@ snapshots:
       mlly: 1.8.0
       pkg-types: 2.3.0
 
-  nitropack@2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55):
+  nitropack@2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.1
       '@rollup/plugin-alias': 5.1.1(rollup@4.53.3)
@@ -15972,7 +16209,7 @@ snapshots:
       cookie-es: 2.0.0
       croner: 9.1.0
       crossws: 0.3.5
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       defu: 6.1.4
       destr: 2.0.5
       dot-prop: 10.1.0
@@ -16018,7 +16255,7 @@ snapshots:
       unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
       unimport: 5.5.0
       unplugin-utils: 0.3.1
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       untyped: 2.0.0
       unwasm: 0.3.11
       youch: 4.1.0-beta.13
@@ -16053,7 +16290,7 @@ snapshots:
       - supports-color
       - uploadthing
 
-  nitropack@2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55):
+  nitropack@2.12.9(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.57):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.1
       '@rollup/plugin-alias': 5.1.1(rollup@4.53.3)
@@ -16074,7 +16311,7 @@ snapshots:
       cookie-es: 2.0.0
       croner: 9.1.0
       crossws: 0.3.5
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       defu: 6.1.4
       destr: 2.0.5
       dot-prop: 10.1.0
@@ -16106,7 +16343,7 @@ snapshots:
       pretty-bytes: 7.1.0
       radix3: 1.1.2
       rollup: 4.53.3
-      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.55)(rollup@4.53.3)
+      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.57)(rollup@4.53.3)
       scule: 1.3.0
       semver: 7.7.3
       serve-placeholder: 2.0.2
@@ -16120,7 +16357,7 @@ snapshots:
       unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
       unimport: 5.5.0
       unplugin-utils: 0.3.1
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       untyped: 2.0.0
       unwasm: 0.3.11
       youch: 4.1.0-beta.13
@@ -16155,7 +16392,7 @@ snapshots:
       - supports-color
       - uploadthing
 
-  nitropack@2.12.9(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.55):
+  nitropack@2.12.9(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(rolldown@1.0.0-beta.57):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.1
       '@rollup/plugin-alias': 5.1.1(rollup@4.53.3)
@@ -16176,7 +16413,7 @@ snapshots:
       cookie-es: 2.0.0
       croner: 9.1.0
       crossws: 0.3.5
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       defu: 6.1.4
       destr: 2.0.5
       dot-prop: 10.1.0
@@ -16208,7 +16445,7 @@ snapshots:
       pretty-bytes: 7.1.0
       radix3: 1.1.2
       rollup: 4.53.3
-      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.55)(rollup@4.53.3)
+      rollup-plugin-visualizer: 6.0.5(rolldown@1.0.0-beta.57)(rollup@4.53.3)
       scule: 1.3.0
       semver: 7.7.3
       serve-placeholder: 2.0.2
@@ -16222,7 +16459,7 @@ snapshots:
       unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
       unimport: 5.5.0
       unplugin-utils: 0.3.1
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       untyped: 2.0.0
       unwasm: 0.3.11
       youch: 4.1.0-beta.13
@@ -16335,7 +16572,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  nuxt-og-image@5.1.12(@unhead/vue@2.0.19(vue@3.5.25(typescript@5.9.3)))(h3@1.15.4)(magicast@0.5.1)(unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2))(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
+  nuxt-og-image@5.1.12(@unhead/vue@2.0.19(vue@3.5.25(typescript@5.9.3)))(h3@1.15.4)(magicast@0.5.1)(unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2))(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3)):
     dependencies:
       '@nuxt/devtools-kit': 2.7.0(magicast@0.5.1)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -16366,7 +16603,7 @@ snapshots:
       strip-literal: 3.1.0
       ufo: 1.6.1
       unplugin: 2.3.11
-      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
+      unstorage: 1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2)
       unwasm: 0.3.11
       yoga-wasm-web: 0.3.3
     transitivePeerDependencies:
@@ -16414,16 +16651,16 @@ snapshots:
       - magicast
       - vue
 
-  nuxt@4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2):
+  nuxt@4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2):
     dependencies:
       '@dxup/nuxt': 0.2.2(magicast@0.5.1)
       '@nuxt/cli': 3.31.2(cac@6.7.14)(magicast@0.5.1)
       '@nuxt/devtools': 3.1.1(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
-      '@nuxt/nitro-server': 4.2.2(81835cb3e0996a8e8dbd8e3172750e0d)
+      '@nuxt/nitro-server': 4.2.2(d7dc459337baab974bbccf9924bea7f7)
       '@nuxt/schema': 4.2.2
       '@nuxt/telemetry': 2.6.6(magicast@0.5.1)
-      '@nuxt/vite-builder': 4.2.2(8fce3dee11b8e120f7a1a8029ddde0aa)
+      '@nuxt/vite-builder': 4.2.2(7e7a673d58958416255b934a10416be0)
       '@unhead/vue': 2.0.19(vue@3.5.25(typescript@5.9.3))
       '@vue/shared': 3.5.25
       c12: 3.3.2(magicast@0.5.1)
@@ -16537,16 +16774,16 @@ snapshots:
       - xml2js
       - yaml
 
-  nuxt@4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2):
+  nuxt@4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@11.10.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2):
     dependencies:
       '@dxup/nuxt': 0.2.2(magicast@0.5.1)
       '@nuxt/cli': 3.31.2(cac@6.7.14)(magicast@0.5.1)
       '@nuxt/devtools': 3.1.1(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
-      '@nuxt/nitro-server': 4.2.2(81bcaced177787f89aa295df1a9a8807)
+      '@nuxt/nitro-server': 4.2.2(90f8c6841b9c9c309396052d6e02eedb)
       '@nuxt/schema': 4.2.2
       '@nuxt/telemetry': 2.6.6(magicast@0.5.1)
-      '@nuxt/vite-builder': 4.2.2(ae09309da1f144fd7414be3d76785c6d)
+      '@nuxt/vite-builder': 4.2.2(5094d8ebf30b8162905bb94b8abccefd)
       '@unhead/vue': 2.0.19(vue@3.5.25(typescript@5.9.3))
       '@vue/shared': 3.5.25
       c12: 3.3.2(magicast@0.5.1)
@@ -16660,16 +16897,16 @@ snapshots:
       - xml2js
       - yaml
 
-  nuxt@4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.55)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2):
+  nuxt@4.2.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.3)(@vue/compiler-sfc@3.5.25)(better-sqlite3@12.5.0)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rolldown@1.0.0-beta.57)(rollup@4.53.3)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-tsc@3.1.8(typescript@5.9.3))(yaml@2.8.2):
     dependencies:
       '@dxup/nuxt': 0.2.2(magicast@0.5.1)
       '@nuxt/cli': 3.31.2(cac@6.7.14)(magicast@0.5.1)
       '@nuxt/devtools': 3.1.1(vite@7.2.7(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
-      '@nuxt/nitro-server': 4.2.2(49e8f93a683f214c55ea8349711ec06e)
+      '@nuxt/nitro-server': 4.2.2(4aec410c94555d47699f1b50f76c99d5)
       '@nuxt/schema': 4.2.2
       '@nuxt/telemetry': 2.6.6(magicast@0.5.1)
-      '@nuxt/vite-builder': 4.2.2(3270097fc3075c602a965a095e87d7d1)
+      '@nuxt/vite-builder': 4.2.2(f1701707d608bc44986b75114588b8d6)
       '@unhead/vue': 2.0.19(vue@3.5.25(typescript@5.9.3))
       '@vue/shared': 3.5.25
       c12: 3.3.2(magicast@0.5.1)
@@ -17627,6 +17864,23 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
+  rolldown-plugin-dts@0.20.0(rolldown@1.0.0-beta.57)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3)):
+    dependencies:
+      '@babel/generator': 7.28.5
+      '@babel/parser': 7.28.5
+      '@babel/types': 7.28.5
+      ast-kit: 2.2.0
+      birpc: 4.0.0
+      dts-resolver: 2.1.3
+      get-tsconfig: 4.13.0
+      obug: 2.1.1
+      rolldown: 1.0.0-beta.57
+    optionalDependencies:
+      typescript: 5.9.3
+      vue-tsc: 3.1.8(typescript@5.9.3)
+    transitivePeerDependencies:
+      - oxc-resolver
+
   rolldown@1.0.0-beta.55:
     dependencies:
       '@oxc-project/types': 0.103.0
@@ -17646,6 +17900,25 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.0.0-beta.55
       '@rolldown/binding-win32-x64-msvc': 1.0.0-beta.55
 
+  rolldown@1.0.0-beta.57:
+    dependencies:
+      '@oxc-project/types': 0.103.0
+      '@rolldown/pluginutils': 1.0.0-beta.57
+    optionalDependencies:
+      '@rolldown/binding-android-arm64': 1.0.0-beta.57
+      '@rolldown/binding-darwin-arm64': 1.0.0-beta.57
+      '@rolldown/binding-darwin-x64': 1.0.0-beta.57
+      '@rolldown/binding-freebsd-x64': 1.0.0-beta.57
+      '@rolldown/binding-linux-arm-gnueabihf': 1.0.0-beta.57
+      '@rolldown/binding-linux-arm64-gnu': 1.0.0-beta.57
+      '@rolldown/binding-linux-arm64-musl': 1.0.0-beta.57
+      '@rolldown/binding-linux-x64-gnu': 1.0.0-beta.57
+      '@rolldown/binding-linux-x64-musl': 1.0.0-beta.57
+      '@rolldown/binding-openharmony-arm64': 1.0.0-beta.57
+      '@rolldown/binding-wasm32-wasi': 1.0.0-beta.57
+      '@rolldown/binding-win32-arm64-msvc': 1.0.0-beta.57
+      '@rolldown/binding-win32-x64-msvc': 1.0.0-beta.57
+
   rollup-plugin-dts@6.3.0(rollup@4.53.3)(typescript@5.9.3):
     dependencies:
       magic-string: 0.30.21
@@ -17662,6 +17935,16 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       rolldown: 1.0.0-beta.55
+      rollup: 4.53.3
+
+  rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-beta.57)(rollup@4.53.3):
+    dependencies:
+      open: 8.4.2
+      picomatch: 4.0.3
+      source-map: 0.7.6
+      yargs: 17.7.2
+    optionalDependencies:
+      rolldown: 1.0.0-beta.57
       rollup: 4.53.3
 
   rollup@4.53.3:
@@ -18252,6 +18535,33 @@ snapshots:
       - synckit
       - vue-tsc
 
+  tsdown@0.18.3(synckit@0.11.11)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3)):
+    dependencies:
+      ansis: 4.2.0
+      cac: 6.7.14
+      defu: 6.1.4
+      empathic: 2.0.0
+      hookable: 6.0.1
+      import-without-cache: 0.2.5
+      obug: 2.1.1
+      picomatch: 4.0.3
+      rolldown: 1.0.0-beta.57
+      rolldown-plugin-dts: 0.20.0(rolldown@1.0.0-beta.57)(typescript@5.9.3)(vue-tsc@3.1.8(typescript@5.9.3))
+      semver: 7.7.3
+      tinyexec: 1.0.2
+      tinyglobby: 0.2.15
+      tree-kill: 1.2.2
+      unconfig-core: 7.4.2
+      unrun: 0.2.21(synckit@0.11.11)
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - '@ts-macro/tsc'
+      - '@typescript/native-preview'
+      - oxc-resolver
+      - synckit
+      - vue-tsc
+
   tslib@1.14.1: {}
 
   tslib@2.8.1: {}
@@ -18533,7 +18843,13 @@ snapshots:
     optionalDependencies:
       synckit: 0.11.11
 
-  unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
+  unrun@0.2.21(synckit@0.11.11):
+    dependencies:
+      rolldown: 1.0.0-beta.57
+    optionalDependencies:
+      synckit: 0.11.11
+
+  unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
     dependencies:
       anymatch: 3.1.3
       chokidar: 4.0.3
@@ -18544,10 +18860,10 @@ snapshots:
       ofetch: 1.5.1
       ufo: 1.6.1
     optionalDependencies:
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       ioredis: 5.8.2
 
-  unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
+  unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
     dependencies:
       anymatch: 3.1.3
       chokidar: 4.0.3
@@ -18558,10 +18874,10 @@ snapshots:
       ofetch: 1.5.1
       ufo: 1.6.1
     optionalDependencies:
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@11.10.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@11.10.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       ioredis: 5.8.2
 
-  unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
+  unstorage@1.17.3(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0)))(ioredis@5.8.2):
     dependencies:
       anymatch: 3.1.3
       chokidar: 4.0.3
@@ -18572,7 +18888,7 @@ snapshots:
       ofetch: 1.5.1
       ufo: 1.6.1
     optionalDependencies:
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251219.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.5.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251230.0)(@libsql/client@0.15.15)(@prisma/client@5.22.0(prisma@5.22.0))(@types/better-sqlite3@7.6.13)(@types/pg@8.16.0)(better-sqlite3@12.5.0)(kysely@0.28.9)(pg@8.16.3)(prisma@5.22.0))
       ioredis: 5.8.2
 
   untun@0.1.3:
@@ -18935,7 +19251,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20251217.0
       '@cloudflare/workerd-windows-64': 1.20251217.0
 
-  wrangler@4.56.0(@cloudflare/workers-types@4.20251219.0):
+  wrangler@4.56.0(@cloudflare/workers-types@4.20251230.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.1
       '@cloudflare/unenv-preset': 2.7.13(unenv@2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a))(workerd@1.20251217.0)
@@ -18946,7 +19262,7 @@ snapshots:
       unenv: 2.0.0-rc.24(patch_hash=9a59b5822004542ce0d4b7e36ab85d7471f999743c34e706c95956d7c86eed5a)
       workerd: 1.20251217.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251219.0
+      '@cloudflare/workers-types': 4.20251230.0
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil
