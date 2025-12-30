@@ -20,22 +20,26 @@ export type { BetterAuthModuleOptions } from './runtime/config'
 export default defineNuxtModule<BetterAuthModuleOptions>({
   meta: { name: '@onmax/nuxt-better-auth', configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
   defaults: {
+    serverConfig: 'server/auth.config',
+    clientConfig: 'app/auth.config',
     redirects: { login: '/login', guest: '/' },
     secondaryStorage: false,
   },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    const serverConfigPath = resolver.resolve(nuxt.options.rootDir, 'auth.config')
-    const clientConfigPath = resolver.resolve(nuxt.options.srcDir, 'client-auth.config')
+    const serverConfigFile = options.serverConfig!
+    const clientConfigFile = options.clientConfig!
+    const serverConfigPath = resolver.resolve(nuxt.options.rootDir, serverConfigFile)
+    const clientConfigPath = resolver.resolve(nuxt.options.rootDir, clientConfigFile)
 
     const serverConfigExists = existsSync(`${serverConfigPath}.ts`) || existsSync(`${serverConfigPath}.js`)
     const clientConfigExists = existsSync(`${clientConfigPath}.ts`) || existsSync(`${clientConfigPath}.js`)
 
     if (!serverConfigExists)
-      throw new Error('[nuxt-better-auth] Missing auth.config.ts in project root - create with defineServerAuth()')
+      throw new Error(`[nuxt-better-auth] Missing ${serverConfigFile}.ts - create with defineServerAuth()`)
     if (!clientConfigExists)
-      throw new Error('[nuxt-better-auth] Missing client-auth.config.ts - export createAppAuthClient()')
+      throw new Error(`[nuxt-better-auth] Missing ${clientConfigFile}.ts - export createAppAuthClient()`)
 
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as unknown as Record<string, unknown>).hub as { db?: boolean | string | object, kv?: boolean } | undefined : undefined
@@ -169,7 +173,7 @@ declare module 'nitropack/types' {
 
     // HMR
     nuxt.hook('builder:watch', async (_event, relativePath) => {
-      if (relativePath.includes('auth.config') || relativePath.includes('client-auth.config')) {
+      if (relativePath.includes('auth.config')) {
         await updateTemplates({ filter: t => t.filename.includes('nuxt-better-auth') })
       }
     })

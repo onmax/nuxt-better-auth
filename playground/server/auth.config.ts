@@ -1,7 +1,7 @@
 import { passkey } from '@better-auth/passkey'
 import { admin, lastLoginMethod, multiSession, twoFactor } from 'better-auth/plugins'
 import { Resend } from 'resend'
-import { defineServerAuth } from '../src/runtime/config'
+import { defineServerAuth } from '../../src/runtime/config'
 
 const from = 'Nuxt Better Auth <onboarding@resend.dev>'
 let _resend: Resend

@@ -17,6 +17,10 @@ export type ClientAuthConfigFn = (ctx: ClientAuthContext) => ClientAuthConfig
 
 // Module options for nuxt.config.ts
 export interface BetterAuthModuleOptions {
+  /** Server config path relative to rootDir. Default: 'server/auth.config' */
+  serverConfig?: string
+  /** Client config path relative to rootDir. Default: 'app/auth.config' */
+  clientConfig?: string
   redirects?: {
     login?: string // default: '/login'
     guest?: string // default: '/'
