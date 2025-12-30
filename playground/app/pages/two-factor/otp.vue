@@ -3,6 +3,7 @@ definePageMeta({ layout: 'auth' })
 
 const { client } = useUserSession()
 const toast = useToast()
+const emailWarning = useEmailWarning()
 
 // Type assertion for twoFactor plugin
 type AsyncFn = (...args: unknown[]) => Promise<unknown>
@@ -19,6 +20,7 @@ async function sendOTP() {
   try {
     await authClient?.twoFactor.sendOtp()
     toast.add({ title: 'OTP Sent', description: 'Check your email for the code', color: 'success' })
+    emailWarning()
     otpSent.value = true
   }
   catch (e: any) {

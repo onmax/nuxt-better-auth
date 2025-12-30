@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { user, session, client, signOut } = useUserSession()
 const toast = useToast()
+const emailWarning = useEmailWarning()
 
 type AsyncFn = (...args: unknown[]) => Promise<unknown>
 const authClient = client as typeof client & {
@@ -41,6 +42,7 @@ async function resendVerification() {
   try {
     await client?.sendVerificationEmail({ email: user.value?.email || '' })
     toast.add({ title: 'Verification email sent', color: 'success' })
+    emailWarning()
   }
   catch (e: any) {
     toast.add({ title: 'Error', description: e.message, color: 'error' })

@@ -3,6 +3,7 @@ definePageMeta({ layout: 'auth' })
 
 const { signUp } = useUserSession()
 const toast = useToast()
+const emailWarning = useEmailWarning()
 
 const firstName = ref('')
 const lastName = ref('')
@@ -53,6 +54,7 @@ async function handleSignUp() {
     {
       onSuccess: () => {
         toast.add({ title: 'Success', description: 'Successfully signed up', color: 'success' })
+        emailWarning()
         navigateTo('/app')
       },
       onError: (ctx) => {

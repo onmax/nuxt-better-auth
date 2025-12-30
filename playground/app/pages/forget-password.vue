@@ -3,6 +3,7 @@ definePageMeta({ layout: 'auth' })
 
 const { client } = useUserSession()
 const toast = useToast()
+const emailWarning = useEmailWarning()
 
 const email = ref('')
 const loading = ref(false)
@@ -20,6 +21,7 @@ async function handleRequestReset() {
 
   success.value = true
   toast.add({ title: 'Success', description: 'Check your email for the reset link', color: 'success' })
+  emailWarning()
 }
 </script>
 

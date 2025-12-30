@@ -29,7 +29,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
 
   const config = useRuntimeConfig().public.auth as { redirects: { login: string, guest: string } } | undefined
-  const { fetchSession, user, loggedIn, ready } = useUserSession()
+  const { fetchSession, user, loggedIn } = useUserSession()
 
   // Always fetch session if not logged in - state may not have synced yet
   if (!loggedIn.value) {
