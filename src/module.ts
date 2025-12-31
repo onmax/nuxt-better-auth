@@ -75,10 +75,11 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
     nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
+    const hubKVPath = nuxt.options.alias["hub:kv"];
 
     // conditional hub:kv
-    const secondaryStorageCode = secondaryStorageEnabled
-      ? `import { kv } from 'hub:kv'
+    const secondaryStorageCode = secondaryStorageEnabled && hubKVPath
+      ? `import { kv } from '${hubKVPath}'
 export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
