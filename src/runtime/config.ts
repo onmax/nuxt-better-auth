@@ -31,6 +31,8 @@ export interface BetterAuthModuleOptions {
   schema?: {
     /** Plural table names: user → users. Default: false */
     usePlural?: boolean
+    /** Column/table name casing. Auto-inherited from hub.db.casing if not set. */
+    casing?: 'camelCase' | 'snake_case'
   }
 }
 

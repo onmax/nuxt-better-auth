@@ -16,7 +16,7 @@ import './types/hooks'
 
 // NuxtHub module options type
 interface NuxtHubOptions {
-  db?: boolean | string | { dialect?: 'sqlite' | 'postgresql' | 'mysql' }
+  db?: boolean | string | { dialect?: 'sqlite' | 'postgresql' | 'mysql', casing?: 'camelCase' | 'snake_case' }
   kv?: boolean
 }
 
@@ -281,9 +281,10 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
     const { getAuthTables } = await import('better-auth/db')
     const tables = getAuthTables({ plugins })
 
-    // Auto-detect UUID mode from auth.config.ts
+    // Auto-detect UUID mode from auth.config.ts and casing from hub.db
     const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
-    const schemaOptions = { ...options.schema, useUuid }
+    const hubCasing = typeof hub?.db === 'object' ? hub.db.casing : undefined
+    const schemaOptions = { ...options.schema, useUuid, casing: options.schema?.casing ?? hubCasing }
     const schemaCode = generateDrizzleSchema(tables as unknown as Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect as 'sqlite' | 'postgresql' | 'mysql', schemaOptions)
 
     const schemaDir = join(nuxt.options.buildDir, 'better-auth')

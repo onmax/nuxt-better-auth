@@ -4,7 +4,11 @@ import { consola } from 'consola'
 interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: unknown, references?: { model: string, field: string, onDelete?: string }, index?: boolean }
 interface TableSchema { fields: Record<string, FieldAttribute>, modelName?: string }
 
-export interface SchemaOptions { usePlural?: boolean, useUuid?: boolean }
+export interface SchemaOptions { usePlural?: boolean, useUuid?: boolean, casing?: 'camelCase' | 'snake_case' }
+
+function toSnakeCase(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
+}
 
 export function generateDrizzleSchema(tables: Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect: 'sqlite' | 'postgresql' | 'mysql', options?: SchemaOptions): string {
   // Cast to internal types - better-auth's DBFieldAttribute is compatible
@@ -30,10 +34,13 @@ function getImports(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: Schema
 
 function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const tableFunc = dialect === 'sqlite' ? 'sqliteTable' : dialect === 'postgresql' ? 'pgTable' : 'mysqlTable'
-  let dbTableName = table.modelName || tableName
-  if (options?.usePlural && !table.modelName) {
-    dbTableName = `${tableName}s`
-  }
+  // Only use modelName if explicitly customized (different from tableName)
+  const hasCustomModelName = table.modelName && table.modelName !== tableName
+  let dbTableName = hasCustomModelName ? table.modelName! : tableName
+  if (options?.casing === 'snake_case' && !hasCustomModelName)
+    dbTableName = toSnakeCase(dbTableName)
+  if (options?.usePlural && !hasCustomModelName)
+    dbTableName = `${dbTableName}s`
   const fields = Object.entries(table.fields).map(([fieldName, field]) => generateField(fieldName, field, dialect, allTables, options)).join(',\n    ')
 
   // Add id field (better-auth expects string ids)
@@ -59,7 +66,7 @@ function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: S
 }
 
 function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
-  const dbFieldName = fieldName
+  const dbFieldName = options?.casing === 'snake_case' ? toSnakeCase(fieldName) : fieldName
   // Use uuid()/varchar for FK columns referencing id when useUuid is enabled
   const isFkToId = options?.useUuid && field.references?.field === 'id'
   let fieldDef: string
