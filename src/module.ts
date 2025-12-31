@@ -305,7 +305,7 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
   nuxtWithHubHooks.hook('hub:db:schema:extend', ({ paths, dialect: hookDialect }) => {
     const schemaPath = join(nuxt.options.buildDir, 'better-auth', `schema.${hookDialect}.ts`)
     if (existsSync(schemaPath)) {
-      paths.push(schemaPath)
+      paths.unshift(schemaPath)
     }
   })
 }
