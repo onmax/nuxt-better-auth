@@ -213,7 +213,7 @@ declare module 'nitropack/types' {
     })
 
     if (hasHubDb) {
-      await setupBetterAuthSchema(nuxt, serverConfigPath)
+      await setupBetterAuthSchema(nuxt, serverConfigPath, options)
     }
 
     // Only enable devtools in development - explicit production check
@@ -259,7 +259,7 @@ declare module 'nitropack/types' {
   },
 })
 
-async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string) {
+async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, options: BetterAuthModuleOptions) {
   const hub = (nuxt.options as { hub?: NuxtHubOptions }).hub
   const dialect = typeof hub?.db === 'string' ? hub.db : (typeof hub?.db === 'object' ? hub.db.dialect : undefined)
   if (!dialect || !['sqlite', 'postgresql', 'mysql'].includes(dialect)) {
@@ -281,7 +281,7 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string) {
     const { getAuthTables } = await import('better-auth/db')
     const tables = getAuthTables({ plugins })
 
-    const schemaCode = generateDrizzleSchema(tables as unknown as Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect as 'sqlite' | 'postgresql' | 'mysql')
+    const schemaCode = generateDrizzleSchema(tables as unknown as Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect as 'sqlite' | 'postgresql' | 'mysql', options.schema)
 
     const schemaDir = join(nuxt.options.buildDir, 'better-auth')
     const schemaPath = join(schemaDir, `schema.${dialect}.ts`)

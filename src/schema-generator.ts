@@ -4,11 +4,13 @@ import { consola } from 'consola'
 interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: unknown, references?: { model: string, field: string, onDelete?: string }, index?: boolean }
 interface TableSchema { fields: Record<string, FieldAttribute>, modelName?: string }
 
-export function generateDrizzleSchema(tables: Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect: 'sqlite' | 'postgresql' | 'mysql'): string {
+export interface SchemaOptions { usePlural?: boolean }
+
+export function generateDrizzleSchema(tables: Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect: 'sqlite' | 'postgresql' | 'mysql', options?: SchemaOptions): string {
   // Cast to internal types - better-auth's DBFieldAttribute is compatible
   const typedTables = tables as Record<string, TableSchema>
   const imports = getImports(dialect)
-  const tableDefinitions = Object.entries(typedTables).map(([tableName, table]) => generateTable(tableName, table, dialect, typedTables)).join('\n\n')
+  const tableDefinitions = Object.entries(typedTables).map(([tableName, table]) => generateTable(tableName, table, dialect, typedTables, options)).join('\n\n')
 
   return `${imports}\n\n${tableDefinitions}\n`
 }
@@ -24,9 +26,12 @@ function getImports(dialect: 'sqlite' | 'postgresql' | 'mysql'): string {
   }
 }
 
-function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>): string {
+function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const tableFunc = dialect === 'sqlite' ? 'sqliteTable' : dialect === 'postgresql' ? 'pgTable' : 'mysqlTable'
-  const dbTableName = table.modelName || tableName
+  let dbTableName = table.modelName || tableName
+  if (options?.usePlural && !table.modelName) {
+    dbTableName = `${tableName}s`
+  }
   const fields = Object.entries(table.fields).map(([fieldName, field]) => generateField(fieldName, field, dialect, allTables)).join(',\n    ')
 
   // Add id field (better-auth expects string ids)
