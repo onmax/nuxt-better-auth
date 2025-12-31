@@ -24,4 +24,31 @@ describe('generateDrizzleSchema', () => {
     const schema = generateDrizzleSchema(tables, 'sqlite', { usePlural: true })
     expect(schema).toContain('sqliteTable(\'custom_user\'')
   })
+
+  it('postgresql uses text id by default', () => {
+    const schema = generateDrizzleSchema(mockTables, 'postgresql')
+    expect(schema).toContain('id: text(\'id\').primaryKey()')
+    expect(schema).not.toContain('uuid')
+  })
+
+  it('postgresql uses uuid id with useUuid', () => {
+    const schema = generateDrizzleSchema(mockTables, 'postgresql', { useUuid: true })
+    expect(schema).toContain('id: uuid(\'id\').primaryKey()')
+    expect(schema).toContain('import { boolean, integer, pgTable, text, timestamp, uuid }')
+  })
+
+  it('postgresql FK columns use uuid with useUuid', () => {
+    const tables = {
+      user: { fields: { name: { type: 'string', required: true } } },
+      session: { fields: { userId: { type: 'string', required: true, references: { model: 'user', field: 'id' } } } },
+    }
+    const schema = generateDrizzleSchema(tables, 'postgresql', { useUuid: true })
+    expect(schema).toContain('userId: uuid(\'userId\')')
+  })
+
+  it('sqlite ignores useUuid (no native uuid support)', () => {
+    const schema = generateDrizzleSchema(mockTables, 'sqlite', { useUuid: true })
+    expect(schema).toContain('id: text(\'id\').primaryKey()')
+    expect(schema).not.toContain('uuid')
+  })
 })
