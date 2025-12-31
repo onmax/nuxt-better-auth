@@ -48,9 +48,11 @@ function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' 
 function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: SchemaOptions): string {
   switch (dialect) {
     case 'sqlite':
+      if (options?.useUuid)
+        consola.warn('[@onmax/nuxt-better-auth] useUuid ignored for SQLite (no native uuid type). Using text.')
       return `id: text('id').primaryKey()`
     case 'postgresql':
-      return options?.useUuid ? `id: uuid('id').primaryKey()` : `id: text('id').primaryKey()`
+      return options?.useUuid ? `id: uuid('id').defaultRandom().primaryKey()` : `id: text('id').primaryKey()`
     case 'mysql':
       return `id: varchar('id', { length: 36 }).primaryKey()`
   }
@@ -58,9 +60,15 @@ function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: S
 
 function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const dbFieldName = fieldName
-  // Use uuid() for FK columns referencing id in PostgreSQL when useUuid is enabled
-  const isUuidFk = dialect === 'postgresql' && options?.useUuid && field.references?.field === 'id'
-  let fieldDef = isUuidFk ? `uuid('${dbFieldName}')` : getFieldType(field.type, dialect, dbFieldName)
+  // Use uuid()/varchar for FK columns referencing id when useUuid is enabled
+  const isFkToId = options?.useUuid && field.references?.field === 'id'
+  let fieldDef: string
+  if (isFkToId && dialect === 'postgresql')
+    fieldDef = `uuid('${dbFieldName}')`
+  else if (isFkToId && dialect === 'mysql')
+    fieldDef = `varchar('${dbFieldName}', { length: 36 })`
+  else
+    fieldDef = getFieldType(field.type, dialect, dbFieldName)
 
   if (field.required && field.defaultValue === undefined)
     fieldDef += '.notNull()'

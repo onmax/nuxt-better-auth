@@ -33,7 +33,7 @@ describe('generateDrizzleSchema', () => {
 
   it('postgresql uses uuid id with useUuid', () => {
     const schema = generateDrizzleSchema(mockTables, 'postgresql', { useUuid: true })
-    expect(schema).toContain('id: uuid(\'id\').primaryKey()')
+    expect(schema).toContain('id: uuid(\'id\').defaultRandom().primaryKey()')
     expect(schema).toContain('import { boolean, integer, pgTable, text, timestamp, uuid }')
   })
 
@@ -50,5 +50,14 @@ describe('generateDrizzleSchema', () => {
     const schema = generateDrizzleSchema(mockTables, 'sqlite', { useUuid: true })
     expect(schema).toContain('id: text(\'id\').primaryKey()')
     expect(schema).not.toContain('uuid')
+  })
+
+  it('mysql FK columns use varchar(36) with useUuid', () => {
+    const tables = {
+      user: { fields: { name: { type: 'string', required: true } } },
+      session: { fields: { userId: { type: 'string', required: true, references: { model: 'user', field: 'id' } } } },
+    }
+    const schema = generateDrizzleSchema(tables, 'mysql', { useUuid: true })
+    expect(schema).toContain('userId: varchar(\'userId\', { length: 36 })')
   })
 })
