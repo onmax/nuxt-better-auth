@@ -281,7 +281,10 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
     const { getAuthTables } = await import('better-auth/db')
     const tables = getAuthTables({ plugins })
 
-    const schemaCode = generateDrizzleSchema(tables as unknown as Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect as 'sqlite' | 'postgresql' | 'mysql', options.schema)
+    // Auto-detect UUID mode from auth.config.ts
+    const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
+    const schemaOptions = { ...options.schema, useUuid }
+    const schemaCode = generateDrizzleSchema(tables as unknown as Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect as 'sqlite' | 'postgresql' | 'mysql', schemaOptions)
 
     const schemaDir = join(nuxt.options.buildDir, 'better-auth')
     const schemaPath = join(schemaDir, `schema.${dialect}.ts`)
