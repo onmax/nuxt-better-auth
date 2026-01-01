@@ -41,7 +41,7 @@
     "dev:prepare": "nuxt-module-build build --stub && nuxi prepare playground",
     "dev:docs": "nuxi dev docs",
     "build:docs": "nuxi build docs",
-    "release": "bumpp && git push --follow-tags",
+    "release": "bumpp --push",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "vue-tsc --noEmit",
