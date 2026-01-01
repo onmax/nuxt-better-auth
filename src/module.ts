@@ -11,12 +11,14 @@ import { join } from 'pathe'
 import { createRouter, toRouteMatcher } from 'radix3'
 import { setupDevTools } from './devtools'
 import { generateDrizzleSchema, loadUserAuthConfig } from './schema-generator'
+import type { CasingOption } from './schema-generator'
 
 import './types/hooks'
 
 // NuxtHub module options type
+type DbDialect = 'sqlite' | 'postgresql' | 'mysql'
 interface NuxtHubOptions {
-  db?: boolean | string | { dialect?: 'sqlite' | 'postgresql' | 'mysql', casing?: 'camelCase' | 'snake_case' }
+  db?: boolean | DbDialect | { dialect?: DbDialect, casing?: CasingOption }
   kv?: boolean
 }
 
@@ -285,7 +287,7 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
     const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
     const hubCasing = typeof hub?.db === 'object' ? hub.db.casing : undefined
     const schemaOptions = { ...options.schema, useUuid, casing: options.schema?.casing ?? hubCasing }
-    const schemaCode = generateDrizzleSchema(tables as unknown as Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect as 'sqlite' | 'postgresql' | 'mysql', schemaOptions)
+    const schemaCode = generateDrizzleSchema(tables, dialect as 'sqlite' | 'postgresql' | 'mysql', schemaOptions)
 
     const schemaDir = join(nuxt.options.buildDir, 'better-auth')
     const schemaPath = join(schemaDir, `schema.${dialect}.ts`)

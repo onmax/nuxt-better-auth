@@ -1,5 +1,6 @@
 import type { BetterAuthOptions } from 'better-auth'
 import type { ClientOptions } from 'better-auth/client'
+import type { CasingOption } from '../schema-generator'
 import type { ServerAuthContext } from './types/augment'
 
 // Re-export for declaration merging with generated types
@@ -31,8 +32,8 @@ export interface BetterAuthModuleOptions {
   schema?: {
     /** Plural table names: user → users. Default: false */
     usePlural?: boolean
-    /** Column/table name casing. Auto-inherited from hub.db.casing if not set. */
-    casing?: 'camelCase' | 'snake_case'
+    /** Column/table name casing. Explicit value takes precedence over hub.db.casing. */
+    casing?: CasingOption
   }
 }
 
