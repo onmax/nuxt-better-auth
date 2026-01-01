@@ -82,12 +82,13 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
     nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
+
+    // conditional hub:kv - use resolved path instead of hub:kv alias to avoid ESM loader issues
     const hubKVPath = nuxt.options.alias['hub:kv'] as string | undefined
     if (secondaryStorageEnabled && !hubKVPath) {
       throw new Error('[nuxt-better-auth] hub:kv alias not found. Ensure @nuxthub/core is loaded before this module.')
     }
 
-    // conditional hub:kv
     const secondaryStorageCode = secondaryStorageEnabled
       ? `import { kv } from '${hubKVPath}'
 export function createSecondaryStorage() {
