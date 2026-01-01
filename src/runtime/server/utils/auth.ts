@@ -37,7 +37,7 @@ export async function serverAuth(event: H3Event): Promise<AuthInstance> {
   const database = createDatabase()
   const userConfig = createServerAuth({ runtimeConfig, db })
 
-  event.context._betterAuth = betterAuth<ReturnType<typeof createServerAuth>>({
+  event.context._betterAuth = betterAuth({
     ...userConfig,
     ...(database && { database }),
     secondaryStorage: createSecondaryStorage(),
