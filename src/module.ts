@@ -25,7 +25,17 @@ interface NuxtHubOptions {
 function getHubDialect(hub?: NuxtHubOptions): DbDialect | undefined {
   if (!hub?.db)
     return undefined
-  return typeof hub.db === 'string' ? hub.db : (typeof hub.db === 'object' ? hub.db.dialect : undefined)
+  if (typeof hub.db === 'string')
+    return hub.db
+  if (typeof hub.db === 'object' && hub.db !== null)
+    return hub.db.dialect
+  return undefined
+}
+
+function getHubCasing(hub?: NuxtHubOptions): CasingOption | undefined {
+  if (!hub?.db || typeof hub.db !== 'object' || hub.db === null)
+    return undefined
+  return hub.db.casing
 }
 
 const consola = _consola.withTag('nuxt-better-auth')
@@ -289,7 +299,7 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
     const tables = getAuthTables({ plugins })
 
     const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
-    const hubCasing = typeof hub?.db === 'object' ? hub.db.casing : undefined
+    const hubCasing = getHubCasing(hub)
     const schemaOptions = { ...options.schema, useUuid, casing: options.schema?.casing ?? hubCasing }
     const schemaCode = generateDrizzleSchema(tables, dialect as 'sqlite' | 'postgresql' | 'mysql', schemaOptions)
 
