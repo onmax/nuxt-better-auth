@@ -22,6 +22,12 @@ interface NuxtHubOptions {
   kv?: boolean
 }
 
+function getHubDialect(hub?: NuxtHubOptions): DbDialect | undefined {
+  if (!hub?.db)
+    return undefined
+  return typeof hub.db === 'string' ? hub.db : (typeof hub.db === 'object' ? hub.db.dialect : undefined)
+}
+
 const consola = _consola.withTag('nuxt-better-auth')
 
 export type { BetterAuthModuleOptions } from './runtime/config'
@@ -105,8 +111,7 @@ export function createSecondaryStorage() {
     if (hasHubDb && !hubDbPath) {
       throw new Error('[nuxt-better-auth] hub:db alias not found. Ensure @nuxthub/core is loaded before this module.')
     }
-    // Extract dialect from hub.db config (string or object with dialect property)
-    const hubDialect = typeof hub?.db === 'string' ? hub.db : (typeof hub?.db === 'object' ? hub.db.dialect : undefined) ?? 'sqlite'
+    const hubDialect = getHubDialect(hub) ?? 'sqlite'
     const databaseCode = hasHubDb && hubDbPath
       ? `import { db, schema } from '${hubDbPath}'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
@@ -263,7 +268,7 @@ declare module 'nitropack/types' {
 
 async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, options: BetterAuthModuleOptions) {
   const hub = (nuxt.options as { hub?: NuxtHubOptions }).hub
-  const dialect = typeof hub?.db === 'string' ? hub.db : (typeof hub?.db === 'object' ? hub.db.dialect : undefined)
+  const dialect = getHubDialect(hub)
   if (!dialect || !['sqlite', 'postgresql', 'mysql'].includes(dialect)) {
     consola.warn(`Unsupported database dialect: ${dialect}`)
     return
@@ -283,7 +288,6 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
     const { getAuthTables } = await import('better-auth/db')
     const tables = getAuthTables({ plugins })
 
-    // Auto-detect UUID mode from auth.config.ts and casing from hub.db
     const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
     const hubCasing = typeof hub?.db === 'object' ? hub.db.casing : undefined
     const schemaOptions = { ...options.schema, useUuid, casing: options.schema?.casing ?? hubCasing }
