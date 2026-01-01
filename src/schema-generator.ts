@@ -62,7 +62,7 @@ function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlit
     else if (typeof field.defaultValue === 'string')
       fieldDef += `.default('${field.defaultValue}')`
     else if (typeof field.defaultValue === 'function')
-      fieldDef += `.$defaultFn('${field.defaultValue}')`
+      fieldDef += `.$defaultFn(${field.defaultValue})`
     else
       fieldDef += `.default(${field.defaultValue})`
 
