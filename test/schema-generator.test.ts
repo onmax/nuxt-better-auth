@@ -94,12 +94,12 @@ describe('generateDrizzleSchema', () => {
     expect(schema).toContain('emailVerified: boolean(\'emailVerified\')')
   })
 
-  it('FK field names transformed to snake_case', () => {
+  it('fK field names transformed to snake_case', () => {
     const tables = {
       user: { fields: { id: { type: 'string' } } },
       session: { fields: { userId: { type: 'string', references: { model: 'user', field: 'id' } } } },
     }
     const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
-    expect(schema).toContain("userId: text('user_id')")
+    expect(schema).toContain('userId: text(\'user_id\')')
   })
 })
