@@ -1,7 +1,7 @@
 import type { BetterAuthOptions } from 'better-auth'
 import { consola } from 'consola'
 
-interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: unknown, references?: { model: string, field: string, onDelete?: string }, index?: boolean }
+interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: unknown, onUpdate?: (() => unknown), references?: { model: string, field: string, onDelete?: string }, index?: boolean }
 interface TableSchema { fields: Record<string, FieldAttribute>, modelName?: string }
 
 export interface SchemaOptions { usePlural?: boolean, useUuid?: boolean }
@@ -89,6 +89,9 @@ export function generateField(fieldName: string, field: FieldAttribute, dialect:
     if (field.required)
       fieldDef += '.notNull()'
   }
+
+  if (typeof field.onUpdate === 'function' && field.type === 'date')
+    fieldDef += `.$onUpdate(${field.onUpdate})`
 
   if (field.references) {
     const refTable = field.references.model

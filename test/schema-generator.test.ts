@@ -71,4 +71,14 @@ describe('generateDrizzleSchema', () => {
     expect(result).toContain('.$defaultFn(')
     expect(result).not.toContain('\'() =>') // no quotes around function
   })
+
+  it('generates $onUpdate for date fields with onUpdate function', () => {
+    const field = {
+      type: 'date',
+      required: true,
+      onUpdate: () => new Date(),
+    }
+    const result = generateField('updatedAt', field, 'sqlite', {})
+    expect(result).toContain('.$onUpdate(')
+  })
 })
