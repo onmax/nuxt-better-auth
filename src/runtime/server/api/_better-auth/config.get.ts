@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
           baseURL: options.baseURL,
           basePath: options.basePath || '/api/auth',
           socialProviders: Object.keys(options.socialProviders || {}),
-          plugins: (options.plugins || []).map((p: any) => p.id || 'unknown'),
+          plugins: (options.plugins || []).map((p: { id?: string }) => p.id || 'unknown'),
           trustedOrigins: options.trustedOrigins || [],
           session: {
             expiresIn: `${expiresInDays} days`,
@@ -45,7 +45,8 @@ export default defineEventHandler(async (event) => {
       },
     }
   }
-  catch (error: any) {
-    return { config: null, error: error.message || 'Failed to fetch config' }
+  catch (error: unknown) {
+    console.error('[DevTools] Config fetch failed:', error)
+    return { config: null, error: 'Failed to fetch configuration' }
   }
 })

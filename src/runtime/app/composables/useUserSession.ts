@@ -117,11 +117,12 @@ export function useUserSession() {
   const signIn: SignIn = client?.signIn
     ? new Proxy(client.signIn, {
         get(target, prop) {
-          const method = (target as any)[prop]
+          const targetRecord = target as Record<string | symbol, unknown>
+          const method = targetRecord[prop]
           if (typeof method !== 'function')
             return method
           // Don't bind - call through target to preserve better-auth's Proxy context
-          return wrapAuthMethod((...args: unknown[]) => (target as any)[prop](...args))
+          return wrapAuthMethod((...args: unknown[]) => (targetRecord[prop] as (...a: unknown[]) => Promise<unknown>)(...args))
         },
       })
     : new Proxy({} as SignIn, {
@@ -131,11 +132,12 @@ export function useUserSession() {
   const signUp: SignUp = client?.signUp
     ? new Proxy(client.signUp, {
         get(target, prop) {
-          const method = (target as any)[prop]
+          const targetRecord = target as Record<string | symbol, unknown>
+          const method = targetRecord[prop]
           if (typeof method !== 'function')
             return method
           // Don't bind - call through target to preserve better-auth's Proxy context
-          return wrapAuthMethod((...args: unknown[]) => (target as any)[prop](...args))
+          return wrapAuthMethod((...args: unknown[]) => (targetRecord[prop] as (...a: unknown[]) => Promise<unknown>)(...args))
         },
       })
     : new Proxy({} as SignUp, {

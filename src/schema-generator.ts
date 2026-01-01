@@ -1,34 +1,43 @@
 import type { BetterAuthOptions } from 'better-auth'
 import { consola } from 'consola'
 
-interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: any, references?: { model: string, field: string, onDelete?: string }, index?: boolean }
+interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: unknown, references?: { model: string, field: string, onDelete?: string }, index?: boolean }
 interface TableSchema { fields: Record<string, FieldAttribute>, modelName?: string }
 
-export function generateDrizzleSchema(tables: Record<string, TableSchema>, dialect: 'sqlite' | 'postgresql' | 'mysql'): string {
-  const imports = getImports(dialect)
-  const tableDefinitions = Object.entries(tables).map(([tableName, table]) => generateTable(tableName, table, dialect, tables)).join('\n\n')
+export interface SchemaOptions { usePlural?: boolean, useUuid?: boolean }
+
+export function generateDrizzleSchema(tables: Record<string, { fields: Record<string, unknown>, modelName?: string }>, dialect: 'sqlite' | 'postgresql' | 'mysql', options?: SchemaOptions): string {
+  // Cast to internal types - better-auth's DBFieldAttribute is compatible
+  const typedTables = tables as Record<string, TableSchema>
+  const imports = getImports(dialect, options)
+  const tableDefinitions = Object.entries(typedTables).map(([tableName, table]) => generateTable(tableName, table, dialect, typedTables, options)).join('\n\n')
 
   return `${imports}\n\n${tableDefinitions}\n`
 }
 
-function getImports(dialect: 'sqlite' | 'postgresql' | 'mysql'): string {
+function getImports(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: SchemaOptions): string {
   switch (dialect) {
     case 'sqlite':
       return `import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'`
     case 'postgresql':
-      return `import { boolean, pgTable, text, timestamp, integer } from 'drizzle-orm/pg-core'`
+      return options?.useUuid
+        ? `import { boolean, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'`
+        : `import { boolean, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core'`
     case 'mysql':
       return `import { boolean, int, mysqlTable, text, timestamp, varchar } from 'drizzle-orm/mysql-core'`
   }
 }
 
-function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>): string {
+function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const tableFunc = dialect === 'sqlite' ? 'sqliteTable' : dialect === 'postgresql' ? 'pgTable' : 'mysqlTable'
-  const dbTableName = table.modelName || tableName
-  const fields = Object.entries(table.fields).map(([fieldName, field]) => generateField(fieldName, field, dialect, allTables)).join(',\n    ')
+  let dbTableName = table.modelName || tableName
+  if (options?.usePlural && !table.modelName) {
+    dbTableName = `${tableName}s`
+  }
+  const fields = Object.entries(table.fields).map(([fieldName, field]) => generateField(fieldName, field, dialect, allTables, options)).join(',\n    ')
 
   // Add id field (better-auth expects string ids)
-  const idField = generateIdField(dialect)
+  const idField = generateIdField(dialect, options)
 
   return `export const ${tableName} = ${tableFunc}('${dbTableName}', {
     ${idField},
@@ -36,19 +45,30 @@ function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' 
   })`
 }
 
-function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql'): string {
+function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: SchemaOptions): string {
   switch (dialect) {
     case 'sqlite':
-    case 'postgresql':
+      if (options?.useUuid)
+        consola.warn('[@onmax/nuxt-better-auth] useUuid ignored for SQLite (no native uuid type). Using text.')
       return `id: text('id').primaryKey()`
+    case 'postgresql':
+      return options?.useUuid ? `id: uuid('id').defaultRandom().primaryKey()` : `id: text('id').primaryKey()`
     case 'mysql':
       return `id: varchar('id', { length: 36 }).primaryKey()`
   }
 }
 
-function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>): string {
+function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const dbFieldName = fieldName
-  let fieldDef = getFieldType(field.type, dialect, dbFieldName)
+  // Use uuid()/varchar for FK columns referencing id when useUuid is enabled
+  const isFkToId = options?.useUuid && field.references?.field === 'id'
+  let fieldDef: string
+  if (isFkToId && dialect === 'postgresql')
+    fieldDef = `uuid('${dbFieldName}')`
+  else if (isFkToId && dialect === 'mysql')
+    fieldDef = `varchar('${dbFieldName}', { length: 36 })`
+  else
+    fieldDef = getFieldType(field.type, dialect, dbFieldName)
 
   if (field.required && field.defaultValue === undefined)
     fieldDef += '.notNull()'
@@ -140,8 +160,8 @@ export async function loadUserAuthConfig(configPath: string, throwOnError = fals
   const jiti = createJiti(import.meta.url, { interopDefault: true })
 
   try {
-    const mod = await jiti.import(configPath) as any
-    const configFn = mod.default || mod
+    const mod = await jiti.import(configPath) as { default?: unknown } | ((...args: unknown[]) => unknown)
+    const configFn = typeof mod === 'object' && mod !== null && 'default' in mod ? mod.default : mod
     if (typeof configFn === 'function') {
       // Call with empty context - we only need plugins, not db
       return configFn({ runtimeConfig: {}, db: null })

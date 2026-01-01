@@ -27,6 +27,11 @@ export interface BetterAuthModuleOptions {
   }
   /** Enable KV secondary storage for sessions. Requires hub.kv: true */
   secondaryStorage?: boolean
+  /** Schema generation options. Must match drizzleAdapter config. */
+  schema?: {
+    /** Plural table names: user → users. Default: false */
+    usePlural?: boolean
+  }
 }
 
 // Runtime config type for public.auth
