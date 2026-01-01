@@ -58,7 +58,7 @@ function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: S
   }
 }
 
-function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
+export function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const dbFieldName = fieldName
   // Use uuid()/varchar for FK columns referencing id when useUuid is enabled
   const isFkToId = options?.useUuid && field.references?.field === 'id'

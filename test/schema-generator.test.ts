@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { generateDrizzleSchema } from '../src/schema-generator'
+import { generateDrizzleSchema, generateField } from '../src/schema-generator'
 
 const mockTables = {
   user: { fields: { name: { type: 'string', required: true } } },
@@ -59,5 +59,16 @@ describe('generateDrizzleSchema', () => {
     }
     const schema = generateDrizzleSchema(tables, 'mysql', { useUuid: true })
     expect(schema).toContain('userId: varchar(\'userId\', { length: 36 })')
+  })
+
+  it('generates function defaults with $defaultFn', () => {
+    const field = {
+      type: 'Date',
+      required: true,
+      defaultValue: () => /* @__PURE__ */ new Date(),
+    }
+    const result = generateField('createdAt', field, 'sqlite', {})
+    expect(result).toContain('.$defaultFn(')
+    expect(result).not.toContain('\'() =>') // no quotes around function
   })
 })
