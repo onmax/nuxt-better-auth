@@ -33,8 +33,16 @@ export default defineEventHandler(async (event) => {
       countQuery,
     ])
 
-    // Redact sensitive token field
-    const safeSessions = sessions.map(s => ({ ...s, token: '[REDACTED]' }))
+    // Return only safe fields (allowlist approach for security)
+    const safeSessions = sessions.map(s => ({
+      id: s.id,
+      userId: s.userId,
+      createdAt: s.createdAt,
+      updatedAt: (s as Record<string, unknown>).updatedAt,
+      expiresAt: s.expiresAt,
+      ipAddress: s.ipAddress,
+      userAgent: s.userAgent,
+    }))
 
     return { sessions: safeSessions, total: totalResult[0]?.count ?? 0, page, limit }
   }

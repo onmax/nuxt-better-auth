@@ -1,7 +1,7 @@
 {
   "name": "@onmax/nuxt-better-auth",
   "type": "module",
-  "version": "0.0.2-alpha.2",
+  "version": "0.0.2-alpha.3",
   "packageManager": "pnpm@10.15.1",
   "description": "Nuxt module for Better Auth integration with NuxtHub, route protection, session management, and role-based access",
   "author": "onmax",
@@ -95,9 +95,11 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@parcel/watcher",
       "better-sqlite3",
       "esbuild",
-      "@parcel/watcher"
+      "sharp",
+      "workerd"
     ],
     "patchedDependencies": {
       "@peculiar/x509@1.14.2": "patches/@peculiar__x509@1.14.2.patch",
