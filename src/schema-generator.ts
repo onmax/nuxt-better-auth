@@ -1,6 +1,7 @@
 import type { BetterAuthOptions } from 'better-auth'
 import type { BetterAuthDBSchema, DBFieldAttribute } from 'better-auth/db'
 import { consola } from 'consola'
+import pluralize from 'pluralize'
 
 interface TableSchema { fields: Record<string, DBFieldAttribute>, modelName?: string }
 
@@ -8,7 +9,7 @@ export type CasingOption = 'camelCase' | 'snake_case'
 export interface SchemaOptions { usePlural?: boolean, useUuid?: boolean, casing?: CasingOption }
 
 function toSnakeCase(str: string): string {
-  return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
+  return str.replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2').replace(/([a-z\d])([A-Z])/g, '$1_$2').toLowerCase()
 }
 
 export function generateDrizzleSchema(tables: BetterAuthDBSchema, dialect: 'sqlite' | 'postgresql' | 'mysql', options?: SchemaOptions): string {
@@ -34,13 +35,12 @@ function getImports(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: Schema
 
 function generateTable(tableName: string, table: TableSchema, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const tableFunc = dialect === 'sqlite' ? 'sqliteTable' : dialect === 'postgresql' ? 'pgTable' : 'mysqlTable'
-  // Only use modelName if explicitly customized (different from tableName)
   const hasCustomModelName = table.modelName && table.modelName !== tableName
   let dbTableName = hasCustomModelName ? table.modelName! : tableName
   if (options?.casing === 'snake_case' && !hasCustomModelName)
     dbTableName = toSnakeCase(dbTableName)
   if (options?.usePlural && !hasCustomModelName)
-    dbTableName = `${dbTableName}s`
+    dbTableName = pluralize(dbTableName)
   const fields = Object.entries(table.fields).map(([fieldName, field]) => generateField(fieldName, field, dialect, allTables, options)).join(',\n    ')
 
   // Add id field (better-auth expects string ids)

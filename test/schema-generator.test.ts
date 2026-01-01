@@ -33,6 +33,12 @@ describe('generateDrizzleSchema', () => {
     expect(schema).toContain('sqliteTable(\'users\'')
   })
 
+  it('usePlural handles words ending in s correctly', () => {
+    const tables = { address: { fields: {} } }
+    const schema = generateDrizzleSchema(tables, 'sqlite', { usePlural: true })
+    expect(schema).toContain('sqliteTable(\'addresses\'')
+  })
+
   it('postgresql uses text id by default', () => {
     const schema = generateDrizzleSchema(mockTables, 'postgresql')
     expect(schema).toContain('id: text(\'id\').primaryKey()')
@@ -101,5 +107,12 @@ describe('generateDrizzleSchema', () => {
     }
     const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
     expect(schema).toContain('userId: text(\'user_id\')')
+  })
+
+  it('snake_case handles consecutive capitals', () => {
+    const tables = { user: { fields: { userID: { type: 'string' }, oAuth2Token: { type: 'string' } } } }
+    const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
+    expect(schema).toContain('userID: text(\'user_id\')')
+    expect(schema).toContain('oAuth2Token: text(\'o_auth2_token\')')
   })
 })
