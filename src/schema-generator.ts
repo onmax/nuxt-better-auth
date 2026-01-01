@@ -3,7 +3,8 @@ import type { BetterAuthDBSchema, DBFieldAttribute } from 'better-auth/db'
 import { consola } from 'consola'
 import pluralize from 'pluralize'
 
-interface TableSchema { fields: Record<string, DBFieldAttribute>, modelName?: string }
+interface FieldAttribute { type: string | string[], required?: boolean, unique?: boolean, defaultValue?: unknown, onUpdate?: (() => unknown), references?: { model: string, field: string, onDelete?: string }, index?: boolean }
+interface TableSchema { fields: Record<string, FieldAttribute>, modelName?: string }
 
 export type CasingOption = 'camelCase' | 'snake_case'
 export interface SchemaOptions { usePlural?: boolean, useUuid?: boolean, casing?: CasingOption }
@@ -65,7 +66,7 @@ function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql', options?: S
   }
 }
 
-function generateField(fieldName: string, field: DBFieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
+export function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>, options?: SchemaOptions): string {
   const dbFieldName = options?.casing === 'snake_case' ? toSnakeCase(fieldName) : fieldName
   // Use uuid()/varchar for FK columns referencing id when useUuid is enabled
   const isFkToId = options?.useUuid && field.references?.field === 'id'
@@ -88,12 +89,17 @@ function generateField(fieldName: string, field: DBFieldAttribute, dialect: 'sql
       fieldDef += `.default(${field.defaultValue})`
     else if (typeof field.defaultValue === 'string')
       fieldDef += `.default('${field.defaultValue}')`
+    else if (typeof field.defaultValue === 'function')
+      fieldDef += `.$defaultFn(${field.defaultValue})`
     else
       fieldDef += `.default(${field.defaultValue})`
 
     if (field.required)
       fieldDef += '.notNull()'
   }
+
+  if (typeof field.onUpdate === 'function' && field.type === 'date')
+    fieldDef += `.$onUpdate(${field.onUpdate})`
 
   if (field.references) {
     const refTable = field.references.model

@@ -1,5 +1,6 @@
+import { getAuthTables } from 'better-auth/db'
 import { describe, expect, it } from 'vitest'
-import { generateDrizzleSchema } from '../src/schema-generator'
+import { generateDrizzleSchema, generateField } from '../src/schema-generator'
 
 const mockTables = {
   user: { fields: { name: { type: 'string', required: true } } },
@@ -114,5 +115,42 @@ describe('generateDrizzleSchema', () => {
     const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
     expect(schema).toContain('userID: text(\'user_id\')')
     expect(schema).toContain('oAuth2Token: text(\'o_auth2_token\')')
+  })
+
+  it('generates function defaults with $defaultFn', () => {
+    const field = {
+      type: 'Date',
+      required: true,
+      defaultValue: () => /* @__PURE__ */ new Date(),
+    }
+    const result = generateField('createdAt', field, 'sqlite', {})
+    expect(result).toContain('.$defaultFn(')
+    expect(result).not.toContain('\'() =>') // no quotes around function
+  })
+
+  it('generates $onUpdate for date fields with onUpdate function', () => {
+    const field = {
+      type: 'date',
+      required: true,
+      onUpdate: () => new Date(),
+    }
+    const result = generateField('updatedAt', field, 'sqlite', {})
+    expect(result).toContain('.$onUpdate(')
+  })
+})
+
+describe('getAuthTables with secondaryStorage', () => {
+  it('excludes session table when secondaryStorage is provided', () => {
+    const mockStorage = { get: async () => null, set: async () => {}, delete: async () => {} }
+    const tables = getAuthTables({ secondaryStorage: mockStorage })
+    expect(tables).not.toHaveProperty('session')
+    expect(tables).toHaveProperty('user')
+    expect(tables).toHaveProperty('account')
+  })
+
+  it('includes session table when secondaryStorage is undefined', () => {
+    const tables = getAuthTables({})
+    expect(tables).toHaveProperty('session')
+    expect(tables).toHaveProperty('user')
   })
 })

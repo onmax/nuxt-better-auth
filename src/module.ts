@@ -101,9 +101,14 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
-    // conditional hub:kv
+    // conditional hub:kv - use resolved path instead of hub:kv alias to avoid ESM loader issues
+    const hubKVPath = nuxt.options.alias['hub:kv'] as string | undefined
+    if (secondaryStorageEnabled && !hubKVPath) {
+      throw new Error('[nuxt-better-auth] hub:kv alias not found. Ensure @nuxthub/core is loaded before this module.')
+    }
+
     const secondaryStorageCode = secondaryStorageEnabled
-      ? `import { kv } from 'hub:kv'
+      ? `import { kv } from '${hubKVPath}'
 export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
@@ -296,7 +301,16 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
     const plugins = [...(userConfig.plugins || []), ...(extendedConfig.plugins || [])]
 
     const { getAuthTables } = await import('better-auth/db')
-    const tables = getAuthTables({ plugins })
+    const tables = getAuthTables({
+      plugins,
+      secondaryStorage: options.secondaryStorage
+        ? {
+            get: async (_key: string) => null,
+            set: async (_key: string, _value: unknown, _ttl?: number) => {},
+            delete: async (_key: string) => {},
+          }
+        : undefined,
+    })
 
     const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
     const hubCasing = getHubCasing(hub)

@@ -1,3 +1,4 @@
+import type { Auth } from 'better-auth'
 import type { H3Event } from 'h3'
 import { createDatabase, db } from '#auth/database'
 import { createSecondaryStorage } from '#auth/secondary-storage'
@@ -9,7 +10,7 @@ import { useRuntimeConfig } from 'nitropack/runtime'
 
 const logger = consola.withTag('nuxt-better-auth')
 
-type AuthInstance = ReturnType<typeof betterAuth>
+type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
 
 declare module 'h3' {
   interface H3EventContext {
