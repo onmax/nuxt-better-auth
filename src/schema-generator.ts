@@ -46,7 +46,7 @@ function generateIdField(dialect: 'sqlite' | 'postgresql' | 'mysql'): string {
   }
 }
 
-function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>): string {
+export function generateField(fieldName: string, field: FieldAttribute, dialect: 'sqlite' | 'postgresql' | 'mysql', allTables: Record<string, TableSchema>): string {
   const dbFieldName = fieldName
   let fieldDef = getFieldType(field.type, dialect, dbFieldName)
 
