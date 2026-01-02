@@ -205,14 +205,19 @@ declare module '#nuxt-better-auth' {
 
     addTypeTemplate({
       filename: 'types/nuxt-better-auth-nitro.d.ts',
-      getContents: () => `
-declare module 'nitropack/types' {
+      getContents: () => `declare module 'nitropack/types' {
   interface NitroRouteRules {
     auth?: import('${resolver.resolve('./runtime/types')}').AuthMeta
   }
 }
+declare module 'nitropack' {
+  interface NitroRouteConfig {
+    auth?: import('${resolver.resolve('./runtime/types')}').AuthMeta
+  }
+}
+export {}
 `,
-    })
+    }, { nuxt: true, nitro: true, node: true })
 
     // HMR
     nuxt.hook('builder:watch', async (_event, relativePath) => {
