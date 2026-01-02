@@ -1,5 +1,5 @@
 import type { AuthMeta, AuthMode, AuthRouteRules } from '../../types'
-import { createError, defineNuxtRouteMiddleware, getRouteRules, navigateTo, useNuxtApp, useRequestHeaders, useRuntimeConfig } from '#imports'
+import { createError, defineNuxtRouteMiddleware, getRouteRules, navigateTo, useNuxtApp, useRequestHeaders, useRuntimeConfig, useUserSession } from '#imports'
 import { matchesUser } from '../../utils/match-user'
 
 declare module '#app' {
