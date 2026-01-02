@@ -1,5 +1,6 @@
 // Base types - automatically extended via type generation from auth.config.ts
 // These serve as fallbacks and base structure
+import type { db } from '#imports'
 
 import type { NitroRuntimeConfig } from 'nitropack/types'
 
@@ -31,7 +32,7 @@ export interface AuthSession {
 // Server auth context - extended by generated types with hub:db types
 export interface ServerAuthContext {
   runtimeConfig: NitroRuntimeConfig
-  db: unknown
+  db: typeof db
 }
 
 // Composable return type
