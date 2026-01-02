@@ -1,6 +1,8 @@
 // Base types - automatically extended via type generation from auth.config.ts
 // These serve as fallbacks and base structure
 
+import type { NitroRuntimeConfig } from 'nitropack/types'
+
 import type { ComputedRef, Ref } from 'vue'
 
 // Base user - extended by InferUser<Config> from generated types
@@ -28,7 +30,7 @@ export interface AuthSession {
 
 // Server auth context - extended by generated types with hub:db types
 export interface ServerAuthContext {
-  runtimeConfig: Record<string, unknown>
+  runtimeConfig: NitroRuntimeConfig
   db: unknown
 }
 
