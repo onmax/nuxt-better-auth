@@ -1,8 +1,23 @@
 import type { AppAuthClient, AuthSession, AuthUser } from '#nuxt-better-auth'
+import type { ComputedRef, Ref } from 'vue'
 import { createAppAuthClient } from '#auth/client'
 import { computed, nextTick, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
 
 export interface SignOutOptions { onSuccess?: () => void | Promise<void> }
+
+export interface UseUserSessionReturn {
+  client: AppAuthClient | null
+  session: Ref<AuthSession | null>
+  user: Ref<AuthUser | null>
+  loggedIn: ComputedRef<boolean>
+  ready: ComputedRef<boolean>
+  signIn: NonNullable<AppAuthClient>['signIn']
+  signUp: NonNullable<AppAuthClient>['signUp']
+  signOut: (options?: SignOutOptions) => Promise<void>
+  waitForSession: () => Promise<void>
+  fetchSession: (options?: { headers?: HeadersInit, force?: boolean }) => Promise<void>
+  updateUser: (updates: Partial<AuthUser>) => void
+}
 
 // Singleton client instance to ensure consistent state across all useUserSession calls
 let _client: AppAuthClient | null = null
@@ -12,7 +27,7 @@ function getClient(baseURL: string): AppAuthClient {
   return _client
 }
 
-export function useUserSession() {
+export function useUserSession(): UseUserSessionReturn {
   const runtimeConfig = useRuntimeConfig()
   const requestURL = useRequestURL()
 
@@ -184,11 +199,10 @@ export function useUserSession() {
   async function signOut(options?: SignOutOptions) {
     if (!client)
       throw new Error('signOut can only be called on client-side')
-    const response = await client.signOut()
+    await client.signOut()
     clearSession()
     if (options?.onSuccess)
       await options.onSuccess()
-    return response
   }
 
   return {
