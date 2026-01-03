@@ -190,6 +190,18 @@ declare module '#nuxt-better-auth' {
     ${hasHubDb ? `db: typeof import('hub:db')['db']` : ''}
   }
 }
+
+// Augment the config module to use the extended ServerAuthContext
+interface _AugmentedServerAuthContext {
+  runtimeConfig: RuntimeConfig
+  ${hasHubDb ? `db: typeof import('hub:db')['db']` : 'db: unknown'}
+}
+
+declare module '@onmax/nuxt-better-auth/config' {
+  import type { BetterAuthOptions } from 'better-auth'
+  type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
+  export function defineServerAuth<T extends ServerAuthConfig>(config: (ctx: _AugmentedServerAuthContext) => T): (ctx: _AugmentedServerAuthContext) => T
+}
 `,
     })
 
