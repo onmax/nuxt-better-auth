@@ -121,10 +121,8 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
-export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }
-export { db }`
-      : `export function createDatabase() { return undefined }
-export const db = undefined`
+export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }`
+      : `export function createDatabase() { return undefined }`
 
     const databaseTemplate = addTemplate({ filename: 'better-auth/database.mjs', getContents: () => databaseCode, write: true })
     nuxt.options.alias['#auth/database'] = databaseTemplate.dst

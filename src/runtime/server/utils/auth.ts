@@ -1,6 +1,6 @@
 import type { Auth } from 'better-auth'
 import type { H3Event } from 'h3'
-import { createDatabase, db } from '#auth/database'
+import { createDatabase } from '#auth/database'
 import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
 import { betterAuth } from 'better-auth'
@@ -35,7 +35,10 @@ export async function serverAuth(event: H3Event): Promise<AuthInstance> {
 
   const runtimeConfig = useRuntimeConfig()
   const database = createDatabase()
-  const userConfig = createServerAuth({ runtimeConfig, db })
+  const userConfig = createServerAuth({
+    runtimeConfig,
+    ...(runtimeConfig.public.auth.useDatabase && { db }),
+  })
 
   event.context._betterAuth = betterAuth({
     ...userConfig,
