@@ -5,7 +5,7 @@ import type { AuthRouteRules } from './runtime/types'
 import type { CasingOption } from './schema-generator'
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, updateTemplates } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, updateTemplates } from '@nuxt/kit'
 import { consola as _consola } from 'consola'
 import { defu } from 'defu'
 import { join } from 'pathe'
@@ -246,6 +246,7 @@ export {}
     })
 
     addServerImportsDir(resolver.resolve('./runtime/server/utils'))
+    addServerImports([{ name: 'defineServerAuth', from: resolver.resolve('./runtime/config') }])
     addServerScanDir(resolver.resolve('./runtime/server/middleware'))
     addServerHandler({ route: '/api/auth/**', handler: resolver.resolve('./runtime/server/api/auth/[...all]') })
     addImportsDir(resolver.resolve('./runtime/app/composables'))

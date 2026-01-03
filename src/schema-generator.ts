@@ -170,7 +170,17 @@ function getMysqlType(type: string, fieldName: string): string {
 
 export async function loadUserAuthConfig(configPath: string, throwOnError = false): Promise<Partial<BetterAuthOptions>> {
   const { createJiti } = await import('jiti')
-  const jiti = createJiti(import.meta.url, { interopDefault: true })
+  const { defineServerAuth } = await import('./runtime/config')
+  const jiti = createJiti(import.meta.url, { interopDefault: true, moduleCache: false })
+
+  // Inject into global scope for jiti (no auto-imports at build time)
+  const key = 'defineServerAuth'
+  const g = globalThis as Record<string, unknown>
+  if (!g[key]) {
+    (defineServerAuth as unknown as { _count: number })._count = 0
+    g[key] = defineServerAuth
+  }
+  (g[key] as unknown as { _count: number })._count++
 
   try {
     const mod = await jiti.import(configPath) as { default?: unknown } | ((...args: unknown[]) => unknown)
@@ -190,5 +200,11 @@ export async function loadUserAuthConfig(configPath: string, throwOnError = fals
     }
     consola.error('[@onmax/nuxt-better-auth] Failed to load auth config for schema generation. Schema may be incomplete:', error)
     return {}
+  }
+  finally {
+    (g[key] as unknown as { _count: number })._count--
+    if (!(g[key] as unknown as { _count: number })._count) {
+      delete g[key]
+    }
   }
 }
