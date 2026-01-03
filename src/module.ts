@@ -101,14 +101,13 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
-    // conditional hub:kv - use resolved path instead of hub:kv alias to avoid ESM loader issues
-    const hubKVPath = nuxt.options.alias['hub:kv'] as string | undefined
-    if (secondaryStorageEnabled && !hubKVPath) {
-      throw new Error('[nuxt-better-auth] hub:kv alias not found. Ensure @nuxthub/core is loaded before this module.')
+    // Validate hub:kv alias exists when secondaryStorage is enabled
+    if (secondaryStorageEnabled && !nuxt.options.alias['hub:kv']) {
+      throw new Error('[nuxt-better-auth] hub:kv not found. Ensure @nuxthub/core is loaded before this module and hub.kv is enabled.')
     }
 
     const secondaryStorageCode = secondaryStorageEnabled
-      ? `import { kv } from '${hubKVPath}'
+      ? `import { kv } from '../hub/kv.mjs'
 export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
@@ -121,14 +120,14 @@ export function createSecondaryStorage() {
     const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
     nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
 
-    // conditional hub:db - use resolved path instead of hub:db alias to avoid ESM loader issues
-    const hubDbPath = nuxt.options.alias['hub:db'] as string | undefined
-    if (hasHubDb && !hubDbPath) {
-      throw new Error('[nuxt-better-auth] hub:db alias not found. Ensure @nuxthub/core is loaded before this module.')
+    // Validate hub:db alias exists when using NuxtHub database
+    if (hasHubDb && !nuxt.options.alias['hub:db']) {
+      throw new Error('[nuxt-better-auth] hub:db not found. Ensure @nuxthub/core is loaded before this module and hub.db is configured.')
     }
+
     const hubDialect = getHubDialect(hub) ?? 'sqlite'
-    const databaseCode = hasHubDb && hubDbPath
-      ? `import { db, schema } from '${hubDbPath}'
+    const databaseCode = hasHubDb
+      ? `import { db, schema } from '../hub/db.mjs'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
