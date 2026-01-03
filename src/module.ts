@@ -102,8 +102,8 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
     const secondaryStorageCode = secondaryStorageEnabled
-      ? `export function createSecondaryStorage() {
-  // kv is auto-imported by NuxtHub - no import statement needed
+      ? `import { kv } from '../hub/kv.mjs'
+export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
     set: async (key, value, ttl) => kv.set(\`_auth:\${key}\`, value, { ttl }),
@@ -117,12 +117,14 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
     const hubDialect = getHubDialect(hub) ?? 'sqlite'
     const databaseCode = hasHubDb
-      ? `// db and schema are auto-imported by NuxtHub - no import statement needed
+      ? `import { db, schema } from '../hub/db.mjs'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
-export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }`
-      : `export function createDatabase() { return undefined }`
+export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }
+export { db }`
+      : `export function createDatabase() { return undefined }
+export const db = undefined`
 
     const databaseTemplate = addTemplate({ filename: 'better-auth/database.mjs', getContents: () => databaseCode, write: true })
     nuxt.options.alias['#auth/database'] = databaseTemplate.dst
