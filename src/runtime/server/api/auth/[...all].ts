@@ -3,6 +3,6 @@ import { defineEventHandler, toWebRequest } from 'h3'
 import { serverAuth } from '../../utils/auth'
 
 export default defineEventHandler(async (event: H3Event) => {
-  const auth = await serverAuth(event)
+  const auth = serverAuth()
   return auth.handler(toWebRequest(event))
 })
