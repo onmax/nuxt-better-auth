@@ -101,15 +101,9 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
-    // conditional hub:kv - use resolved path instead of hub:kv alias to avoid ESM loader issues
-    const hubKVPath = nuxt.options.alias['hub:kv'] as string | undefined
-    if (secondaryStorageEnabled && !hubKVPath) {
-      throw new Error('[nuxt-better-auth] hub:kv alias not found. Ensure @nuxthub/core is loaded before this module.')
-    }
-
     const secondaryStorageCode = secondaryStorageEnabled
-      ? `import { kv } from '${hubKVPath}'
-export function createSecondaryStorage() {
+      ? `export function createSecondaryStorage() {
+  // kv is auto-imported by NuxtHub - no import statement needed
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
     set: async (key, value, ttl) => kv.set(\`_auth:\${key}\`, value, { ttl }),
@@ -121,14 +115,9 @@ export function createSecondaryStorage() {
     const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
     nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
 
-    // conditional hub:db - use resolved path instead of hub:db alias to avoid ESM loader issues
-    const hubDbPath = nuxt.options.alias['hub:db'] as string | undefined
-    if (hasHubDb && !hubDbPath) {
-      throw new Error('[nuxt-better-auth] hub:db alias not found. Ensure @nuxthub/core is loaded before this module.')
-    }
     const hubDialect = getHubDialect(hub) ?? 'sqlite'
-    const databaseCode = hasHubDb && hubDbPath
-      ? `import { db, schema } from '${hubDbPath}'
+    const databaseCode = hasHubDb
+      ? `// db and schema are auto-imported by NuxtHub - no import statement needed
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
