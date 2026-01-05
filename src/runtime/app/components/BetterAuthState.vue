@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useUserSession } from '#imports'
+
 const { loggedIn, user, session, signOut, ready } = useUserSession()
 </script>
 
