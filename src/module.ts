@@ -45,6 +45,7 @@ export type { BetterAuthModuleOptions } from './runtime/config'
 export default defineNuxtModule<BetterAuthModuleOptions>({
   meta: { name: '@onmax/nuxt-better-auth', configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
   defaults: {
+    clientOnly: false,
     serverConfig: 'server/auth.config',
     clientConfig: 'app/auth.config',
     redirects: { login: '/login', guest: '/' },
@@ -52,6 +53,7 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
   },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
+    const clientOnly = options.clientOnly!
 
     const serverConfigFile = options.serverConfig!
     const clientConfigFile = options.clientConfig!
@@ -61,17 +63,21 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const serverConfigExists = existsSync(`${serverConfigPath}.ts`) || existsSync(`${serverConfigPath}.js`)
     const clientConfigExists = existsSync(`${clientConfigPath}.ts`) || existsSync(`${clientConfigPath}.js`)
 
-    if (!serverConfigExists)
+    if (!clientOnly && !serverConfigExists)
       throw new Error(`[nuxt-better-auth] Missing ${serverConfigFile}.ts - create with defineServerAuth()`)
     if (!clientConfigExists)
       throw new Error(`[nuxt-better-auth] Missing ${clientConfigFile}.ts - export createAppAuthClient()`)
 
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
-    const hasHubDb = hasNuxtHub && !!hub?.db
+    const hasHubDb = !clientOnly && hasNuxtHub && !!hub?.db
 
     let secondaryStorageEnabled = options.secondaryStorage ?? false
-    if (secondaryStorageEnabled && (!hasNuxtHub || !hub?.kv)) {
+    if (secondaryStorageEnabled && clientOnly) {
+      consola.warn('secondaryStorage is not available in clientOnly mode. Disabling.')
+      secondaryStorageEnabled = false
+    }
+    else if (secondaryStorageEnabled && (!hasNuxtHub || !hub?.kv)) {
       consola.warn('secondaryStorage requires @nuxthub/core with hub.kv: true. Disabling.')
       secondaryStorageEnabled = false
     }
@@ -80,34 +86,50 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.runtimeConfig.public.auth = defu(nuxt.options.runtimeConfig.public.auth as Record<string, unknown>, {
       redirects: { login: options.redirects?.login ?? '/login', guest: options.redirects?.guest ?? '/' },
       useDatabase: hasHubDb,
-    }) as { redirects: { login: string, guest: string }, useDatabase: boolean }
+      clientOnly,
+    }) as { redirects: { login: string, guest: string }, useDatabase: boolean, clientOnly: boolean }
 
-    const betterAuthSecret = process.env.BETTER_AUTH_SECRET || process.env.NUXT_BETTER_AUTH_SECRET || (nuxt.options.runtimeConfig.betterAuthSecret as string) || ''
-
-    if (!nuxt.options.dev && !betterAuthSecret) {
-      throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET is required in production. Set BETTER_AUTH_SECRET or NUXT_BETTER_AUTH_SECRET environment variable.')
+    // Client-only mode: warn about limitations
+    if (clientOnly) {
+      const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || (nuxt.options.runtimeConfig.public.siteUrl as string)
+      if (!siteUrl) {
+        consola.warn('clientOnly mode: NUXT_PUBLIC_SITE_URL should be set to your frontend URL')
+      }
+      consola.info('clientOnly mode enabled - server utilities (serverAuth, getUserSession, requireUserSession) are not available')
     }
-    if (betterAuthSecret && betterAuthSecret.length < 32) {
-      throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET must be at least 32 characters for security')
+
+    // Server-only: secret validation
+    if (!clientOnly) {
+      const betterAuthSecret = process.env.BETTER_AUTH_SECRET || process.env.NUXT_BETTER_AUTH_SECRET || (nuxt.options.runtimeConfig.betterAuthSecret as string) || ''
+
+      if (!nuxt.options.dev && !betterAuthSecret) {
+        throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET is required in production. Set BETTER_AUTH_SECRET or NUXT_BETTER_AUTH_SECRET environment variable.')
+      }
+      if (betterAuthSecret && betterAuthSecret.length < 32) {
+        throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET must be at least 32 characters for security')
+      }
+
+      nuxt.options.runtimeConfig.betterAuthSecret = betterAuthSecret
+
+      nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
+        secondaryStorage: secondaryStorageEnabled,
+      }) as { secondaryStorage: boolean }
     }
-
-    nuxt.options.runtimeConfig.betterAuthSecret = betterAuthSecret
-
-    nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
-      secondaryStorage: secondaryStorageEnabled,
-    }) as { secondaryStorage: boolean }
 
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
-    nuxt.options.alias['#auth/server'] = serverConfigPath
+    if (!clientOnly)
+      nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
-    // Validate hub:kv alias exists when secondaryStorage is enabled
-    if (secondaryStorageEnabled && !nuxt.options.alias['hub:kv']) {
-      throw new Error('[nuxt-better-auth] hub:kv not found. Ensure @nuxthub/core is loaded before this module and hub.kv is enabled.')
-    }
+    // Server-only: secondary storage and database templates
+    if (!clientOnly) {
+      // Validate hub:kv alias exists when secondaryStorage is enabled
+      if (secondaryStorageEnabled && !nuxt.options.alias['hub:kv']) {
+        throw new Error('[nuxt-better-auth] hub:kv not found. Ensure @nuxthub/core is loaded before this module and hub.kv is enabled.')
+      }
 
-    const secondaryStorageCode = secondaryStorageEnabled
-      ? `import { kv } from '../hub/kv.mjs'
+      const secondaryStorageCode = secondaryStorageEnabled
+        ? `import { kv } from '../hub/kv.mjs'
 export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
@@ -115,33 +137,33 @@ export function createSecondaryStorage() {
     delete: async (key) => kv.del(\`_auth:\${key}\`),
   }
 }`
-      : `export function createSecondaryStorage() { return undefined }`
+        : `export function createSecondaryStorage() { return undefined }`
 
-    const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
-    nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
+      const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
+      nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
 
-    // Validate hub:db alias exists when using NuxtHub database
-    if (hasHubDb && !nuxt.options.alias['hub:db']) {
-      throw new Error('[nuxt-better-auth] hub:db not found. Ensure @nuxthub/core is loaded before this module and hub.db is configured.')
-    }
+      // Validate hub:db alias exists when using NuxtHub database
+      if (hasHubDb && !nuxt.options.alias['hub:db']) {
+        throw new Error('[nuxt-better-auth] hub:db not found. Ensure @nuxthub/core is loaded before this module and hub.db is configured.')
+      }
 
-    const hubDialect = getHubDialect(hub) ?? 'sqlite'
-    const databaseCode = hasHubDb
-      ? `import { db, schema } from '../hub/db.mjs'
+      const hubDialect = getHubDialect(hub) ?? 'sqlite'
+      const databaseCode = hasHubDb
+        ? `import { db, schema } from '../hub/db.mjs'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
 export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }
 export { db }`
-      : `export function createDatabase() { return undefined }
+        : `export function createDatabase() { return undefined }
 export const db = undefined`
 
-    const databaseTemplate = addTemplate({ filename: 'better-auth/database.mjs', getContents: () => databaseCode, write: true })
-    nuxt.options.alias['#auth/database'] = databaseTemplate.dst
+      const databaseTemplate = addTemplate({ filename: 'better-auth/database.mjs', getContents: () => databaseCode, write: true })
+      nuxt.options.alias['#auth/database'] = databaseTemplate.dst
 
-    addTypeTemplate({
-      filename: 'types/auth-secondary-storage.d.ts',
-      getContents: () => `
+      addTypeTemplate({
+        filename: 'types/auth-secondary-storage.d.ts',
+        getContents: () => `
 declare module '#auth/secondary-storage' {
   interface SecondaryStorage {
     get: (key: string) => Promise<string | null>
@@ -151,30 +173,22 @@ declare module '#auth/secondary-storage' {
   export function createSecondaryStorage(): SecondaryStorage | undefined
 }
 `,
-    })
+      })
 
-    addTypeTemplate({
-      filename: 'types/auth-database.d.ts',
-      getContents: () => `
+      addTypeTemplate({
+        filename: 'types/auth-database.d.ts',
+        getContents: () => `
 declare module '#auth/database' {
   import type { drizzleAdapter } from 'better-auth/adapters/drizzle'
   export function createDatabase(): ReturnType<typeof drizzleAdapter> | undefined
   export const db: unknown
 }
 `,
-    })
+      })
 
-    addTypeTemplate({
-      filename: 'types/nuxt-better-auth.d.ts',
-      getContents: () => `
-export * from '${resolver.resolve('./runtime/types/augment')}'
-export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptions, Auth, InferUser, InferSession } from '${resolver.resolve('./runtime/types')}'
-`,
-    })
-
-    addTypeTemplate({
-      filename: 'types/nuxt-better-auth-infer.d.ts',
-      getContents: () => `
+      addTypeTemplate({
+        filename: 'types/nuxt-better-auth-infer.d.ts',
+        getContents: () => `
 import type { InferUser, InferSession } from 'better-auth'
 import type { RuntimeConfig } from 'nuxt/schema'
 import type configFn from '${serverConfigPath}'
@@ -202,21 +216,11 @@ declare module '@onmax/nuxt-better-auth/config' {
   export function defineServerAuth<T extends ServerAuthConfig>(config: (ctx: _AugmentedServerAuthContext) => T): (ctx: _AugmentedServerAuthContext) => T
 }
 `,
-    })
+      })
 
-    addTypeTemplate({
-      filename: 'types/nuxt-better-auth-client.d.ts',
-      getContents: () => `
-import type { createAppAuthClient } from '${clientConfigPath}'
-declare module '#nuxt-better-auth' {
-  export type AppAuthClient = ReturnType<typeof createAppAuthClient>
-}
-`,
-    })
-
-    addTypeTemplate({
-      filename: 'types/nuxt-better-auth-nitro.d.ts',
-      getContents: () => `
+      addTypeTemplate({
+        filename: 'types/nuxt-better-auth-nitro.d.ts',
+        getContents: () => `
 declare module 'nitropack' {
   interface NitroRouteRules {
     auth?: import('${resolver.resolve('./runtime/types')}').AuthMeta
@@ -235,7 +239,26 @@ declare module 'nitropack/types' {
 }
 export {}
 `,
-    }, { nuxt: true, nitro: true, node: true })
+      }, { nuxt: true, nitro: true, node: true })
+    }
+
+    addTypeTemplate({
+      filename: 'types/nuxt-better-auth.d.ts',
+      getContents: () => `
+export * from '${resolver.resolve('./runtime/types/augment')}'
+export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptions, Auth, InferUser, InferSession } from '${resolver.resolve('./runtime/types')}'
+`,
+    })
+
+    addTypeTemplate({
+      filename: 'types/nuxt-better-auth-client.d.ts',
+      getContents: () => `
+import type { createAppAuthClient } from '${clientConfigPath}'
+declare module '#nuxt-better-auth' {
+  export type AppAuthClient = ReturnType<typeof createAppAuthClient>
+}
+`,
+    })
 
     // HMR
     nuxt.hook('builder:watch', async (_event, relativePath) => {
@@ -244,13 +267,18 @@ export {}
       }
     })
 
-    addServerImportsDir(resolver.resolve('./runtime/server/utils'))
-    addServerImports([{ name: 'defineServerAuth', from: resolver.resolve('./runtime/config') }])
-    addServerScanDir(resolver.resolve('./runtime/server/middleware'))
-    addServerHandler({ route: '/api/auth/**', handler: resolver.resolve('./runtime/server/api/auth/[...all]') })
+    // Server-only handlers and imports
+    if (!clientOnly) {
+      addServerImportsDir(resolver.resolve('./runtime/server/utils'))
+      addServerImports([{ name: 'defineServerAuth', from: resolver.resolve('./runtime/config') }])
+      addServerScanDir(resolver.resolve('./runtime/server/middleware'))
+      addServerHandler({ route: '/api/auth/**', handler: resolver.resolve('./runtime/server/api/auth/[...all]') })
+    }
+
     addImportsDir(resolver.resolve('./runtime/app/composables'))
     addImportsDir(resolver.resolve('./runtime/utils'))
-    addPlugin({ src: resolver.resolve('./runtime/app/plugins/session.server'), mode: 'server' })
+    if (!clientOnly)
+      addPlugin({ src: resolver.resolve('./runtime/app/plugins/session.server'), mode: 'server' })
     addPlugin({ src: resolver.resolve('./runtime/app/plugins/session.client'), mode: 'client' })
     addComponentsDir({ path: resolver.resolve('./runtime/app/components') })
 
@@ -264,7 +292,7 @@ export {}
 
     // Only enable devtools in development - explicit production check
     const isProduction = process.env.NODE_ENV === 'production' || !nuxt.options.dev
-    if (!isProduction) {
+    if (!isProduction && !clientOnly) {
       setupDevTools(nuxt)
       addServerHandler({ route: '/api/_better-auth/config', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
       if (hasHubDb) {

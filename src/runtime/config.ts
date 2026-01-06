@@ -18,6 +18,8 @@ export type ClientAuthConfigFn = (ctx: ClientAuthContext) => ClientAuthConfig
 
 // Module options for nuxt.config.ts
 export interface BetterAuthModuleOptions {
+  /** Client-only mode - skip server setup for external auth backends */
+  clientOnly?: boolean
   /** Server config path relative to rootDir. Default: 'server/auth.config' */
   serverConfig?: string
   /** Client config path relative to rootDir. Default: 'app/auth.config' */
@@ -40,6 +42,8 @@ export interface BetterAuthModuleOptions {
 // Runtime config type for public.auth
 export interface AuthRuntimeConfig {
   redirects: { login: string, guest: string }
+  useDatabase: boolean
+  clientOnly: boolean
 }
 
 // Private runtime config (server-only)
