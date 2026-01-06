@@ -5,7 +5,7 @@ import type { AuthSession, AuthUser } from './types/augment'
 export type { AuthSession, AuthUser, ServerAuthContext, UserSessionComposable } from './types/augment'
 
 // Re-export better-auth types for $Infer access
-export type { Auth, InferSession, InferUser } from 'better-auth'
+export type { Auth, InferPluginTypes, InferSession, InferUser } from 'better-auth'
 
 export type AuthMode = 'guest' | 'user'
 

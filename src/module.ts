@@ -189,7 +189,7 @@ declare module '#auth/database' {
       addTypeTemplate({
         filename: 'types/nuxt-better-auth-infer.d.ts',
         getContents: () => `
-import type { InferUser, InferSession } from 'better-auth'
+import type { InferUser, InferSession, InferPluginTypes } from 'better-auth'
 import type { RuntimeConfig } from 'nuxt/schema'
 import type configFn from '${serverConfigPath}'
 
@@ -197,11 +197,12 @@ type _Config = ReturnType<typeof configFn>
 
 declare module '#nuxt-better-auth' {
   interface AuthUser extends InferUser<_Config> {}
-  interface AuthSession { session: InferSession<_Config>['session'], user: InferUser<_Config> }
+  interface AuthSession extends InferSession<_Config> {}
   interface ServerAuthContext {
     runtimeConfig: RuntimeConfig
     ${hasHubDb ? `db: typeof import('hub:db')['db']` : ''}
   }
+  type PluginTypes = InferPluginTypes<_Config>
 }
 
 // Augment the config module to use the extended ServerAuthContext
