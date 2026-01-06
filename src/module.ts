@@ -217,7 +217,7 @@ declare module '@onmax/nuxt-better-auth/config' {
   export function defineServerAuth<T extends ServerAuthConfig>(config: (ctx: _AugmentedServerAuthContext) => T): (ctx: _AugmentedServerAuthContext) => T
 }
 `,
-      })
+      }, { nuxt: true, nitro: true, node: true })
 
       addTypeTemplate({
         filename: 'types/nuxt-better-auth-nitro.d.ts',
