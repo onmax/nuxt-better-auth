@@ -173,7 +173,7 @@ declare module '#auth/secondary-storage' {
   export function createSecondaryStorage(): SecondaryStorage | undefined
 }
 `,
-      })
+      }, { nitro: true, node: true })
 
       addTypeTemplate({
         filename: 'types/auth-database.d.ts',
@@ -184,7 +184,7 @@ declare module '#auth/database' {
   export const db: unknown
 }
 `,
-      })
+      }, { nitro: true, node: true })
 
       addTypeTemplate({
         filename: 'types/nuxt-better-auth-infer.d.ts',
