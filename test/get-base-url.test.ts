@@ -1,19 +1,28 @@
 import { describe, expect, it } from 'vitest'
 
+function validateURL(url: string): string {
+  try {
+    return new URL(url).origin
+  }
+  catch {
+    throw new Error(`Invalid siteUrl: "${url}". Must be a valid URL.`)
+  }
+}
+
 // Recreate getBaseURL logic for unit testing (not exported from module)
 function getBaseURL(config: { public: { siteUrl?: unknown } }, requestURL: string | undefined, env: NodeJS.ProcessEnv, isDev: boolean): string {
   if (config.public.siteUrl && typeof config.public.siteUrl === 'string')
-    return config.public.siteUrl
+    return validateURL(config.public.siteUrl)
 
   if (requestURL)
     return requestURL
 
   if (env.VERCEL_URL)
-    return `https://${env.VERCEL_URL}`
+    return validateURL(`https://${env.VERCEL_URL}`)
   if (env.CF_PAGES_URL)
-    return `https://${env.CF_PAGES_URL}`
+    return validateURL(`https://${env.CF_PAGES_URL}`)
   if (env.URL)
-    return env.URL.startsWith('http') ? env.URL : `https://${env.URL}`
+    return validateURL(env.URL.startsWith('http') ? env.URL : `https://${env.URL}`)
 
   if (isDev)
     return 'http://localhost:3000'
@@ -49,5 +58,9 @@ describe('getBaseURL', () => {
 
   it('ignores non-string siteUrl', () => {
     expect(getBaseURL({ public: { siteUrl: 123 } }, undefined, { VERCEL_URL: 'x.vercel.app' } as NodeJS.ProcessEnv, false)).toBe('https://x.vercel.app')
+  })
+
+  it('throws on invalid URL format', () => {
+    expect(() => getBaseURL({ public: { siteUrl: 'not-a-url' } }, undefined, {} as NodeJS.ProcessEnv, false)).toThrow('Invalid siteUrl')
   })
 })
