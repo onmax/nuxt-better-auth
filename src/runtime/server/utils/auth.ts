@@ -11,12 +11,21 @@ type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
 
 let _auth: AuthInstance | null = null
 
+function validateURL(url: string): string {
+  try {
+    return new URL(url).origin
+  }
+  catch {
+    throw new Error(`Invalid siteUrl: "${url}". Must be a valid URL.`)
+  }
+}
+
 function getBaseURL(event?: H3Event): string {
   const config = useRuntimeConfig()
 
   // 1. Explicit config (highest priority)
   if (config.public.siteUrl && typeof config.public.siteUrl === 'string')
-    return config.public.siteUrl
+    return validateURL(config.public.siteUrl)
 
   // 2. Request URL (always correct for current request)
   if (event)
@@ -24,11 +33,11 @@ function getBaseURL(event?: H3Event): string {
 
   // 3. Platform env vars (fallback for non-request contexts like seed scripts)
   if (process.env.VERCEL_URL)
-    return `https://${process.env.VERCEL_URL}`
+    return validateURL(`https://${process.env.VERCEL_URL}`)
   if (process.env.CF_PAGES_URL)
-    return `https://${process.env.CF_PAGES_URL}`
+    return validateURL(`https://${process.env.CF_PAGES_URL}`)
   if (process.env.URL)
-    return process.env.URL.startsWith('http') ? process.env.URL : `https://${process.env.URL}`
+    return validateURL(process.env.URL.startsWith('http') ? process.env.URL : `https://${process.env.URL}`)
 
   // 4. Dev fallback
   if (import.meta.dev)
