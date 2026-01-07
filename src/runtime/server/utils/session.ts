@@ -7,7 +7,7 @@ import { serverAuth } from './auth'
 interface FullSession { user: AuthUser, session: AuthSession }
 
 export async function getUserSession(event: H3Event): Promise<FullSession | null> {
-  const auth = serverAuth()
+  const auth = serverAuth(event)
   const session = await auth.api.getSession({ headers: event.headers })
   return session as FullSession | null
 }

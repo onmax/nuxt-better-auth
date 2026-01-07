@@ -2,9 +2,9 @@ import { defineEventHandler } from 'h3'
 import { useRuntimeConfig } from 'nitropack/runtime'
 import { serverAuth } from '../../utils/auth'
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
   try {
-    const auth = serverAuth()
+    const auth = serverAuth(event)
     const options = auth.options
     const runtimeConfig = useRuntimeConfig()
     const publicAuth = runtimeConfig.public?.auth as { redirects?: { login?: string, guest?: string }, useDatabase?: boolean } | undefined
