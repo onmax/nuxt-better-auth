@@ -51,12 +51,12 @@
   },
   "peerDependencies": {
     "@nuxthub/core": ">=0.10.0",
-    "better-auth": ">=1.0.0"
+    "better-auth": ">=1.0.0",
+    "h3": "^1.0.0"
   },
   "peerDependenciesMeta": {
-    "@nuxthub/core": {
-      "optional": true
-    }
+    "@nuxthub/core": { "optional": true },
+    "h3": { "optional": true }
   },
   "dependencies": {
     "@nuxt/kit": "^4.2.2",
