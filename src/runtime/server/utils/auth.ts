@@ -4,8 +4,9 @@ import { createDatabase, db } from '#auth/database'
 import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
 import { betterAuth } from 'better-auth'
-import { getRequestURL } from 'h3'
+import { getRequestHost, getRequestProtocol } from 'h3'
 import { useRuntimeConfig } from 'nitropack/runtime'
+import { withoutProtocol } from 'ufo'
 
 type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
 
@@ -20,6 +21,53 @@ function validateURL(url: string): string {
   }
 }
 
+/**
+ * Get the Nitro origin URL.
+ * Adapted from nuxt-site-config by @harlan-zw
+ * @see https://github.com/harlan-zw/nuxt-site-config/blob/main/packages/kit/src/util.ts
+ */
+function getNitroOrigin(e?: H3Event): string | undefined {
+  const cert = process.env.NITRO_SSL_CERT
+  const key = process.env.NITRO_SSL_KEY
+  let host: string | undefined = process.env.NITRO_HOST || process.env.HOST
+  let port: string | undefined
+  if (import.meta.dev)
+    port = process.env.NITRO_PORT || process.env.PORT || '3000'
+  let protocol = (cert && key) || !import.meta.dev ? 'https' : 'http'
+
+  try {
+    if ((import.meta.dev || import.meta.prerender) && process.env.__NUXT_DEV__) {
+      const origin = JSON.parse(process.env.__NUXT_DEV__).proxy.url
+      host = withoutProtocol(origin)
+      protocol = origin.includes('https') ? 'https' : 'http'
+    }
+    else if ((import.meta.dev || import.meta.prerender) && process.env.NUXT_VITE_NODE_OPTIONS) {
+      const origin = JSON.parse(process.env.NUXT_VITE_NODE_OPTIONS).baseURL.replace('/__nuxt_vite_node__', '')
+      host = withoutProtocol(origin)
+      protocol = origin.includes('https') ? 'https' : 'http'
+    }
+    else if (e) {
+      host = getRequestHost(e, { xForwardedHost: true }) || host
+      protocol = getRequestProtocol(e, { xForwardedProto: true }) || protocol
+    }
+  }
+  catch {
+    // JSON parse failed, continue with env fallbacks
+  }
+
+  if (!host)
+    return undefined
+
+  if (host.includes(':') && !host.startsWith('[')) {
+    const hostParts = host.split(':')
+    port = hostParts.pop()
+    host = hostParts.join(':')
+  }
+
+  const portSuffix = port ? `:${port}` : ''
+  return `${protocol}://${host}${portSuffix}`
+}
+
 function getBaseURL(event?: H3Event): string {
   const config = useRuntimeConfig()
 
@@ -27,11 +75,12 @@ function getBaseURL(event?: H3Event): string {
   if (config.public.siteUrl && typeof config.public.siteUrl === 'string')
     return validateURL(config.public.siteUrl)
 
-  // 2. Request URL (always correct for current request)
-  if (event)
-    return getRequestURL(event).origin
+  // 2. Nitro origin detection (handles dev proxy, request headers)
+  const nitroOrigin = getNitroOrigin(event)
+  if (nitroOrigin)
+    return validateURL(nitroOrigin)
 
-  // 3. Platform env vars (fallback for non-request contexts like seed scripts)
+  // 3. Platform env vars (fallback for non-request contexts)
   if (process.env.VERCEL_URL)
     return validateURL(`https://${process.env.VERCEL_URL}`)
   if (process.env.CF_PAGES_URL)
