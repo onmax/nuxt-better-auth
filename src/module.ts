@@ -100,7 +100,12 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
     // Server-only: secret validation
     if (!clientOnly) {
-      const betterAuthSecret = process.env.BETTER_AUTH_SECRET || process.env.NUXT_BETTER_AUTH_SECRET || (nuxt.options.runtimeConfig.betterAuthSecret as string) || ''
+      // Map BETTER_AUTH_SECRET to runtimeConfig for runtime support
+      // Priority: runtimeConfig (nuxt.config or NUXT_BETTER_AUTH_SECRET) > BETTER_AUTH_SECRET
+      const currentSecret = nuxt.options.runtimeConfig.betterAuthSecret as string | undefined
+      nuxt.options.runtimeConfig.betterAuthSecret = currentSecret || process.env.BETTER_AUTH_SECRET || ''
+
+      const betterAuthSecret = nuxt.options.runtimeConfig.betterAuthSecret as string
 
       if (!nuxt.options.dev && !betterAuthSecret) {
         throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET is required in production. Set BETTER_AUTH_SECRET or NUXT_BETTER_AUTH_SECRET environment variable.')
@@ -108,8 +113,6 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
       if (betterAuthSecret && betterAuthSecret.length < 32) {
         throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET must be at least 32 characters for security')
       }
-
-      nuxt.options.runtimeConfig.betterAuthSecret = betterAuthSecret
 
       nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
         secondaryStorage: secondaryStorageEnabled,
