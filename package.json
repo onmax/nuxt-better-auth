@@ -97,7 +97,7 @@
     "drizzle-orm": "^0.38.4",
     "eslint": "^9.39.1",
     "nuxt": "^4.2.2",
-    "npm-agentskills": "https://pkg.pr.new/onmax/npm-agentskills@1097956",
+    "npm-agentskills": "https://pkg.pr.new/onmax/npm-agentskills@fca7929",
     "tinyexec": "^1.0.2",
     "typescript": "~5.9.3",
     "vitest": "^4.0.15",
