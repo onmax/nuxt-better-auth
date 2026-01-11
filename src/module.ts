@@ -53,16 +53,6 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
   },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
-
-    // Register bundled AI skill for agent discovery (dev only)
-    if (nuxt.options.dev) {
-      try {
-        const { addSkill } = await import('nuxt-skills-toolkit')
-        addSkill({ dir: resolver.resolve('../skills/nuxt-better-auth') })
-      }
-      catch {} // Optional dependency
-    }
-
     const clientOnly = options.clientOnly!
 
     const serverConfigFile = options.serverConfig!
