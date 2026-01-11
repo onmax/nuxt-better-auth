@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '../src/module', ['nuxt-skills-toolkit', { additionalPaths: ['../skills/nuxt-better-auth'], targets: ['claude'] }]],
+  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '../src/module', ['npm-agentskills/nuxt', { targets: ['claude'] }]],
 
   css: ['~/assets/css/main.css'],
 
