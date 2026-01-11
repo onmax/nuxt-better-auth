@@ -6,7 +6,6 @@ import type { CasingOption } from './schema-generator'
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, updateTemplates } from '@nuxt/kit'
-import { addSkill } from 'nuxt-skills-toolkit'
 import { consola as _consola } from 'consola'
 import { defu } from 'defu'
 import { join } from 'pathe'
@@ -55,8 +54,12 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    // Register bundled AI skill for agent discovery
-    addSkill({ dir: resolver.resolve('../skills/nuxt-better-auth') })
+    // Register bundled AI skill for agent discovery (dev only)
+    if (nuxt.options.dev) {
+      import('nuxt-skills-toolkit').then(({ addSkill }) => {
+        addSkill({ dir: resolver.resolve('../skills/nuxt-better-auth') })
+      }).catch(() => {}) // Optional dependency
+    }
 
     const clientOnly = options.clientOnly!
 
