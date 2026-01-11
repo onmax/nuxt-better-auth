@@ -11,7 +11,12 @@
     "url": "https://github.com/onmax/nuxt-better-auth"
   },
   "agentskills": {
-    "skills": [{ "name": "nuxt-better-auth", "path": "./skills/nuxt-better-auth" }]
+    "skills": [
+      {
+        "name": "nuxt-better-auth",
+        "path": "./skills/nuxt-better-auth"
+      }
+    ]
   },
   "exports": {
     ".": {
@@ -34,7 +39,10 @@
       ]
     }
   },
-  "files": ["dist", "skills"],
+  "files": [
+    "dist",
+    "skills"
+  ],
   "scripts": {
     "prepack": "nuxt-module-build build",
     "dev": "pnpm dev:prepare && nuxi dev playground",
@@ -63,6 +71,7 @@
     "@nuxt/kit": "^4.2.2",
     "defu": "^6.1.4",
     "jiti": "^2.4.2",
+    "nuxt-skills-toolkit": "https://pkg.pr.new/onmax/nuxt-skills/nuxt-skills-toolkit@12",
     "pathe": "^2.0.3",
     "pluralize": "^8.0.0",
     "radix3": "^1.1.2"
