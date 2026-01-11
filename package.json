@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/onmax/nuxt-better-auth"
   },
+  "agentskills": {
+    "skills": [{ "name": "nuxt-better-auth", "path": "./skills/nuxt-better-auth" }]
+  },
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
@@ -31,9 +34,7 @@
       ]
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist", "skills"],
   "scripts": {
     "prepack": "nuxt-module-build build",
     "dev": "pnpm dev:prepare && nuxi dev playground",
