@@ -76,7 +76,7 @@ function getCodeBlock(tab: { name: string, code: string }) {
                     <span class="italic text-amber-600">x</span>
                   </p>
                   <p class="relative inline tracking-tight opacity-90 md:text-sm text-xs dark:text-white font-mono text-black select-all">
-                    npx nuxi module add <span class="relative dark:text-fuchsia-300 text-fuchsia-800">@onmax/nuxt-better-auth</span>
+                    npx nuxi module add <span class="relative dark:text-fuchsia-300 text-fuchsia-800">@onmax/nuxt-better-auth@alpha</span>
                   </p>
                 </div>
                 <div class="flex gap-2 items-center">
