@@ -360,7 +360,7 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
       ...userConfig,
       plugins,
       secondaryStorage: options.secondaryStorage
-        ? { get: async (_key: string) => null, set: async (_key: string, _value: unknown, _ttl?: number) => {}, delete: async (_key: string) => {} }
+        ? { get: async (_key: string) => null, set: async (_key: string, _value: string, _ttl?: number) => {}, delete: async (_key: string) => {} }
         : undefined,
     }
 
