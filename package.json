@@ -10,7 +10,14 @@
     "type": "git",
     "url": "https://github.com/onmax/nuxt-better-auth"
   },
-  "agents": { "skills": [{ "name": "nuxt-better-auth", "path": "./skills/nuxt-better-auth" }] },
+  "agents": {
+    "skills": [
+      {
+        "name": "nuxt-better-auth",
+        "path": "./skills/nuxt-better-auth"
+      }
+    ]
+  },
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
@@ -89,8 +96,8 @@
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.38.4",
     "eslint": "^9.39.1",
+    "npm-agentskills": "https://pkg.pr.new/onmax/npm-agentskills@394499e",
     "nuxt": "^4.2.2",
-    "npm-agentskills": "https://pkg.pr.new/onmax/npm-agentskills@1",
     "tinyexec": "^1.0.2",
     "typescript": "~5.9.3",
     "vitest": "^4.0.15",
