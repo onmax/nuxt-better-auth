@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '../src/module'],
+  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '../src/module', ['npm-agentskills/nuxt', { targets: ['claude'] }]],
 
   css: ['~/assets/css/main.css'],
 
