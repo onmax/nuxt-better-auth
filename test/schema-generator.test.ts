@@ -1,141 +1,77 @@
+import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { getAuthTables } from 'better-auth/db'
-import { describe, expect, it } from 'vitest'
-import { generateDrizzleSchema, generateField } from '../src/schema-generator'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { generateDrizzleSchema, loadUserAuthConfig } from '../src/schema-generator'
 
-const mockTables = {
-  user: { fields: { name: { type: 'string', required: true } } },
-  session: { fields: { token: { type: 'string', required: true } } },
-}
+const TEST_DIR = join(import.meta.dirname, '.test-configs')
+
+beforeAll(() => {
+  if (!existsSync(TEST_DIR))
+    mkdirSync(TEST_DIR, { recursive: true })
+})
+afterAll(() => {
+  if (existsSync(TEST_DIR))
+    rmSync(TEST_DIR, { recursive: true })
+})
 
 describe('generateDrizzleSchema', () => {
-  it('singular table names by default', () => {
-    const schema = generateDrizzleSchema(mockTables, 'sqlite')
-    expect(schema).toContain('sqliteTable(\'user\'')
-    expect(schema).toContain('sqliteTable(\'session\'')
+  it('singular table names by default', async () => {
+    const schema = await generateDrizzleSchema({}, 'sqlite')
+    expect(schema).toContain('export const user = sqliteTable("user"')
+    expect(schema).toContain('"session"')
+    expect(schema).toContain('export const session = ')
   })
 
-  it('plural table names with usePlural', () => {
-    const schema = generateDrizzleSchema(mockTables, 'sqlite', { usePlural: true })
-    expect(schema).toContain('sqliteTable(\'users\'')
-    expect(schema).toContain('sqliteTable(\'sessions\'')
+  it('plural table names with usePlural', async () => {
+    const schema = await generateDrizzleSchema({}, 'sqlite', { usePlural: true })
+    expect(schema).toContain('"users"')
+    expect(schema).toContain('"sessions"')
+    expect(schema).toContain('export const users = ')
+    expect(schema).toContain('export const sessions = ')
   })
 
-  it('custom modelName takes precedence over usePlural', () => {
-    // Only a DIFFERENT modelName should skip pluralization
-    const tables = { user: { modelName: 'custom_user', fields: {} } }
-    const schema = generateDrizzleSchema(tables, 'sqlite', { usePlural: true })
-    expect(schema).toContain('sqliteTable(\'custom_user\'')
+  it('postgresql uses text id by default', async () => {
+    const schema = await generateDrizzleSchema({}, 'postgresql')
+    expect(schema).toContain('text("id").primaryKey()')
+    expect(schema).not.toContain('uuid("id")')
   })
 
-  it('same modelName as tableName does not skip transformations', () => {
-    // better-auth sets modelName=tableName by default, this should NOT skip transforms
-    const tables = { user: { modelName: 'user', fields: {} } }
-    const schema = generateDrizzleSchema(tables, 'sqlite', { usePlural: true })
-    expect(schema).toContain('sqliteTable(\'users\'')
+  it('postgresql uses uuid id with useUuid', async () => {
+    const schema = await generateDrizzleSchema({}, 'postgresql', { useUuid: true })
+    expect(schema).toContain('uuid("id")')
   })
 
-  it('usePlural handles words ending in s correctly', () => {
-    const tables = { address: { fields: {} } }
-    const schema = generateDrizzleSchema(tables, 'sqlite', { usePlural: true })
-    expect(schema).toContain('sqliteTable(\'addresses\'')
+  it('postgresql FK columns use uuid with useUuid', async () => {
+    const schema = await generateDrizzleSchema({}, 'postgresql', { useUuid: true })
+    expect(schema).toContain('uuid("userId")')
   })
 
-  it('postgresql uses text id by default', () => {
-    const schema = generateDrizzleSchema(mockTables, 'postgresql')
-    expect(schema).toContain('id: text(\'id\').primaryKey()')
+  it('sqlite ignores useUuid (no native uuid support)', async () => {
+    const schema = await generateDrizzleSchema({}, 'sqlite', { useUuid: true })
+    expect(schema).toContain('text("id").primaryKey()')
     expect(schema).not.toContain('uuid')
   })
 
-  it('postgresql uses uuid id with useUuid', () => {
-    const schema = generateDrizzleSchema(mockTables, 'postgresql', { useUuid: true })
-    expect(schema).toContain('id: uuid(\'id\').defaultRandom().primaryKey()')
-    expect(schema).toContain('import { boolean, integer, pgTable, text, timestamp, uuid }')
+  it('mysql FK columns use varchar(36) with useUuid', async () => {
+    const schema = await generateDrizzleSchema({}, 'mysql', { useUuid: true })
+    expect(schema).toContain('varchar("userId", { length: 36 })')
   })
 
-  it('postgresql FK columns use uuid with useUuid', () => {
-    const tables = {
-      user: { fields: { name: { type: 'string', required: true } } },
-      session: { fields: { userId: { type: 'string', required: true, references: { model: 'user', field: 'id' } } } },
-    }
-    const schema = generateDrizzleSchema(tables, 'postgresql', { useUuid: true })
-    expect(schema).toContain('userId: uuid(\'userId\')')
+  it('snake_case field names with casing option', async () => {
+    const schema = await generateDrizzleSchema({}, 'postgresql', { casing: 'snake_case' })
+    expect(schema).toContain('email_verified')
+    expect(schema).toContain('created_at')
   })
 
-  it('sqlite ignores useUuid (no native uuid support)', () => {
-    const schema = generateDrizzleSchema(mockTables, 'sqlite', { useUuid: true })
-    expect(schema).toContain('id: text(\'id\').primaryKey()')
-    expect(schema).not.toContain('uuid')
+  it('snake_case table names with casing option', async () => {
+    const schema = await generateDrizzleSchema({}, 'postgresql', { casing: 'snake_case' })
+    expect(schema).toContain('pgTable("user"')
   })
 
-  it('mysql FK columns use varchar(36) with useUuid', () => {
-    const tables = {
-      user: { fields: { name: { type: 'string', required: true } } },
-      session: { fields: { userId: { type: 'string', required: true, references: { model: 'user', field: 'id' } } } },
-    }
-    const schema = generateDrizzleSchema(tables, 'mysql', { useUuid: true })
-    expect(schema).toContain('userId: varchar(\'userId\', { length: 36 })')
-  })
-
-  it('snake_case field names with casing option', () => {
-    const tables = { user: { fields: { emailVerified: { type: 'boolean' }, createdAt: { type: 'date' } } } }
-    const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
-    expect(schema).toContain('emailVerified: boolean(\'email_verified\')')
-    expect(schema).toContain('createdAt: timestamp(\'created_at\')')
-  })
-
-  it('snake_case table names with casing option', () => {
-    const tables = { userAccount: { fields: { name: { type: 'string' } } } }
-    const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
-    expect(schema).toContain('pgTable(\'user_account\'')
-  })
-
-  it('usePlural + snake_case combines correctly', () => {
-    const tables = { userAccount: { fields: {} } }
-    const schema = generateDrizzleSchema(tables, 'postgresql', { usePlural: true, casing: 'snake_case' })
-    expect(schema).toContain('pgTable(\'user_accounts\'')
-  })
-
-  it('camelCase casing option keeps names unchanged', () => {
-    const tables = { user: { fields: { emailVerified: { type: 'boolean' } } } }
-    const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'camelCase' })
-    expect(schema).toContain('emailVerified: boolean(\'emailVerified\')')
-  })
-
-  it('fK field names transformed to snake_case', () => {
-    const tables = {
-      user: { fields: { id: { type: 'string' } } },
-      session: { fields: { userId: { type: 'string', references: { model: 'user', field: 'id' } } } },
-    }
-    const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
-    expect(schema).toContain('userId: text(\'user_id\')')
-  })
-
-  it('snake_case handles consecutive capitals', () => {
-    const tables = { user: { fields: { userID: { type: 'string' }, oAuth2Token: { type: 'string' } } } }
-    const schema = generateDrizzleSchema(tables, 'postgresql', { casing: 'snake_case' })
-    expect(schema).toContain('userID: text(\'user_id\')')
-    expect(schema).toContain('oAuth2Token: text(\'o_auth2_token\')')
-  })
-
-  it('generates function defaults with $defaultFn', () => {
-    const field = {
-      type: 'Date',
-      required: true,
-      defaultValue: () => /* @__PURE__ */ new Date(),
-    }
-    const result = generateField('createdAt', field, 'sqlite', {})
-    expect(result).toContain('.$defaultFn(')
-    expect(result).not.toContain('\'() =>') // no quotes around function
-  })
-
-  it('generates $onUpdate for date fields with onUpdate function', () => {
-    const field = {
-      type: 'date',
-      required: true,
-      onUpdate: () => new Date(),
-    }
-    const result = generateField('updatedAt', field, 'sqlite', {})
-    expect(result).toContain('.$onUpdate(')
+  it('generates relations', async () => {
+    const schema = await generateDrizzleSchema({}, 'postgresql')
+    expect(schema).toContain('relations')
   })
 })
 
@@ -152,5 +88,36 @@ describe('getAuthTables with secondaryStorage', () => {
     const tables = getAuthTables({})
     expect(tables).toHaveProperty('session')
     expect(tables).toHaveProperty('user')
+  })
+})
+
+describe('loadUserAuthConfig', () => {
+  it('returns empty object for non-existent file (dev mode)', async () => {
+    const result = await loadUserAuthConfig(join(TEST_DIR, 'nonexistent.ts'), false)
+    expect(result).toEqual({})
+  })
+
+  it('throws for non-existent file when throwOnError=true', async () => {
+    await expect(loadUserAuthConfig(join(TEST_DIR, 'nonexistent.ts'), true)).rejects.toThrow('Failed to load auth config')
+  })
+
+  it('returns config from valid defineServerAuth export', async () => {
+    const configPath = join(TEST_DIR, 'valid-config.ts')
+    writeFileSync(configPath, `export default defineServerAuth(() => ({ plugins: [] }))`)
+    const result = await loadUserAuthConfig(configPath, false)
+    expect(result).toEqual({ plugins: [] })
+  })
+
+  it('warns and returns empty for non-function export (dev mode)', async () => {
+    const configPath = join(TEST_DIR, 'invalid-config.ts')
+    writeFileSync(configPath, `export default { notAFunction: true }`)
+    const result = await loadUserAuthConfig(configPath, false)
+    expect(result).toEqual({})
+  })
+
+  it('throws for non-function export when throwOnError=true', async () => {
+    const configPath = join(TEST_DIR, 'invalid-config2.ts')
+    writeFileSync(configPath, `export default { notAFunction: true }`)
+    await expect(loadUserAuthConfig(configPath, true)).rejects.toThrow('must export default defineServerAuth')
   })
 })

@@ -356,22 +356,17 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
 
     const plugins = [...(userConfig.plugins || []), ...(extendedConfig.plugins || [])]
 
-    const { getAuthTables } = await import('better-auth/db')
-    const tables = getAuthTables({
+    const authOptions = {
+      ...userConfig,
       plugins,
       secondaryStorage: options.secondaryStorage
-        ? {
-            get: async (_key: string) => null,
-            set: async (_key: string, _value: unknown, _ttl?: number) => {},
-            delete: async (_key: string) => {},
-          }
+        ? { get: async (_key: string) => null, set: async (_key: string, _value: unknown, _ttl?: number) => {}, delete: async (_key: string) => {} }
         : undefined,
-    })
+    }
 
-    const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
     const hubCasing = getHubCasing(hub)
-    const schemaOptions = { ...options.schema, useUuid, casing: options.schema?.casing ?? hubCasing }
-    const schemaCode = generateDrizzleSchema(tables, dialect as 'sqlite' | 'postgresql' | 'mysql', schemaOptions)
+    const schemaOptions = { ...options.schema, useUuid: userConfig.advanced?.database?.generateId === 'uuid', casing: options.schema?.casing ?? hubCasing }
+    const schemaCode = await generateDrizzleSchema(authOptions, dialect as 'sqlite' | 'postgresql' | 'mysql', schemaOptions)
 
     const schemaDir = join(nuxt.options.buildDir, 'better-auth')
     const schemaPath = join(schemaDir, `schema.${dialect}.ts`)
@@ -381,7 +376,7 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
 
     addTemplate({ filename: `better-auth/schema.${dialect}.ts`, getContents: () => schemaCode, write: true })
 
-    consola.info(`Generated ${dialect} schema with ${Object.keys(tables).length} tables`)
+    consola.info(`Generated ${dialect} schema`)
   }
   catch (error) {
     if (isProduction) {

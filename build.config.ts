@@ -1,5 +1,5 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  externals: ['consola'],
+  externals: ['consola', '@better-auth/cli', '@better-auth/cli/api'],
 })
