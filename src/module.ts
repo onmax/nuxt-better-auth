@@ -151,12 +151,14 @@ export function createSecondaryStorage() {
       }
 
       const hubDialect = getHubDialect(hub) ?? 'sqlite'
+      const usePlural = options.schema?.usePlural ?? false
+      const camelCase = (options.schema?.casing ?? getHubCasing(hub)) !== 'snake_case'
       const databaseCode = hasHubDb
         ? `import { db, schema } from '../hub/db.mjs'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
-export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }
+export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema, usePlural: ${usePlural}, camelCase: ${camelCase} }) }
 export { db }`
         : `export function createDatabase() { return undefined }
 export const db = undefined`
