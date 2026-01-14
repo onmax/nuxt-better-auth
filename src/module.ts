@@ -5,7 +5,7 @@ import type { AuthRouteRules } from './runtime/types'
 import type { CasingOption } from './schema-generator'
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, updateTemplates } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, installModule, updateTemplates } from '@nuxt/kit'
 import { consola as _consola } from 'consola'
 import { defu } from 'defu'
 import { join } from 'pathe'
@@ -297,6 +297,9 @@ declare module '#nuxt-better-auth' {
     // Only enable devtools in development - explicit production check
     const isProduction = process.env.NODE_ENV === 'production' || !nuxt.options.dev
     if (!isProduction && !clientOnly) {
+      // Devtools UI requires Nuxt UI components (UTable, UTabs, etc.)
+      if (!hasNuxtModule('@nuxt/ui'))
+        await installModule('@nuxt/ui')
       setupDevTools(nuxt)
       addServerHandler({ route: '/api/_better-auth/config', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
       if (hasHubDb) {
