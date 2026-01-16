@@ -43,7 +43,12 @@ const consola = _consola.withTag('nuxt-better-auth')
 export type { BetterAuthModuleOptions } from './runtime/config'
 
 export default defineNuxtModule<BetterAuthModuleOptions>({
-  meta: { name: '@onmax/nuxt-better-auth', configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
+  meta: {
+    name: '@onmax/nuxt-better-auth',
+    configKey: 'auth',
+    compatibility: { nuxt: '>=3.0.0' },
+    agents: { skills: [{ name: 'nuxt-better-auth', path: '../skills/nuxt-better-auth' }] },
+  },
   defaults: {
     clientOnly: false,
     serverConfig: 'server/auth.config',
