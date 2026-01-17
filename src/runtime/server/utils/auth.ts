@@ -1,6 +1,7 @@
 import type { Auth } from 'better-auth'
 import type { H3Event } from 'h3'
 import { createDatabase, db } from '#auth/database'
+import { getLocale } from '#auth/i18n'
 import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
 import { betterAuth } from 'better-auth'
@@ -116,3 +117,5 @@ export function serverAuth(event?: H3Event): AuthInstance {
 
   return _auth
 }
+
+export { getLocale }

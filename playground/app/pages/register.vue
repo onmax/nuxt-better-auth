@@ -2,6 +2,7 @@
 definePageMeta({ layout: 'auth' })
 
 const { signUp } = useUserSession()
+const { t } = useI18n()
 const toast = useToast()
 const emailWarning = useEmailWarning()
 
@@ -53,12 +54,12 @@ async function handleSignUp() {
     },
     {
       onSuccess: () => {
-        toast.add({ title: 'Success', description: 'Successfully signed up', color: 'success' })
+        toast.add({ title: 'Success', description: t('register.success'), color: 'success' })
         emailWarning()
         navigateTo('/app')
       },
       onError: (ctx) => {
-        toast.add({ title: 'Error', description: ctx.error.message || 'Sign up failed', color: 'error' })
+        toast.add({ title: 'Error', description: ctx.error.message || t('register.error'), color: 'error' })
       },
     },
   )
@@ -70,10 +71,10 @@ async function handleSignUp() {
   <UCard class="max-w-md">
     <template #header>
       <h3 class="text-lg md:text-xl font-semibold leading-none tracking-tight">
-        Sign Up
+        {{ t('register.title') }}
       </h3>
       <p class="text-xs md:text-sm text-muted-foreground">
-        Enter your information to create an account
+        {{ t('register.subtitle') }}
       </p>
     </template>
 
