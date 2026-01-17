@@ -3,13 +3,16 @@ import type { BetterAuthPlugin } from 'better-auth'
 import type { BetterAuthModuleOptions } from './runtime/config'
 import type { AuthRouteRules } from './runtime/types'
 import type { CasingOption } from './schema-generator'
-import { existsSync } from 'node:fs'
+import { randomBytes } from 'node:crypto'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, updateTemplates } from '@nuxt/kit'
 import { consola as _consola } from 'consola'
 import { defu } from 'defu'
-import { join } from 'pathe'
+import { dirname, join } from 'pathe'
 import { createRouter, toRouteMatcher } from 'radix3'
+import { isCI, isTest } from 'std-env'
+import { version } from '../package.json'
 import { setupDevTools } from './devtools'
 import { generateDrizzleSchema, loadUserAuthConfig } from './schema-generator'
 
@@ -40,10 +43,86 @@ function getHubCasing(hub?: NuxtHubOptions): CasingOption | undefined {
 
 const consola = _consola.withTag('nuxt-better-auth')
 
+const generateSecret = () => randomBytes(32).toString('hex')
+
+function readEnvFile(rootDir: string): string {
+  const envPath = join(rootDir, '.env')
+  return existsSync(envPath) ? readFileSync(envPath, 'utf-8') : ''
+}
+
+function hasEnvSecret(rootDir: string): boolean {
+  const match = readEnvFile(rootDir).match(/^BETTER_AUTH_SECRET=(.+)$/m)
+  return !!match && !!match[1] && match[1].trim().length > 0
+}
+
+function appendSecretToEnv(rootDir: string, secret: string): void {
+  const envPath = join(rootDir, '.env')
+  let content = readEnvFile(rootDir)
+  if (content.length > 0 && !content.endsWith('\n'))
+    content += '\n'
+  content += `BETTER_AUTH_SECRET=${secret}\n`
+  writeFileSync(envPath, content, 'utf-8')
+}
+
+async function promptForSecret(rootDir: string): Promise<string | undefined> {
+  if (process.env.BETTER_AUTH_SECRET || hasEnvSecret(rootDir))
+    return undefined
+
+  // Only auto-generate in CI or test - otherwise always prompt
+  if (isCI || isTest) {
+    const secret = generateSecret()
+    appendSecretToEnv(rootDir, secret)
+    consola.info('Generated BETTER_AUTH_SECRET and added to .env (CI mode)')
+    return secret
+  }
+
+  // Interactive prompt
+  consola.box('BETTER_AUTH_SECRET is required for authentication.\nThis will be appended to your .env file.')
+  const choice = await consola.prompt('How do you want to set it?', {
+    type: 'select',
+    options: [
+      { label: 'Generate for me', value: 'generate', hint: 'uses crypto.randomBytes(32)' },
+      { label: 'Enter manually', value: 'paste' },
+      { label: 'Skip', value: 'skip', hint: 'will fail in production' },
+    ],
+    cancel: 'null',
+  }) as 'generate' | 'paste' | 'skip' | symbol
+
+  if (typeof choice === 'symbol' || choice === 'skip') {
+    consola.warn('Skipping BETTER_AUTH_SECRET. Auth will fail without it in production.')
+    return undefined
+  }
+
+  let secret: string
+  if (choice === 'generate') {
+    secret = generateSecret()
+  }
+  else {
+    const input = await consola.prompt('Paste your secret (min 32 chars):', { type: 'text', cancel: 'null' }) as string | symbol
+    if (typeof input === 'symbol' || !input || input.length < 32) {
+      consola.warn('Invalid secret. Skipping.')
+      return undefined
+    }
+    secret = input
+  }
+
+  // Preview
+  const preview = `${secret.slice(0, 8)}...${secret.slice(-4)}`
+  const confirm = await consola.prompt(`Add to .env:\nBETTER_AUTH_SECRET=${preview}\nProceed?`, { type: 'confirm', initial: true, cancel: 'null' }) as boolean | symbol
+  if (typeof confirm === 'symbol' || !confirm) {
+    consola.info('Cancelled. Secret not written.')
+    return undefined
+  }
+
+  appendSecretToEnv(rootDir, secret)
+  consola.success('Added BETTER_AUTH_SECRET to .env')
+  return secret
+}
+
 export type { BetterAuthModuleOptions } from './runtime/config'
 
 export default defineNuxtModule<BetterAuthModuleOptions>({
-  meta: { name: '@onmax/nuxt-better-auth', configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
+  meta: { name: '@onmax/nuxt-better-auth', version, configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
   defaults: {
     clientOnly: false,
     serverConfig: 'server/auth.config',
@@ -51,8 +130,53 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     redirects: { login: '/login', guest: '/' },
     secondaryStorage: false,
   },
+  async onInstall(nuxt) {
+    // Prompt for BETTER_AUTH_SECRET if missing
+    const generatedSecret = await promptForSecret(nuxt.options.rootDir)
+    if (generatedSecret)
+      process.env.BETTER_AUTH_SECRET = generatedSecret
+
+    const serverPath = join(nuxt.options.rootDir, 'server/auth.config.ts')
+    const clientPath = join(nuxt.options.srcDir, 'auth.config.ts')
+
+    const serverTemplate = `import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
+
+export default defineServerAuth(() => ({
+  emailAndPassword: { enabled: true },
+}))
+`
+
+    const clientTemplate = `import { createAuthClient } from 'better-auth/vue'
+
+export function createAppAuthClient(baseURL: string) {
+  return createAuthClient({ baseURL })
+}
+`
+
+    if (!existsSync(serverPath)) {
+      await mkdir(dirname(serverPath), { recursive: true })
+      await writeFile(serverPath, serverTemplate)
+      consola.success('Created server/auth.config.ts')
+    }
+
+    if (!existsSync(clientPath)) {
+      await mkdir(dirname(clientPath), { recursive: true })
+      await writeFile(clientPath, clientTemplate)
+      const relativePath = clientPath.replace(`${nuxt.options.rootDir}/`, '')
+      consola.success(`Created ${relativePath}`)
+    }
+  },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
+
+    // Auto-detect clientConfig path based on srcDir
+    if (options.clientConfig === 'app/auth.config') {
+      const srcDirRelative = nuxt.options.srcDir.replace(`${nuxt.options.rootDir}/`, '')
+      options.clientConfig = srcDirRelative === nuxt.options.srcDir
+        ? 'auth.config' // srcDir is rootDir
+        : `${srcDirRelative}/auth.config`
+    }
+
     const clientOnly = options.clientOnly!
 
     const serverConfigFile = options.serverConfig!
@@ -71,6 +195,17 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
     const hasHubDb = !clientOnly && hasNuxtHub && !!hub?.db
+
+    // i18n integration - auto-detect @nuxtjs/i18n
+    const hasI18n = hasNuxtModule('@nuxtjs/i18n', nuxt)
+    const i18nEnabled = !clientOnly && options.i18n !== false && hasI18n
+    const i18nOptions = typeof options.i18n === 'object' ? options.i18n : {}
+    const i18nCookie = i18nOptions.cookie || 'i18n_redirected'
+    const i18nTranslationPrefix = i18nOptions.translationPrefix || 'auth.errors'
+
+    if (i18nEnabled) {
+      consola.info('i18n integration enabled with @nuxtjs/i18n')
+    }
 
     let secondaryStorageEnabled = options.secondaryStorage ?? false
     if (secondaryStorageEnabled && clientOnly) {
@@ -107,7 +242,7 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
       const betterAuthSecret = nuxt.options.runtimeConfig.betterAuthSecret as string
 
-      if (!nuxt.options.dev && !betterAuthSecret) {
+      if (!nuxt.options.dev && !nuxt.options._prepare && !betterAuthSecret) {
         throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET is required in production. Set BETTER_AUTH_SECRET or NUXT_BETTER_AUTH_SECRET environment variable.')
       }
       if (betterAuthSecret && betterAuthSecret.length < 32) {
@@ -116,7 +251,8 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
       nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
         secondaryStorage: secondaryStorageEnabled,
-      }) as { secondaryStorage: boolean }
+        ...(i18nEnabled && { i18n: { enabled: true, cookie: i18nCookie, translationPrefix: i18nTranslationPrefix } }),
+      }) as { secondaryStorage: boolean, i18n?: { enabled: boolean, cookie: string, translationPrefix: string } }
     }
 
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
@@ -151,14 +287,12 @@ export function createSecondaryStorage() {
       }
 
       const hubDialect = getHubDialect(hub) ?? 'sqlite'
-      const usePlural = options.schema?.usePlural ?? false
-      const camelCase = (options.schema?.casing ?? getHubCasing(hub)) !== 'snake_case'
       const databaseCode = hasHubDb
         ? `import { db, schema } from '../hub/db.mjs'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
-export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema, usePlural: ${usePlural}, camelCase: ${camelCase} }) }
+export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }
 export { db }`
         : `export function createDatabase() { return undefined }
 export const db = undefined`
@@ -187,6 +321,41 @@ declare module '#auth/database' {
   import type { drizzleAdapter } from 'better-auth/adapters/drizzle'
   export function createDatabase(): ReturnType<typeof drizzleAdapter> | undefined
   export const db: unknown
+}
+`,
+      }, { nitro: true, node: true })
+
+      // i18n locale detection template - uses cookie and Accept-Language header
+      const i18nCode = i18nEnabled
+        ? `import { getCookie, getHeader } from 'h3'
+import { useRuntimeConfig } from 'nitropack/runtime'
+
+export function getLocale(event) {
+  if (!event) return undefined
+  const config = useRuntimeConfig().auth?.i18n
+  if (!config?.enabled) return undefined
+  // 1. Check locale cookie (set by nuxt-i18n)
+  const cookieLocale = getCookie(event, config.cookie)
+  if (cookieLocale) return cookieLocale
+  // 2. Parse Accept-Language header
+  const acceptLang = getHeader(event, 'accept-language')
+  if (acceptLang) {
+    const match = acceptLang.match(/^([a-z]{2})/)
+    if (match) return match[1]
+  }
+  return undefined
+}`
+        : `export function getLocale() { return undefined }`
+
+      const i18nTemplate = addTemplate({ filename: 'better-auth/i18n.mjs', getContents: () => i18nCode, write: true })
+      nuxt.options.alias['#auth/i18n'] = i18nTemplate.dst
+
+      addTypeTemplate({
+        filename: 'types/auth-i18n.d.ts',
+        getContents: () => `
+declare module '#auth/i18n' {
+  import type { H3Event } from 'h3'
+  export function getLocale(event?: H3Event): string | undefined
 }
 `,
       }, { nitro: true, node: true })

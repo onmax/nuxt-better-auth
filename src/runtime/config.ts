@@ -16,6 +16,14 @@ type ClientAuthConfig = Omit<ClientOptions, 'baseURL'> & { baseURL?: string }
 export type ServerAuthConfigFn = (ctx: ServerAuthContext) => ServerAuthConfig
 export type ClientAuthConfigFn = (ctx: ClientAuthContext) => ClientAuthConfig
 
+/** i18n integration options */
+export interface AuthI18nOptions {
+  /** Override cookie name for locale detection. Default: uses nuxt-i18n's cookie */
+  cookie?: string
+  /** Namespace in locale files for error translations. Default: 'auth.errors' */
+  translationPrefix?: string
+}
+
 // Module options for nuxt.config.ts
 export interface BetterAuthModuleOptions {
   /** Client-only mode - skip server setup for external auth backends */
@@ -37,6 +45,8 @@ export interface BetterAuthModuleOptions {
     /** Column/table name casing. Explicit value takes precedence over hub.db.casing. */
     casing?: CasingOption
   }
+  /** i18n integration with @nuxtjs/i18n. Auto-enabled when module detected. Set false to disable. */
+  i18n?: boolean | AuthI18nOptions
 }
 
 // Runtime config type for public.auth
@@ -44,11 +54,13 @@ export interface AuthRuntimeConfig {
   redirects: { login: string, guest: string }
   useDatabase: boolean
   clientOnly: boolean
+  i18n?: { enabled: boolean, translationPrefix: string }
 }
 
 // Private runtime config (server-only)
 export interface AuthPrivateRuntimeConfig {
   secondaryStorage: boolean
+  i18n?: { enabled: boolean, cookie: string, translationPrefix: string }
 }
 
 export function defineServerAuth<T extends ServerAuthConfig>(config: (ctx: ServerAuthContext) => T): (ctx: ServerAuthContext) => T {

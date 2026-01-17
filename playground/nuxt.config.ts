@@ -1,5 +1,15 @@
 export default defineNuxtConfig({
-  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '../src/module', ['npm-agentskills/nuxt', { targets: ['claude'] }]],
+  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '@nuxtjs/i18n', '../src/module', ['npm-agentskills/nuxt', { targets: ['claude'] }]],
+
+  i18n: {
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'es', name: 'Español', file: 'es.json' },
+    ],
+    defaultLocale: 'en',
+    bundle: { fullInstall: false },
+    strategy: 'no_prefix',
+  },
 
   css: ['~/assets/css/main.css'],
 
@@ -20,12 +30,6 @@ export default defineNuxtConfig({
   hub: { db: { dialect: 'sqlite', driver: 'd1', connection: { databaseId: '19843a99-07d8-4c3b-b479-b48ba3792ce3' } } },
 
   devtools: { enabled: true },
-
-  runtimeConfig: {
-    public: {
-      siteUrl: 'https://demo-nuxt-better-auth.onmax.me',
-    },
-  },
 
   auth: {
     redirects: {

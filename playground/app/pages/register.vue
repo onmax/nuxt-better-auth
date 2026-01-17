@@ -2,6 +2,7 @@
 definePageMeta({ layout: 'auth' })
 
 const { signUp } = useUserSession()
+const { t } = useI18n()
 const toast = useToast()
 const emailWarning = useEmailWarning()
 
@@ -53,12 +54,12 @@ async function handleSignUp() {
     },
     {
       onSuccess: () => {
-        toast.add({ title: 'Success', description: 'Successfully signed up', color: 'success' })
+        toast.add({ title: 'Success', description: t('register.success'), color: 'success' })
         emailWarning()
         navigateTo('/app')
       },
       onError: (ctx) => {
-        toast.add({ title: 'Error', description: ctx.error.message || 'Sign up failed', color: 'error' })
+        toast.add({ title: 'Error', description: ctx.error.message || t('register.error'), color: 'error' })
       },
     },
   )
@@ -70,42 +71,42 @@ async function handleSignUp() {
   <UCard class="max-w-md">
     <template #header>
       <h3 class="text-lg md:text-xl font-semibold leading-none tracking-tight">
-        Sign Up
+        {{ t('register.title') }}
       </h3>
       <p class="text-xs md:text-sm text-muted-foreground">
-        Enter your information to create an account
+        {{ t('register.subtitle') }}
       </p>
     </template>
 
     <div class="grid gap-4">
       <div class="grid grid-cols-2 gap-4">
         <div class="grid gap-2">
-          <label for="first-name" class="text-sm font-medium leading-none">First name</label>
+          <label for="first-name" class="text-sm font-medium leading-none">{{ t('register.firstName') }}</label>
           <UInput id="first-name" v-model="firstName" placeholder="Max" />
         </div>
         <div class="grid gap-2">
-          <label for="last-name" class="text-sm font-medium leading-none">Last name</label>
+          <label for="last-name" class="text-sm font-medium leading-none">{{ t('register.lastName') }}</label>
           <UInput id="last-name" v-model="lastName" placeholder="Robinson" />
         </div>
       </div>
 
       <div class="grid gap-2">
-        <label for="email" class="text-sm font-medium leading-none">Email</label>
+        <label for="email" class="text-sm font-medium leading-none">{{ t('common.email') }}</label>
         <UInput id="email" v-model="email" type="email" placeholder="m@example.com" />
       </div>
 
       <div class="grid gap-2">
-        <label for="password" class="text-sm font-medium leading-none">Password</label>
+        <label for="password" class="text-sm font-medium leading-none">{{ t('common.password') }}</label>
         <UInput id="password" v-model="password" type="password" placeholder="Password" autocomplete="new-password" />
       </div>
 
       <div class="grid gap-2">
-        <label for="password-confirm" class="text-sm font-medium leading-none">Confirm Password</label>
+        <label for="password-confirm" class="text-sm font-medium leading-none">{{ t('register.confirmPassword') }}</label>
         <UInput id="password-confirm" v-model="passwordConfirm" type="password" placeholder="Confirm Password" autocomplete="new-password" />
       </div>
 
       <div class="grid gap-2">
-        <label for="image" class="text-sm font-medium leading-none">Profile Image (optional)</label>
+        <label for="image" class="text-sm font-medium leading-none">{{ t('register.profileImage') }}</label>
         <div class="flex items-end gap-4">
           <div v-if="imagePreview" class="relative size-16 rounded-sm overflow-hidden">
             <img :src="imagePreview" alt="Profile preview" class="object-cover w-full h-full">
@@ -118,7 +119,7 @@ async function handleSignUp() {
       </div>
 
       <UButton block :loading="loading" @click="handleSignUp">
-        Create an account
+        {{ t('register.submit') }}
       </UButton>
     </div>
 
