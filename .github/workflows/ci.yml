@@ -22,4 +22,6 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm prepack
       - run: pnpm dev:build
+        env:
+          BETTER_AUTH_SECRET: ci-test-secret-12345678901234567890
       - run: pnpm test
