@@ -37,6 +37,13 @@ export interface BetterAuthModuleOptions {
     /** Column/table name casing. Explicit value takes precedence over hub.db.casing. */
     casing?: CasingOption
   }
+  /** i18n integration options. Auto-enabled when @nuxtjs/i18n is detected. */
+  i18n?: boolean | {
+    /** Locale cookie name. Default: 'i18n_redirected' */
+    cookie?: string
+    /** Translation key prefix. Default: 'auth.errors' */
+    translationPrefix?: string
+  }
 }
 
 // Runtime config type for public.auth
@@ -49,6 +56,11 @@ export interface AuthRuntimeConfig {
 // Private runtime config (server-only)
 export interface AuthPrivateRuntimeConfig {
   secondaryStorage: boolean
+  i18n?: {
+    enabled: boolean
+    cookie: string
+    translationPrefix: string
+  }
 }
 
 export function defineServerAuth<T extends ServerAuthConfig>(config: (ctx: ServerAuthContext) => T): (ctx: ServerAuthContext) => T {

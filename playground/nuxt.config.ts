@@ -1,7 +1,18 @@
 export default defineNuxtConfig({
-  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '../src/module', ['npm-agentskills/nuxt', { targets: ['claude'] }]],
+  modules: ['nitro-cloudflare-dev', '@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '@nuxtjs/i18n', '../src/module', ['npm-agentskills/nuxt', { targets: ['claude'] }]],
 
   css: ['~/assets/css/main.css'],
+
+  i18n: {
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'es', name: 'Español', file: 'es.json' },
+    ],
+    defaultLocale: 'en',
+    lazy: true,
+    langDir: 'locales',
+    strategy: 'no_prefix',
+  },
 
   app: {
     head: {

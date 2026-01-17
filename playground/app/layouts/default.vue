@@ -1,5 +1,11 @@
 <script setup lang="ts">
 const { user, loggedIn, ready, signOut } = useUserSession()
+const { locale, locales, setLocale } = useI18n()
+const { t } = useI18n()
+
+const availableLocales = computed(() =>
+  (locales.value as Array<{ code: string, name: string }>).map(l => ({ label: l.name, value: l.code })),
+)
 </script>
 
 <template>
@@ -28,30 +34,31 @@ const { user, loggedIn, ready, signOut } = useUserSession()
           <div class="flex items-center gap-4">
             <nav class="flex items-center gap-4">
               <NuxtLink to="/" class="text-sm text-muted-foreground hover:text-foreground">
-                Home
+                {{ t('nav.home') }}
               </NuxtLink>
               <NuxtLink to="/app" class="text-sm text-muted-foreground hover:text-foreground">
-                App
+                {{ t('nav.app') }}
               </NuxtLink>
               <NuxtLink to="/admin" class="text-sm text-muted-foreground hover:text-foreground">
-                Admin
+                {{ t('nav.admin') }}
               </NuxtLink>
             </nav>
+            <USelect :model-value="locale" :items="availableLocales" class="w-28" @update:model-value="setLocale($event as 'en' | 'es')" />
             <UColorModeButton />
             <template v-if="ready">
               <template v-if="loggedIn">
                 <span class="text-sm text-muted-foreground">{{ user?.name || user?.email }}</span>
                 <button
                   class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3"
-                  @click="signOut({ onSuccess: () => navigateTo('/login') })"
+                  @click="signOut({ onSuccess: () => { navigateTo('/login') } })"
                 >
-                  Sign Out
+                  {{ t('common.signOut') }}
                 </button>
               </template>
               <template v-else>
                 <NuxtLink to="/login">
                   <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">
-                    Sign In
+                    {{ t('common.signIn') }}
                   </button>
                 </NuxtLink>
               </template>

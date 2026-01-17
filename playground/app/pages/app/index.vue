@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { user, session, client, signOut } = useUserSession()
+const { t } = useI18n()
 const toast = useToast()
 const emailWarning = useEmailWarning()
 
@@ -26,7 +27,7 @@ async function saveProfile() {
   editLoading.value = true
   try {
     await client?.updateUser({ name: editForm.name })
-    toast.add({ title: 'Profile updated', color: 'success' })
+    toast.add({ title: t('app.profileUpdated'), color: 'success' })
     editOpen.value = false
   }
   catch (e: any) {
@@ -41,7 +42,7 @@ async function resendVerification() {
   verifyLoading.value = true
   try {
     await client?.sendVerificationEmail({ email: user.value?.email || '' })
-    toast.add({ title: 'Verification email sent', color: 'success' })
+    toast.add({ title: t('app.verificationSent'), color: 'success' })
     emailWarning()
   }
   catch (e: any) {
@@ -67,14 +68,14 @@ async function loadSessions() {
 async function terminateSession(token: string) {
   await client?.revokeSession({ token })
   sessions.value = sessions.value.filter(s => s.token !== token)
-  toast.add({ title: 'Session terminated', color: 'success' })
+  toast.add({ title: t('app.sessionTerminated'), color: 'success' })
 }
 
-const sessionColumns = [
-  { id: 'userAgent', header: 'Device', accessorKey: 'userAgent' },
-  { id: 'createdAt', header: 'Created', accessorKey: 'createdAt' },
+const sessionColumns = computed(() => [
+  { id: 'userAgent', header: t('app.device'), accessorKey: 'userAgent' },
+  { id: 'createdAt', header: t('app.created'), accessorKey: 'createdAt' },
   { id: 'actions', header: '', accessorKey: 'actions' },
-]
+])
 
 // Two-Factor
 const twoFaOpen = ref(false)
@@ -90,13 +91,13 @@ async function enable2FA() {
       // Verify step
       const res = await authClient?.twoFactor.verifyTotp({ code: twoFaCode.value })
       if (res?.data) {
-        toast.add({ title: '2FA enabled', color: 'success' })
+        toast.add({ title: t('app.twoFactorEnabledSuccess'), color: 'success' })
         twoFaOpen.value = false
         twoFaUri.value = ''
         twoFaCode.value = ''
       }
       else {
-        toast.add({ title: 'Invalid code', color: 'error' })
+        toast.add({ title: t('app.invalidCode'), color: 'error' })
       }
     }
     else {
@@ -120,7 +121,7 @@ async function disable2FA() {
   twoFaLoading.value = true
   try {
     await authClient?.twoFactor.disable({ password: twoFaPassword.value })
-    toast.add({ title: '2FA disabled', color: 'success' })
+    toast.add({ title: t('app.twoFactorDisabledSuccess'), color: 'success' })
     twoFaOpen.value = false
     twoFaPassword.value = ''
   }
@@ -140,7 +141,7 @@ async function addPasskey() {
   passkeyLoading.value = true
   try {
     await authClient?.passkey.addPasskey({ name: passkeyName.value || 'My Passkey' })
-    toast.add({ title: 'Passkey added', color: 'success' })
+    toast.add({ title: t('app.passkeyAdded'), color: 'success' })
     passkeyOpen.value = false
     passkeyName.value = ''
   }
@@ -152,7 +153,7 @@ async function addPasskey() {
 
 async function deletePasskey(id: string) {
   await authClient?.passkey.deletePasskey({ id })
-  toast.add({ title: 'Passkey deleted', color: 'success' })
+  toast.add({ title: t('app.passkeyDeleted'), color: 'success' })
 }
 
 // Password change
@@ -162,7 +163,7 @@ const passwordLoading = ref(false)
 
 async function changePassword() {
   if (passwordForm.new !== passwordForm.confirm) {
-    toast.add({ title: 'Passwords do not match', color: 'error' })
+    toast.add({ title: t('app.passwordsNoMatch'), color: 'error' })
     return
   }
   passwordLoading.value = true
@@ -172,7 +173,7 @@ async function changePassword() {
       newPassword: passwordForm.new,
       revokeOtherSessions: passwordForm.revokeOthers,
     })
-    toast.add({ title: 'Password changed', color: 'success' })
+    toast.add({ title: t('app.passwordChanged'), color: 'success' })
     passwordOpen.value = false
     passwordForm.current = ''
     passwordForm.new = ''
@@ -206,11 +207,11 @@ onMounted(() => {
       <template #header>
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold">
-            Profile
+            {{ t('app.profile') }}
           </h2>
           <UButton size="sm" variant="soft" @click="openEdit">
             <UIcon name="i-lucide-pencil" />
-            Edit
+            {{ t('common.edit') }}
           </UButton>
         </div>
       </template>
@@ -219,7 +220,7 @@ onMounted(() => {
         <UAvatar :src="user?.image ?? undefined" :alt="user?.name ?? undefined" size="lg" />
         <div>
           <p class="font-medium">
-            {{ user?.name || 'No name' }}
+            {{ user?.name || t('app.noName') }}
           </p>
           <div class="flex items-center gap-2">
             <p class="text-sm text-muted-foreground">
@@ -232,10 +233,10 @@ onMounted(() => {
         </div>
       </div>
 
-      <UAlert v-if="!user?.emailVerified" title="Email not verified" icon="i-lucide-triangle-alert" color="neutral" variant="outline" class="mt-4 border-s-2 border-s-orange-500/50 border-dashed rounded-none [&_svg]:fill-orange-500 [&_svg]:text-transparent">
+      <UAlert v-if="!user?.emailVerified" :title="t('app.emailNotVerified')" icon="i-lucide-triangle-alert" color="neutral" variant="outline" class="mt-4 border-s-2 border-s-orange-500/50 border-dashed rounded-none [&_svg]:fill-orange-500 [&_svg]:text-transparent">
         <template #description>
           <UButton size="xs" variant="soft" :loading="verifyLoading" @click="resendVerification">
-            Resend verification email
+            {{ t('app.resendVerification') }}
           </UButton>
         </template>
       </UAlert>
@@ -246,7 +247,7 @@ onMounted(() => {
       <template #header>
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold">
-            Active Sessions
+            {{ t('app.activeSessions') }}
           </h2>
           <UButton size="sm" variant="ghost" @click="loadSessions">
             <UIcon name="i-lucide-refresh-cw" />
@@ -260,7 +261,7 @@ onMounted(() => {
             <UIcon :name="row.original.userAgent?.includes('Mobile') ? 'i-lucide-smartphone' : 'i-lucide-monitor'" />
             <span class="text-sm truncate">{{ row.original.userAgent?.substring(0, 40) }}...</span>
             <UBadge v-if="row.original.id === session?.id" size="xs" color="primary">
-              Current
+              {{ t('app.current') }}
             </UBadge>
           </div>
         </template>
@@ -269,7 +270,7 @@ onMounted(() => {
         </template>
         <template #actions-cell="{ row }">
           <UButton size="xs" :color="row.original.id === session?.id ? 'error' : 'neutral'" variant="soft" @click="terminateSession(row.original.token)">
-            {{ row.original.id === session?.id ? 'Sign out' : 'Revoke' }}
+            {{ row.original.id === session?.id ? t('common.signOut') : t('app.revoke') }}
           </UButton>
         </template>
       </UTable>
@@ -279,7 +280,7 @@ onMounted(() => {
     <UCard>
       <template #header>
         <h2 class="text-lg font-semibold">
-          Security
+          {{ t('app.security') }}
         </h2>
       </template>
 
@@ -288,14 +289,14 @@ onMounted(() => {
         <div class="flex justify-between items-center">
           <div>
             <p class="font-medium">
-              Two-Factor Authentication
+              {{ t('app.twoFactor') }}
             </p>
             <p class="text-sm text-muted-foreground">
-              {{ user?.twoFactorEnabled ? 'Enabled' : 'Not enabled' }}
+              {{ user?.twoFactorEnabled ? t('app.twoFactorEnabled') : t('app.twoFactorDisabled') }}
             </p>
           </div>
           <UButton :color="user?.twoFactorEnabled ? 'error' : 'primary'" variant="soft" @click="twoFaOpen = true">
-            {{ user?.twoFactorEnabled ? 'Disable' : 'Enable' }} 2FA
+            {{ user?.twoFactorEnabled ? t('app.disable2fa') : t('app.enable2fa') }}
           </UButton>
         </div>
 
@@ -305,14 +306,14 @@ onMounted(() => {
         <div class="flex justify-between items-center">
           <div>
             <p class="font-medium">
-              Passkeys
+              {{ t('app.passkeys') }}
             </p>
             <p class="text-sm text-muted-foreground">
-              {{ passkeys.length }} registered
+              {{ passkeys.length }} {{ t('app.registered') }}
             </p>
           </div>
           <UButton variant="soft" @click="passkeyOpen = true">
-            Add Passkey
+            {{ t('app.addPasskey') }}
           </UButton>
         </div>
 
@@ -334,26 +335,26 @@ onMounted(() => {
     <div class="flex justify-between">
       <UButton variant="outline" @click="passwordOpen = true">
         <UIcon name="i-lucide-lock" />
-        Change Password
+        {{ t('app.changePassword') }}
       </UButton>
       <UButton color="error" variant="soft" :loading="signOutLoading" @click="handleSignOut">
         <UIcon name="i-lucide-log-out" />
-        Sign Out
+        {{ t('common.signOut') }}
       </UButton>
     </div>
 
     <!-- Edit Profile Modal -->
     <UModal v-model:open="editOpen">
       <template #header>
-        Edit Profile
+        {{ t('app.editProfile') }}
       </template>
       <template #body>
         <div class="space-y-4 p-4">
-          <UFormField label="Name">
+          <UFormField :label="t('app.name')">
             <UInput v-model="editForm.name" />
           </UFormField>
           <UButton block :loading="editLoading" @click="saveProfile">
-            Save
+            {{ t('common.save') }}
           </UButton>
         </div>
       </template>
@@ -362,7 +363,7 @@ onMounted(() => {
     <!-- 2FA Modal -->
     <UModal v-model:open="twoFaOpen">
       <template #header>
-        {{ user?.twoFactorEnabled ? 'Disable' : 'Enable' }} Two-Factor Authentication
+        {{ user?.twoFactorEnabled ? t('app.disable2fa') : t('app.enable2fa') }}
       </template>
       <template #body>
         <div class="space-y-4 p-4">
@@ -371,21 +372,21 @@ onMounted(() => {
               <QRCode :value="twoFaUri" :size="200" />
             </div>
             <p class="text-sm text-center text-muted-foreground">
-              Scan with your authenticator app
+              {{ t('app.scanQr') }}
             </p>
-            <UFormField label="Verification Code">
-              <UInput v-model="twoFaCode" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code" />
+            <UFormField :label="t('app.verificationCode')">
+              <UInput v-model="twoFaCode" inputmode="numeric" maxlength="6" :placeholder="t('app.enterCode')" />
             </UFormField>
             <UButton block :loading="twoFaLoading" @click="enable2FA">
-              Verify & Enable
+              {{ t('app.verifyEnable') }}
             </UButton>
           </template>
           <template v-else>
-            <UFormField label="Password">
-              <UInput v-model="twoFaPassword" type="password" placeholder="Enter your password" />
+            <UFormField :label="t('common.password')">
+              <UInput v-model="twoFaPassword" type="password" :placeholder="t('common.password')" />
             </UFormField>
             <UButton block :loading="twoFaLoading" @click="user?.twoFactorEnabled ? disable2FA() : enable2FA()">
-              {{ user?.twoFactorEnabled ? 'Disable 2FA' : 'Continue' }}
+              {{ user?.twoFactorEnabled ? t('app.disable2fa') : t('app.continue') }}
             </UButton>
           </template>
         </div>
@@ -395,15 +396,15 @@ onMounted(() => {
     <!-- Passkey Modal -->
     <UModal v-model:open="passkeyOpen">
       <template #header>
-        Add Passkey
+        {{ t('app.addPasskey') }}
       </template>
       <template #body>
         <div class="space-y-4 p-4">
-          <UFormField label="Passkey Name (optional)">
+          <UFormField :label="t('app.passkeyName')">
             <UInput v-model="passkeyName" placeholder="My Passkey" />
           </UFormField>
           <UButton block :loading="passkeyLoading" @click="addPasskey">
-            Create Passkey
+            {{ t('app.createPasskey') }}
           </UButton>
         </div>
       </template>
@@ -412,22 +413,22 @@ onMounted(() => {
     <!-- Change Password Modal -->
     <UModal v-model:open="passwordOpen">
       <template #header>
-        Change Password
+        {{ t('app.changePassword') }}
       </template>
       <template #body>
         <div class="space-y-4 p-4">
-          <UFormField label="Current Password">
+          <UFormField :label="t('app.currentPassword')">
             <UInput v-model="passwordForm.current" type="password" />
           </UFormField>
-          <UFormField label="New Password">
+          <UFormField :label="t('app.newPassword')">
             <UInput v-model="passwordForm.new" type="password" />
           </UFormField>
-          <UFormField label="Confirm New Password">
+          <UFormField :label="t('app.confirmNewPassword')">
             <UInput v-model="passwordForm.confirm" type="password" />
           </UFormField>
-          <UCheckbox v-model="passwordForm.revokeOthers" label="Sign out from other devices" />
+          <UCheckbox v-model="passwordForm.revokeOthers" :label="t('app.signOutOthers')" />
           <UButton block :loading="passwordLoading" @click="changePassword">
-            Change Password
+            {{ t('app.changePassword') }}
           </UButton>
         </div>
       </template>

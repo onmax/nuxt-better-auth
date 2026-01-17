@@ -72,6 +72,17 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
     const hasHubDb = !clientOnly && hasNuxtHub && !!hub?.db
 
+    // i18n integration - auto-detect @nuxtjs/i18n
+    const hasI18n = hasNuxtModule('@nuxtjs/i18n', nuxt)
+    const i18nEnabled = !clientOnly && options.i18n !== false && hasI18n
+    const i18nOptions = typeof options.i18n === 'object' ? options.i18n : {}
+    const i18nCookie = i18nOptions.cookie || 'i18n_redirected'
+    const i18nTranslationPrefix = i18nOptions.translationPrefix || 'auth.errors'
+
+    if (i18nEnabled) {
+      consola.info('i18n integration enabled with @nuxtjs/i18n')
+    }
+
     let secondaryStorageEnabled = options.secondaryStorage ?? false
     if (secondaryStorageEnabled && clientOnly) {
       consola.warn('secondaryStorage is not available in clientOnly mode. Disabling.')
@@ -116,7 +127,8 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
       nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
         secondaryStorage: secondaryStorageEnabled,
-      }) as { secondaryStorage: boolean }
+        ...(i18nEnabled && { i18n: { enabled: true, cookie: i18nCookie, translationPrefix: i18nTranslationPrefix } }),
+      }) as { secondaryStorage: boolean, i18n?: { enabled: boolean, cookie: string, translationPrefix: string } }
     }
 
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
@@ -165,6 +177,41 @@ export const db = undefined`
 
       const databaseTemplate = addTemplate({ filename: 'better-auth/database.mjs', getContents: () => databaseCode, write: true })
       nuxt.options.alias['#auth/database'] = databaseTemplate.dst
+
+      // i18n locale detection template - uses cookie and Accept-Language header
+      const i18nCode = i18nEnabled
+        ? `import { getCookie, getHeader } from 'h3'
+import { useRuntimeConfig } from 'nitropack/runtime'
+
+export function getLocale(event) {
+  if (!event) return undefined
+  const config = useRuntimeConfig().auth?.i18n
+  if (!config?.enabled) return undefined
+  // 1. Check locale cookie (set by nuxt-i18n)
+  const cookieLocale = getCookie(event, config.cookie)
+  if (cookieLocale) return cookieLocale
+  // 2. Parse Accept-Language header
+  const acceptLang = getHeader(event, 'accept-language')
+  if (acceptLang) {
+    const match = acceptLang.match(/^([a-z]{2})/)
+    if (match) return match[1]
+  }
+  return undefined
+}`
+        : `export function getLocale() { return undefined }`
+
+      const i18nTemplate = addTemplate({ filename: 'better-auth/i18n.mjs', getContents: () => i18nCode, write: true })
+      nuxt.options.alias['#auth/i18n'] = i18nTemplate.dst
+
+      addTypeTemplate({
+        filename: 'types/auth-i18n.d.ts',
+        getContents: () => `
+declare module '#auth/i18n' {
+  import type { H3Event } from 'h3'
+  export function getLocale(event?: H3Event): string | undefined
+}
+`,
+      }, { nitro: true, node: true })
 
       addTypeTemplate({
         filename: 'types/auth-secondary-storage.d.ts',
