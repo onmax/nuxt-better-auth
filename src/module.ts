@@ -72,12 +72,10 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
     const hasHubDb = !clientOnly && hasNuxtHub && !!hub?.db
 
-    // i18n integration - auto-detect @nuxtjs/i18n
+    // i18n integration - auto-detect @nuxtjs/i18n and read its cookie config
     const hasI18n = hasNuxtModule('@nuxtjs/i18n', nuxt)
     const i18nEnabled = !clientOnly && options.i18n !== false && hasI18n
-    const i18nOptions = typeof options.i18n === 'object' ? options.i18n : {}
-    const i18nCookie = i18nOptions.cookie || 'i18n_redirected'
-    const i18nTranslationPrefix = i18nOptions.translationPrefix || 'auth.errors'
+    const i18nCookie = (nuxt.options as any).i18n?.detectBrowserLanguage?.cookieKey || 'i18n_redirected'
 
     if (i18nEnabled) {
       consola.info('i18n integration enabled with @nuxtjs/i18n')
@@ -127,8 +125,8 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
       nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
         secondaryStorage: secondaryStorageEnabled,
-        ...(i18nEnabled && { i18n: { enabled: true, cookie: i18nCookie, translationPrefix: i18nTranslationPrefix } }),
-      }) as { secondaryStorage: boolean, i18n?: { enabled: boolean, cookie: string, translationPrefix: string } }
+        ...(i18nEnabled && { i18n: { enabled: true, cookie: i18nCookie } }),
+      }) as { secondaryStorage: boolean, i18n?: { enabled: boolean, cookie: string } }
     }
 
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
