@@ -1,13 +1,13 @@
 import { passkey } from '@better-auth/passkey'
 import { admin, lastLoginMethod, multiSession, twoFactor } from 'better-auth/plugins'
-import consola from 'consola'
+import { consola } from 'consola'
 import { Resend } from 'resend'
 import { defineServerAuth } from '../../src/runtime/config'
 
 const from = 'Nuxt Better Auth <onboarding@resend.dev>'
 let _resend: Resend
 const getResend = () => _resend || (_resend = new Resend(process.env.RESEND_API_KEY))
-const isEmailEnabled = () => !import.meta.prod
+const isEmailEnabled = () => import.meta.dev
 
 export default defineServerAuth(() => ({
   appName: 'Nuxt Better Auth Playground',
