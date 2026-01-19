@@ -4,6 +4,10 @@ export default defineNuxtConfig({
   extends: ['docus'],
   modules: ['@vueuse/nuxt', 'motion-v/nuxt'],
 
+  icon: {
+    customCollections: [{ prefix: 'custom', dir: './public/icons' }],
+  },
+
   css: ['~/assets/css/main.css'],
 
   site: {
