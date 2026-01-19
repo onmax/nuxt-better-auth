@@ -3,13 +3,16 @@ import type { BetterAuthPlugin } from 'better-auth'
 import type { BetterAuthModuleOptions } from './runtime/config'
 import type { AuthRouteRules } from './runtime/types'
 import type { CasingOption } from './schema-generator'
-import { existsSync } from 'node:fs'
+import { randomBytes } from 'node:crypto'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, updateTemplates } from '@nuxt/kit'
+import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImports, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, installModule, updateTemplates } from '@nuxt/kit'
 import { consola as _consola } from 'consola'
 import { defu } from 'defu'
-import { join } from 'pathe'
+import { dirname, join } from 'pathe'
 import { createRouter, toRouteMatcher } from 'radix3'
+import { isCI, isTest } from 'std-env'
+import { version } from '../package.json'
 import { setupDevTools } from './devtools'
 import { generateDrizzleSchema, loadUserAuthConfig } from './schema-generator'
 
@@ -40,10 +43,86 @@ function getHubCasing(hub?: NuxtHubOptions): CasingOption | undefined {
 
 const consola = _consola.withTag('nuxt-better-auth')
 
+const generateSecret = () => randomBytes(32).toString('hex')
+
+function readEnvFile(rootDir: string): string {
+  const envPath = join(rootDir, '.env')
+  return existsSync(envPath) ? readFileSync(envPath, 'utf-8') : ''
+}
+
+function hasEnvSecret(rootDir: string): boolean {
+  const match = readEnvFile(rootDir).match(/^BETTER_AUTH_SECRET=(.+)$/m)
+  return !!match && !!match[1] && match[1].trim().length > 0
+}
+
+function appendSecretToEnv(rootDir: string, secret: string): void {
+  const envPath = join(rootDir, '.env')
+  let content = readEnvFile(rootDir)
+  if (content.length > 0 && !content.endsWith('\n'))
+    content += '\n'
+  content += `BETTER_AUTH_SECRET=${secret}\n`
+  writeFileSync(envPath, content, 'utf-8')
+}
+
+async function promptForSecret(rootDir: string): Promise<string | undefined> {
+  if (process.env.BETTER_AUTH_SECRET || hasEnvSecret(rootDir))
+    return undefined
+
+  // Only auto-generate in CI or test - otherwise always prompt
+  if (isCI || isTest) {
+    const secret = generateSecret()
+    appendSecretToEnv(rootDir, secret)
+    consola.info('Generated BETTER_AUTH_SECRET and added to .env (CI mode)')
+    return secret
+  }
+
+  // Interactive prompt
+  consola.box('BETTER_AUTH_SECRET is required for authentication.\nThis will be appended to your .env file.')
+  const choice = await consola.prompt('How do you want to set it?', {
+    type: 'select',
+    options: [
+      { label: 'Generate for me', value: 'generate', hint: 'uses crypto.randomBytes(32)' },
+      { label: 'Enter manually', value: 'paste' },
+      { label: 'Skip', value: 'skip', hint: 'will fail in production' },
+    ],
+    cancel: 'null',
+  }) as 'generate' | 'paste' | 'skip' | symbol
+
+  if (typeof choice === 'symbol' || choice === 'skip') {
+    consola.warn('Skipping BETTER_AUTH_SECRET. Auth will fail without it in production.')
+    return undefined
+  }
+
+  let secret: string
+  if (choice === 'generate') {
+    secret = generateSecret()
+  }
+  else {
+    const input = await consola.prompt('Paste your secret (min 32 chars):', { type: 'text', cancel: 'null' }) as string | symbol
+    if (typeof input === 'symbol' || !input || input.length < 32) {
+      consola.warn('Invalid secret. Skipping.')
+      return undefined
+    }
+    secret = input
+  }
+
+  // Preview
+  const preview = `${secret.slice(0, 8)}...${secret.slice(-4)}`
+  const confirm = await consola.prompt(`Add to .env:\nBETTER_AUTH_SECRET=${preview}\nProceed?`, { type: 'confirm', initial: true, cancel: 'null' }) as boolean | symbol
+  if (typeof confirm === 'symbol' || !confirm) {
+    consola.info('Cancelled. Secret not written.')
+    return undefined
+  }
+
+  appendSecretToEnv(rootDir, secret)
+  consola.success('Added BETTER_AUTH_SECRET to .env')
+  return secret
+}
+
 export type { BetterAuthModuleOptions } from './runtime/config'
 
 export default defineNuxtModule<BetterAuthModuleOptions>({
-  meta: { name: '@onmax/nuxt-better-auth', configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
+  meta: { name: '@onmax/nuxt-better-auth', version, configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
   defaults: {
     clientOnly: false,
     serverConfig: 'server/auth.config',
@@ -51,8 +130,53 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     redirects: { login: '/login', guest: '/' },
     secondaryStorage: false,
   },
+  async onInstall(nuxt) {
+    // Prompt for BETTER_AUTH_SECRET if missing
+    const generatedSecret = await promptForSecret(nuxt.options.rootDir)
+    if (generatedSecret)
+      process.env.BETTER_AUTH_SECRET = generatedSecret
+
+    const serverPath = join(nuxt.options.rootDir, 'server/auth.config.ts')
+    const clientPath = join(nuxt.options.srcDir, 'auth.config.ts')
+
+    const serverTemplate = `import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
+
+export default defineServerAuth(() => ({
+  emailAndPassword: { enabled: true },
+}))
+`
+
+    const clientTemplate = `import { createAuthClient } from 'better-auth/vue'
+
+export function createAppAuthClient(baseURL: string) {
+  return createAuthClient({ baseURL })
+}
+`
+
+    if (!existsSync(serverPath)) {
+      await mkdir(dirname(serverPath), { recursive: true })
+      await writeFile(serverPath, serverTemplate)
+      consola.success('Created server/auth.config.ts')
+    }
+
+    if (!existsSync(clientPath)) {
+      await mkdir(dirname(clientPath), { recursive: true })
+      await writeFile(clientPath, clientTemplate)
+      const relativePath = clientPath.replace(`${nuxt.options.rootDir}/`, '')
+      consola.success(`Created ${relativePath}`)
+    }
+  },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
+
+    // Auto-detect clientConfig path based on srcDir
+    if (options.clientConfig === 'app/auth.config') {
+      const srcDirRelative = nuxt.options.srcDir.replace(`${nuxt.options.rootDir}/`, '')
+      options.clientConfig = srcDirRelative === nuxt.options.srcDir
+        ? 'auth.config' // srcDir is rootDir
+        : `${srcDirRelative}/auth.config`
+    }
+
     const clientOnly = options.clientOnly!
 
     const serverConfigFile = options.serverConfig!
@@ -107,7 +231,7 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
       const betterAuthSecret = nuxt.options.runtimeConfig.betterAuthSecret as string
 
-      if (!nuxt.options.dev && !betterAuthSecret) {
+      if (!nuxt.options.dev && !nuxt.options._prepare && !betterAuthSecret) {
         throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET is required in production. Set BETTER_AUTH_SECRET or NUXT_BETTER_AUTH_SECRET environment variable.')
       }
       if (betterAuthSecret && betterAuthSecret.length < 32) {
@@ -151,12 +275,14 @@ export function createSecondaryStorage() {
       }
 
       const hubDialect = getHubDialect(hub) ?? 'sqlite'
+      const usePlural = options.schema?.usePlural ?? false
+      const camelCase = (options.schema?.casing ?? getHubCasing(hub)) !== 'snake_case'
       const databaseCode = hasHubDb
         ? `import { db, schema } from '../hub/db.mjs'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
-export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema }) }
+export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema, usePlural: ${usePlural}, camelCase: ${camelCase} }) }
 export { db }`
         : `export function createDatabase() { return undefined }
 export const db = undefined`
@@ -297,6 +423,9 @@ declare module '#nuxt-better-auth' {
     // Only enable devtools in development - explicit production check
     const isProduction = process.env.NODE_ENV === 'production' || !nuxt.options.dev
     if (!isProduction && !clientOnly) {
+      // Devtools UI requires Nuxt UI components (UTable, UTabs, etc.)
+      if (!hasNuxtModule('@nuxt/ui'))
+        await installModule('@nuxt/ui')
       setupDevTools(nuxt)
       addServerHandler({ route: '/api/_better-auth/config', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
       if (hasHubDb) {
