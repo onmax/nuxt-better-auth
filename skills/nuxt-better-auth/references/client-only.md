@@ -18,13 +18,11 @@ export default defineNuxtConfig({
 ### 2. Point client to external server
 
 ```ts [app/auth.config.ts]
-import { createAuthClient } from 'better-auth/vue'
+import { defineClientAuth } from '@onmax/nuxt-better-auth/config'
 
-export function createAppAuthClient(_baseURL: string) {
-  return createAuthClient({
-    baseURL: 'https://auth.example.com', // External auth server
-  })
-}
+export default defineClientAuth({
+  baseURL: 'https://auth.example.com', // External auth server
+})
 ```
 
 ### 3. Set frontend URL

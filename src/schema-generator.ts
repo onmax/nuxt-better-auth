@@ -69,12 +69,12 @@ export async function loadUserAuthConfig(configPath: string, throwOnError = fals
   globalThis.defineServerAuth._count++
 
   try {
-    const mod = await jiti.import(configPath) as { default?: unknown } | ((...args: unknown[]) => unknown)
-    const configFn = typeof mod === 'object' && mod !== null && 'default' in mod ? mod.default : mod
+    const mod = await jiti.import(configPath) as { default?: unknown }
+    const configFn = mod.default
     if (typeof configFn === 'function') {
       return configFn({ runtimeConfig: {}, db: null })
     }
-    consola.warn('[@onmax/nuxt-better-auth] auth.config.ts does not export a function. Expected: export default defineServerAuth(...)')
+    consola.warn('[@onmax/nuxt-better-auth] auth.config.ts does not export default. Expected: export default defineServerAuth(...)')
     if (throwOnError) {
       throw new Error('auth.config.ts must export default defineServerAuth(...)')
     }

@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { getAuthTables } from 'better-auth/db'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { defineClientAuth, defineServerAuth } from '../src/runtime/config'
 import { generateDrizzleSchema, loadUserAuthConfig } from '../src/schema-generator'
 
 const TEST_DIR = join(import.meta.dirname, '.test-configs')
@@ -119,5 +120,62 @@ describe('loadUserAuthConfig', () => {
     const configPath = join(TEST_DIR, 'invalid-config2.ts')
     writeFileSync(configPath, `export default { notAFunction: true }`)
     await expect(loadUserAuthConfig(configPath, true)).rejects.toThrow('must export default defineServerAuth')
+  })
+
+  it('returns config from object syntax defineServerAuth', async () => {
+    const configPath = join(TEST_DIR, 'object-config.ts')
+    writeFileSync(configPath, `export default defineServerAuth({ appName: 'Test', plugins: [] })`)
+    const result = await loadUserAuthConfig(configPath, false)
+    expect(result).toEqual({ appName: 'Test', plugins: [] })
+  })
+})
+
+describe('defineServerAuth', () => {
+  it('accepts object syntax and returns config factory', () => {
+    const factory = defineServerAuth({ appName: 'Test', emailAndPassword: { enabled: true } })
+    expect(typeof factory).toBe('function')
+    const config = factory({ runtimeConfig: {} as any, db: null })
+    expect(config).toEqual({ appName: 'Test', emailAndPassword: { enabled: true } })
+  })
+
+  it('accepts function syntax and returns config factory', () => {
+    const factory = defineServerAuth(ctx => ({ appName: 'Dynamic', runtimeBased: !!ctx.runtimeConfig }))
+    expect(typeof factory).toBe('function')
+    const config = factory({ runtimeConfig: { public: {} } as any, db: null })
+    expect(config).toEqual({ appName: 'Dynamic', runtimeBased: true })
+  })
+
+  it('function syntax receives context', () => {
+    const factory = defineServerAuth(({ db }) => ({ hasDb: db !== null }))
+    expect(factory({ runtimeConfig: {} as any, db: {} as any })).toEqual({ hasDb: true })
+    expect(factory({ runtimeConfig: {} as any, db: null })).toEqual({ hasDb: false })
+  })
+})
+
+describe('defineClientAuth', () => {
+  it('accepts object syntax and returns client factory', () => {
+    const factory = defineClientAuth({ plugins: [] })
+    expect(typeof factory).toBe('function')
+    const client = factory('http://localhost:3000')
+    expect(typeof client.signIn).toBe('function')
+    expect(typeof client.signUp).toBe('function')
+    expect(typeof client.signOut).toBe('function')
+  })
+
+  it('accepts function syntax and returns client factory', () => {
+    const factory = defineClientAuth(ctx => ({ fetchOptions: { headers: { 'x-site': ctx.siteUrl } } }))
+    expect(typeof factory).toBe('function')
+    const client = factory('http://example.com')
+    expect(typeof client.signIn).toBe('function')
+  })
+
+  it('function syntax receives context with siteUrl', () => {
+    let capturedUrl = ''
+    const factory = defineClientAuth((ctx) => {
+      capturedUrl = ctx.siteUrl
+      return {}
+    })
+    factory('http://test.local')
+    expect(capturedUrl).toBe('http://test.local')
   })
 })

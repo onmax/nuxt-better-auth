@@ -141,16 +141,14 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
     const serverTemplate = `import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
 
-export default defineServerAuth(() => ({
+export default defineServerAuth({
   emailAndPassword: { enabled: true },
-}))
+})
 `
 
-    const clientTemplate = `import { createAuthClient } from 'better-auth/vue'
+    const clientTemplate = `import { defineClientAuth } from '@onmax/nuxt-better-auth/config'
 
-export function createAppAuthClient(baseURL: string) {
-  return createAuthClient({ baseURL })
-}
+export default defineClientAuth({})
 `
 
     if (!existsSync(serverPath)) {
@@ -188,9 +186,9 @@ export function createAppAuthClient(baseURL: string) {
     const clientConfigExists = existsSync(`${clientConfigPath}.ts`) || existsSync(`${clientConfigPath}.js`)
 
     if (!clientOnly && !serverConfigExists)
-      throw new Error(`[nuxt-better-auth] Missing ${serverConfigFile}.ts - create with defineServerAuth()`)
+      throw new Error(`[nuxt-better-auth] Missing ${serverConfigFile}.ts - export default defineServerAuth(...)`)
     if (!clientConfigExists)
-      throw new Error(`[nuxt-better-auth] Missing ${clientConfigFile}.ts - export createAppAuthClient()`)
+      throw new Error(`[nuxt-better-auth] Missing ${clientConfigFile}.ts - export default defineClientAuth(...)`)
 
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
@@ -320,9 +318,9 @@ declare module '#auth/database' {
         getContents: () => `
 import type { InferUser, InferSession, InferPluginTypes } from 'better-auth'
 import type { RuntimeConfig } from 'nuxt/schema'
-import type configFn from '${serverConfigPath}'
+import type createServerAuth from '${serverConfigPath}'
 
-type _Config = ReturnType<typeof configFn>
+type _Config = ReturnType<typeof createServerAuth>
 
 declare module '#nuxt-better-auth' {
   interface AuthUser extends InferUser<_Config> {}
@@ -343,7 +341,7 @@ interface _AugmentedServerAuthContext {
 declare module '@onmax/nuxt-better-auth/config' {
   import type { BetterAuthOptions } from 'better-auth'
   type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
-  export function defineServerAuth<T extends ServerAuthConfig>(config: (ctx: _AugmentedServerAuthContext) => T): (ctx: _AugmentedServerAuthContext) => T
+  export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: _AugmentedServerAuthContext) => T)): (ctx: _AugmentedServerAuthContext) => T
 }
 `,
       }, { nuxt: true, nitro: true, node: true })
@@ -383,7 +381,7 @@ export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptio
     addTypeTemplate({
       filename: 'types/nuxt-better-auth-client.d.ts',
       getContents: () => `
-import type { createAppAuthClient } from '${clientConfigPath}'
+import type createAppAuthClient from '${clientConfigPath}'
 declare module '#nuxt-better-auth' {
   export type AppAuthClient = ReturnType<typeof createAppAuthClient>
 }

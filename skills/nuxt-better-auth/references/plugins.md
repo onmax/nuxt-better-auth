@@ -6,9 +6,10 @@ The module supports all Better Auth plugins. Configure in both server and client
 
 ```ts
 // server/auth.config.ts
-import { defineServerAuth } from '#auth/server'
+import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
+import { admin, twoFactor, passkey, multiSession } from 'better-auth/plugins'
 
-export default defineServerAuth(({ runtimeConfig }) => ({
+export default defineServerAuth({
   emailAndPassword: { enabled: true },
   plugins: [
     admin(),
@@ -16,17 +17,17 @@ export default defineServerAuth(({ runtimeConfig }) => ({
     passkey(),
     multiSession()
   ]
-}))
+})
 ```
 
 ## Client Plugin Setup
 
 ```ts
 // app/auth.config.ts
-import { createAppAuthClient } from '#auth/client'
+import { defineClientAuth } from '@onmax/nuxt-better-auth/config'
 import { adminClient, twoFactorClient, passkeyClient, multiSessionClient } from 'better-auth/client/plugins'
 
-export default createAppAuthClient({
+export default defineClientAuth({
   plugins: [
     adminClient(),
     twoFactorClient(),

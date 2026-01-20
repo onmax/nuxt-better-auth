@@ -2,6 +2,7 @@ import type { BetterAuthOptions } from 'better-auth'
 import type { ClientOptions } from 'better-auth/client'
 import type { CasingOption } from '../schema-generator'
 import type { ServerAuthContext } from './types/augment'
+import { createAuthClient } from 'better-auth/vue'
 
 // Re-export for declaration merging with generated types
 export type { ServerAuthContext }
@@ -10,8 +11,8 @@ export interface ClientAuthContext {
   siteUrl: string
 }
 
-type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
-type ClientAuthConfig = Omit<ClientOptions, 'baseURL'> & { baseURL?: string }
+export type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
+export type ClientAuthConfig = Omit<ClientOptions, 'baseURL'> & { baseURL?: string }
 
 export type ServerAuthConfigFn = (ctx: ServerAuthContext) => ServerAuthConfig
 export type ClientAuthConfigFn = (ctx: ClientAuthContext) => ClientAuthConfig
@@ -51,10 +52,14 @@ export interface AuthPrivateRuntimeConfig {
   secondaryStorage: boolean
 }
 
-export function defineServerAuth<T extends ServerAuthConfig>(config: (ctx: ServerAuthContext) => T): (ctx: ServerAuthContext) => T {
-  return config
+export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T {
+  return typeof config === 'function' ? config : () => config
 }
 
-export function defineClientAuth(config: ClientAuthConfigFn): ClientAuthConfigFn {
-  return config
+export function defineClientAuth<T extends ClientAuthConfig>(config: T | ((ctx: ClientAuthContext) => T)): (baseURL: string) => ReturnType<typeof createAuthClient<T>> {
+  return (baseURL: string) => {
+    const ctx: ClientAuthContext = { siteUrl: baseURL }
+    const resolved = typeof config === 'function' ? config(ctx) : config
+    return createAuthClient({ ...resolved, baseURL })
+  }
 }

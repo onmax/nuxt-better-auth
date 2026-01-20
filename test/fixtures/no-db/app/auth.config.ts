@@ -1,5 +1,3 @@
-import { createAuthClient } from 'better-auth/vue'
+import { defineClientAuth } from '../../../../src/runtime/config'
 
-export function createAppAuthClient(baseURL: string) {
-  return createAuthClient({ baseURL })
-}
+export default defineClientAuth({})

@@ -1,6 +1,6 @@
 import type { AppAuthClient, AuthSession, AuthUser } from '#nuxt-better-auth'
 import type { ComputedRef, Ref } from 'vue'
-import { createAppAuthClient } from '#auth/client'
+import createAppAuthClient from '#auth/client'
 import { computed, nextTick, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
 
 export interface SignOutOptions { onSuccess?: () => void | Promise<void> }

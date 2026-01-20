@@ -81,7 +81,7 @@ Database adapter injected via context:
 
 ```ts
 // server/auth.config.ts
-import { defineServerAuth } from '#auth/server'
+import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
 
 export default defineServerAuth(({ db }) => ({
   database: db,  // Already configured when hub.database: true
@@ -96,13 +96,13 @@ Without NuxtHub, configure manually:
 ```ts
 // server/auth.config.ts
 import { drizzle } from 'drizzle-orm/...'
-import { defineServerAuth } from '#auth/server'
+import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
 
 const db = drizzle(...)
 
-export default defineServerAuth(() => ({
+export default defineServerAuth({
   database: drizzleAdapter(db, { provider: 'sqlite' })
-}))
+})
 ```
 
 ## Migrations

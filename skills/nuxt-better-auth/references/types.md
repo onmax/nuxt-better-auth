@@ -111,14 +111,16 @@ Extend user type via Better Auth config:
 
 ```ts
 // server/auth.config.ts
-export default defineServerAuth(() => ({
+import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
+
+export default defineServerAuth({
   user: {
     additionalFields: {
       plan: { type: 'string' },
       credits: { type: 'number' }
     }
   }
-}))
+})
 ```
 
 Types automatically include these fields:

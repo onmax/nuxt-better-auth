@@ -1,5 +1,6 @@
-import { createAuthClient } from 'better-auth/vue'
+import { defineClientAuth } from '../../../../src/runtime/config'
 
-export function createAppAuthClient(baseURL: string) {
-  return createAuthClient({ baseURL })
-}
+// Function syntax - demonstrates context access
+export default defineClientAuth(ctx => ({
+  fetchOptions: { headers: { 'x-requested-from': ctx.siteUrl } },
+}))

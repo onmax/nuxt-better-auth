@@ -44,18 +44,29 @@ NUXT_PUBLIC_SITE_URL=https://your-domain.com
 
 ```ts
 // server/auth.config.ts
-import { defineServerAuth } from '#auth/server'
+import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
 
-export default defineServerAuth(({ runtimeConfig, db }) => ({
+// Object syntax (simplest)
+export default defineServerAuth({
   emailAndPassword: { enabled: true },
   // OAuth providers
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string
+    }
+  },
+})
+
+// Or function syntax (access context like runtimeConfig, db)
+export default defineServerAuth(({ runtimeConfig, db }) => ({
+  emailAndPassword: { enabled: true },
   socialProviders: {
     github: {
       clientId: runtimeConfig.github.clientId,
       clientSecret: runtimeConfig.github.clientSecret
     }
   },
-  // Session configuration (optional)
   session: {
     expiresIn: 60 * 60 * 24 * 7,      // 7 days (default)
     updateAge: 60 * 60 * 24,           // Update every 24h (default)
@@ -88,11 +99,17 @@ Context available in `defineServerAuth`:
 
 ```ts
 // app/auth.config.ts
-import { createAppAuthClient } from '#auth/client'
+import { defineClientAuth } from '@onmax/nuxt-better-auth/config'
 
-export default createAppAuthClient({
+// Object syntax (simplest)
+export default defineClientAuth({
   // Client-side plugin options (e.g., passkey, twoFactor)
 })
+
+// Or function syntax (access context like siteUrl)
+export default defineClientAuth(({ siteUrl }) => ({
+  // siteUrl contains the resolved base URL
+}))
 ```
 
 ## NuxtHub Integration
