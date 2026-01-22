@@ -14,7 +14,7 @@ import { createRouter, toRouteMatcher } from 'radix3'
 import { isCI, isTest } from 'std-env'
 import { version } from '../package.json'
 import { setupDevTools } from './devtools'
-import { generateDrizzleSchema, loadUserAuthConfig } from './schema-generator'
+import { generateConvexSchema, generateDrizzleSchema, loadUserAuthConfig } from './schema-generator'
 
 import './types/hooks'
 
@@ -42,6 +42,28 @@ function getHubCasing(hub?: NuxtHubOptions): CasingOption | undefined {
 }
 
 const consola = _consola.withTag('nuxt-better-auth')
+
+function resolveConvexUrl(nuxt: Nuxt): string {
+  // 1. From nuxt-convex module config
+  const convexConfig = (nuxt.options as { convex?: { url?: string } }).convex
+  if (convexConfig?.url)
+    return convexConfig.url
+
+  // 2. From runtimeConfig (set by nuxt-convex or user)
+  const runtimeUrl = (nuxt.options.runtimeConfig.public as { convex?: { url?: string } })?.convex?.url
+  if (runtimeUrl)
+    return runtimeUrl
+
+  // 3. Standard Convex env var
+  if (process.env.CONVEX_URL)
+    return process.env.CONVEX_URL
+
+  // 4. Nuxt-mapped env var
+  if (process.env.NUXT_PUBLIC_CONVEX_URL)
+    return process.env.NUXT_PUBLIC_CONVEX_URL
+
+  return ''
+}
 
 const generateSecret = () => randomBytes(32).toString('hex')
 
@@ -194,6 +216,15 @@ export default defineClientAuth({})
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
     const hasHubDb = !clientOnly && hasNuxtHub && !!hub?.db
 
+    // Convex detection
+    const hasConvex = hasNuxtModule('nuxt-convex', nuxt)
+    const convexUrl = resolveConvexUrl(nuxt)
+    const hasConvexDb = !clientOnly && hasConvex && !!convexUrl && !hasHubDb
+
+    if (hasConvexDb) {
+      consola.info('Detected Convex - using Convex HTTP adapter for Better Auth database')
+    }
+
     let secondaryStorageEnabled = options.secondaryStorage ?? false
     if (secondaryStorageEnabled && clientOnly) {
       consola.warn('secondaryStorage is not available in clientOnly mode. Disabling.')
@@ -207,7 +238,7 @@ export default defineClientAuth({})
     nuxt.options.runtimeConfig.public = nuxt.options.runtimeConfig.public || {}
     nuxt.options.runtimeConfig.public.auth = defu(nuxt.options.runtimeConfig.public.auth as Record<string, unknown>, {
       redirects: { login: options.redirects?.login ?? '/login', guest: options.redirects?.guest ?? '/' },
-      useDatabase: hasHubDb,
+      useDatabase: hasHubDb || hasConvexDb,
       clientOnly,
     }) as { redirects: { login: string, guest: string }, useDatabase: boolean, clientOnly: boolean }
 
@@ -275,15 +306,39 @@ export function createSecondaryStorage() {
       const hubDialect = getHubDialect(hub) ?? 'sqlite'
       const usePlural = options.schema?.usePlural ?? false
       const camelCase = (options.schema?.casing ?? getHubCasing(hub)) !== 'snake_case'
-      const databaseCode = hasHubDb
-        ? `import { db, schema } from '../hub/db.mjs'
+
+      // Generate database code based on detected backend
+      let databaseCode: string
+      if (hasHubDb) {
+        databaseCode = `import { db, schema } from '../hub/db.mjs'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
 export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema, usePlural: ${usePlural}, camelCase: ${camelCase} }) }
 export { db }`
-        : `export function createDatabase() { return undefined }
+      }
+      else if (hasConvexDb) {
+        // Store Convex URL in runtimeConfig for runtime access
+        nuxt.options.runtimeConfig.betterAuth = defu(
+          nuxt.options.runtimeConfig.betterAuth as Record<string, unknown> || {},
+          { convexUrl },
+        )
+        databaseCode = `import { useRuntimeConfig } from '#imports'
+import { createConvexHttpAdapter } from '@onmax/nuxt-better-auth/adapters/convex'
+import { api } from '#convex/api'
+
+export function createDatabase() {
+  const config = useRuntimeConfig()
+  const convexUrl = config.betterAuth?.convexUrl || config.public?.convex?.url
+  if (!convexUrl) throw new Error('[nuxt-better-auth] CONVEX_URL not configured')
+  return createConvexHttpAdapter({ url: convexUrl, api: api.auth })
+}
 export const db = undefined`
+      }
+      else {
+        databaseCode = `export function createDatabase() { return undefined }
+export const db = undefined`
+      }
 
       const databaseTemplate = addTemplate({ filename: 'better-auth/database.mjs', getContents: () => databaseCode, write: true })
       nuxt.options.alias['#auth/database'] = databaseTemplate.dst
@@ -418,6 +473,10 @@ declare module '#nuxt-better-auth' {
       await setupBetterAuthSchema(nuxt, serverConfigPath, options)
     }
 
+    if (hasConvexDb) {
+      await setupConvexAuthSchema(nuxt, serverConfigPath)
+    }
+
     // Only enable devtools in development - explicit production check
     const isProduction = process.env.NODE_ENV === 'production' || !nuxt.options.dev
     if (!isProduction && !clientOnly) {
@@ -520,6 +579,34 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
       paths.unshift(schemaPath)
     }
   })
+}
+
+async function setupConvexAuthSchema(nuxt: Nuxt, serverConfigPath: string) {
+  const isProduction = !nuxt.options.dev
+  try {
+    const configFile = `${serverConfigPath}.ts`
+    const userConfig = await loadUserAuthConfig(configFile, isProduction)
+
+    const authOptions = { ...userConfig }
+    const schemaCode = await generateConvexSchema(authOptions)
+
+    const schemaDir = join(nuxt.options.buildDir, 'better-auth')
+    const schemaPath = join(schemaDir, 'auth-tables.convex.ts')
+
+    await mkdir(schemaDir, { recursive: true })
+    await writeFile(schemaPath, schemaCode)
+
+    addTemplate({ filename: 'better-auth/auth-tables.convex.ts', getContents: () => schemaCode, write: true })
+    nuxt.options.alias['#auth/convex-schema'] = schemaPath
+
+    consola.info('Generated Convex auth schema at .nuxt/better-auth/auth-tables.convex.ts')
+  }
+  catch (error) {
+    if (isProduction) {
+      throw error
+    }
+    consola.error('Failed to generate Convex schema:', error)
+  }
 }
 
 export { defineClientAuth, defineServerAuth } from './runtime/config'
