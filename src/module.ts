@@ -285,7 +285,7 @@ export default defineClientAuth({})
       }
 
       const secondaryStorageCode = secondaryStorageEnabled
-        ? `import { kv } from '../hub/kv.mjs'
+        ? `import { kv } from 'hub:kv'
 export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
@@ -310,7 +310,7 @@ export function createSecondaryStorage() {
       // Generate database code based on detected backend
       let databaseCode: string
       if (hasHubDb) {
-        databaseCode = `import { db, schema } from '../hub/db.mjs'
+        databaseCode = `import { db, schema } from 'hub:db'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
