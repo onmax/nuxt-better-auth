@@ -285,7 +285,7 @@ export default defineClientAuth({})
       }
 
       const secondaryStorageCode = secondaryStorageEnabled
-        ? `import { kv } from 'hub:kv'
+        ? `import { kv } from '@nuxthub/kv'
 export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
@@ -310,7 +310,7 @@ export function createSecondaryStorage() {
       // Generate database code based on detected backend
       let databaseCode: string
       if (hasHubDb) {
-        databaseCode = `import { db, schema } from 'hub:db'
+        databaseCode = `import { db, schema } from '@nuxthub/db'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
