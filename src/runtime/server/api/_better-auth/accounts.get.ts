@@ -3,7 +3,7 @@ import { paginationQuerySchema, sanitizeSearchPattern } from './_schema'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { db, schema } = await import('hub:db')
+    const { db, schema } = await import('@nuxthub/db')
     if (!schema.account)
       return { accounts: [], total: 0, error: 'Account table not found' }
 

@@ -279,13 +279,13 @@ export default defineClientAuth({})
 
     // Server-only: secondary storage and database templates
     if (!clientOnly) {
-      // Validate hub:kv alias exists when secondaryStorage is enabled
-      if (secondaryStorageEnabled && !nuxt.options.alias['hub:kv']) {
-        throw new Error('[nuxt-better-auth] hub:kv not found. Ensure @nuxthub/core is loaded before this module and hub.kv is enabled.')
+      // Validate @nuxthub/kv exists when secondaryStorage is enabled
+      if (secondaryStorageEnabled && !nuxt.options.alias['@nuxthub/kv']) {
+        throw new Error('[nuxt-better-auth] @nuxthub/kv not found. Ensure @nuxthub/core is loaded before this module and hub.kv is enabled.')
       }
 
       const secondaryStorageCode = secondaryStorageEnabled
-        ? `import { kv } from 'hub:kv'
+        ? `import { kv } from '@nuxthub/kv'
 export function createSecondaryStorage() {
   return {
     get: async (key) => kv.get(\`_auth:\${key}\`),
@@ -298,9 +298,9 @@ export function createSecondaryStorage() {
       const secondaryStorageTemplate = addTemplate({ filename: 'better-auth/secondary-storage.mjs', getContents: () => secondaryStorageCode, write: true })
       nuxt.options.alias['#auth/secondary-storage'] = secondaryStorageTemplate.dst
 
-      // Validate hub:db alias exists when using NuxtHub database
-      if (hasHubDb && !nuxt.options.alias['hub:db']) {
-        throw new Error('[nuxt-better-auth] hub:db not found. Ensure @nuxthub/core is loaded before this module and hub.db is configured.')
+      // Validate @nuxthub/db exists when using NuxtHub database
+      if (hasHubDb && !nuxt.options.alias['@nuxthub/db']) {
+        throw new Error('[nuxt-better-auth] @nuxthub/db not found. Ensure @nuxthub/core is loaded before this module and hub.db is configured.')
       }
 
       const hubDialect = getHubDialect(hub) ?? 'sqlite'
@@ -310,7 +310,7 @@ export function createSecondaryStorage() {
       // Generate database code based on detected backend
       let databaseCode: string
       if (hasHubDb) {
-        databaseCode = `import { db, schema } from 'hub:db'
+        databaseCode = `import { db, schema } from '@nuxthub/db'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 const rawDialect = '${hubDialect}'
 const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
@@ -363,7 +363,7 @@ declare module '#auth/secondary-storage' {
 declare module '#auth/database' {
   import type { drizzleAdapter } from 'better-auth/adapters/drizzle'
   export function createDatabase(): ReturnType<typeof drizzleAdapter> | undefined
-  export const db: unknown
+  export const db: typeof import('@nuxthub/db')['db'] | undefined
 }
 `,
       }, { nitro: true, node: true })
@@ -382,7 +382,7 @@ declare module '#nuxt-better-auth' {
   interface AuthSession extends InferSession<_Config> {}
   interface ServerAuthContext {
     runtimeConfig: RuntimeConfig
-    ${hasHubDb ? `db: typeof import('hub:db')['db']` : ''}
+    ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : ''}
   }
   type PluginTypes = InferPluginTypes<_Config>
 }
@@ -390,7 +390,7 @@ declare module '#nuxt-better-auth' {
 // Augment the config module to use the extended ServerAuthContext
 interface _AugmentedServerAuthContext {
   runtimeConfig: RuntimeConfig
-  ${hasHubDb ? `db: typeof import('hub:db')['db']` : 'db: unknown'}
+  ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : 'db: unknown'}
 }
 
 declare module '@onmax/nuxt-better-auth/config' {
