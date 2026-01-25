@@ -2,7 +2,14 @@
   "name": "better-auth-playground",
   "type": "module",
   "private": true,
-  "agentskills": { "skills": [{ "name": "nuxt-better-auth", "path": "../skills/nuxt-better-auth" }] },
+  "agentskills": {
+    "skills": [
+      {
+        "name": "nuxt-better-auth",
+        "path": "../skills/nuxt-better-auth"
+      }
+    ]
+  },
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
@@ -14,7 +21,7 @@
     "@better-auth/passkey": "1.4.7",
     "@nuxt/fonts": "^0.12.1",
     "@nuxt/ui": "^4.2.1",
-    "@nuxthub/core": "^0.10.4",
+    "@nuxthub/core": "^0.10.5",
     "@nuxtjs/i18n": "^9.4.0",
     "better-auth": "1.4.7",
     "nuxt": "^4.2.2",
