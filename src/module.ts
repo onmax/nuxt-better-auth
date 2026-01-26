@@ -404,7 +404,7 @@ declare module '@onmax/nuxt-better-auth/config' {
       addTypeTemplate({
         filename: 'types/nuxt-better-auth-nitro.d.ts',
         getContents: () => `
-declare module 'nitropack' {
+declare module 'nitro' {
   interface NitroRouteRules {
     auth?: import('${resolver.resolve('./runtime/types')}').AuthMeta
   }
@@ -412,7 +412,7 @@ declare module 'nitropack' {
     auth?: import('${resolver.resolve('./runtime/types')}').AuthMeta
   }
 }
-declare module 'nitropack/types' {
+declare module 'nitro/types' {
   interface NitroRouteRules {
     auth?: import('${resolver.resolve('./runtime/types')}').AuthMeta
   }
@@ -484,12 +484,12 @@ declare module '#nuxt-better-auth' {
       if (!hasNuxtModule('@nuxt/ui'))
         await installModule('@nuxt/ui')
       setupDevTools(nuxt)
-      addServerHandler({ route: '/api/_better-auth/config', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
+      addServerHandler({ route: '/api/_better-auth/config', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
       if (hasHubDb) {
-        addServerHandler({ route: '/api/_better-auth/sessions', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.get') })
-        addServerHandler({ route: '/api/_better-auth/sessions', method: 'delete', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.delete') })
-        addServerHandler({ route: '/api/_better-auth/users', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/users.get') })
-        addServerHandler({ route: '/api/_better-auth/accounts', method: 'get', handler: resolver.resolve('./runtime/server/api/_better-auth/accounts.get') })
+        addServerHandler({ route: '/api/_better-auth/sessions', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.get') })
+        addServerHandler({ route: '/api/_better-auth/sessions', method: 'DELETE', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.delete') })
+        addServerHandler({ route: '/api/_better-auth/users', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/users.get') })
+        addServerHandler({ route: '/api/_better-auth/accounts', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/accounts.get') })
       }
       extendPages((pages) => {
         pages.push({ name: 'better-auth-devtools', path: '/__better-auth-devtools', file: resolver.resolve('./runtime/app/pages/__better-auth-devtools.vue') })

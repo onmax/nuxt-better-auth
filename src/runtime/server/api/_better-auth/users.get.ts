@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery } from 'h3'
+import { defineEventHandler, getQuery } from 'nitro/h3'
 import { paginationQuerySchema, sanitizeSearchPattern } from './_schema'
 
 export default defineEventHandler(async (event) => {

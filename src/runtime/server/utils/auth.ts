@@ -1,11 +1,11 @@
 import type { Auth } from 'better-auth'
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import { createDatabase, db } from '#auth/database'
 import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
 import { betterAuth } from 'better-auth'
-import { getRequestHost, getRequestProtocol } from 'h3'
-import { useRuntimeConfig } from 'nitropack/runtime'
+import { getRequestHost, getRequestProtocol } from 'nitro/h3'
+import { useRuntimeConfig } from 'nitro/runtime-config'
 import { withoutProtocol } from 'ufo'
 
 type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
