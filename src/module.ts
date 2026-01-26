@@ -382,7 +382,7 @@ declare module '#nuxt-better-auth' {
   interface AuthSession extends InferSession<_Config> {}
   interface ServerAuthContext {
     runtimeConfig: RuntimeConfig
-    ${hasHubDb ? `db: typeof import('hub:db')['db']` : ''}
+    ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : ''}
   }
   type PluginTypes = InferPluginTypes<_Config>
 }
@@ -390,7 +390,7 @@ declare module '#nuxt-better-auth' {
 // Augment the config module to use the extended ServerAuthContext
 interface _AugmentedServerAuthContext {
   runtimeConfig: RuntimeConfig
-  ${hasHubDb ? `db: typeof import('hub:db')['db']` : 'db: unknown'}
+  ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : 'db: unknown'}
 }
 
 declare module '@onmax/nuxt-better-auth/config' {
