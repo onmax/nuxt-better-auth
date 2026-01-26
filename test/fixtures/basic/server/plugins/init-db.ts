@@ -1,4 +1,4 @@
-import { db } from 'hub:db'
+import { db } from '@nuxthub/db'
 
 export default defineNitroPlugin(async () => {
   // Create auth tables if they don't exist

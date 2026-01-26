@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   try {
     const body = deleteSessionSchema.parse(await readBody(event))
 
-    const { db, schema } = await import('hub:db')
+    const { db, schema } = await import('@nuxthub/db')
     if (!schema.session)
       throw createError({ statusCode: 500, message: 'Session table not found' })
 
