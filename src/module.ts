@@ -459,36 +459,33 @@ declare module '#nuxt-better-auth' {
           : `import ${importName} from '${plugin.from}'`
       }).join('\n')
 
-      const pluginNames = extendedClientConfig.plugins!.map((plugin, index) => {
-        return plugin.name || `plugin${index}`
+      // Generate plugin invocations (call functions with options if provided)
+      const pluginInvocations = extendedClientConfig.plugins!.map((plugin, index) => {
+        const importName = plugin.name || `plugin${index}`
+        if (plugin.options) {
+          return `${importName}(${JSON.stringify(plugin.options)})`
+        }
+        return `${importName}()`
       }).join(', ')
 
       // Generate a wrapper that merges user config with extended plugins
+      // Returns config object (not client) - client is created in useUserSession
       const clientExtensionsCode = `
-import createUserAuthClient from '${clientConfigPath}'
-import { createAuthClient } from 'better-auth/vue'
+import getUserClientConfig from '${clientConfigPath}'
 ${pluginImports}
 
 // Extended plugins from better-auth:client:extend hook
-const extendedPlugins = [${pluginNames}]
+const extendedPlugins = [${pluginInvocations}]
 
-export default function createAppAuthClient(baseURL) {
-  const ctx = { siteUrl: baseURL }
-  const userConfig = typeof createUserAuthClient === 'function'
-    ? (() => {
-        // Call the user's defineClientAuth result to get the client
-        const result = createUserAuthClient(baseURL)
-        // If it returns a client directly, we need to recreate with merged plugins
-        return result
-      })()
-    : createUserAuthClient
+export default function getClientConfig(baseURL) {
+  // Get user's config
+  const userConfig = getUserClientConfig(baseURL)
 
   // Merge extended plugins with user plugins
-  return createAuthClient({
-    baseURL,
+  return {
     ...userConfig,
     plugins: [...extendedPlugins, ...(userConfig.plugins || [])],
-  })
+  }
 }
 `
       const clientExtTemplate = addTemplate({

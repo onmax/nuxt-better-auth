@@ -5,6 +5,8 @@ export interface ClientPluginImport {
   from: string
   /** Named export to import (e.g., 'myPlugin'). If not specified, uses default export. */
   name?: string
+  /** Options to pass to the plugin function */
+  options?: Record<string, unknown>
 }
 
 export interface ClientExtendConfig {
