@@ -3,6 +3,7 @@ import type { BetterAuthPlugin } from 'better-auth'
 import type { BetterAuthModuleOptions } from './runtime/config'
 import type { AuthRouteRules } from './runtime/types'
 import type { CasingOption } from './schema-generator'
+import type { ClientExtendConfig } from './types/hooks'
 import { randomBytes } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
@@ -144,7 +145,7 @@ async function promptForSecret(rootDir: string): Promise<string | undefined> {
 export type { BetterAuthModuleOptions } from './runtime/config'
 
 export default defineNuxtModule<BetterAuthModuleOptions>({
-  meta: { name: '@onmax/nuxt-better-auth', version, configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
+  meta: { name: 'better-auth-nuxt', version, configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
   defaults: {
     clientOnly: false,
     serverConfig: 'server/auth.config',
@@ -161,14 +162,14 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const serverPath = join(nuxt.options.rootDir, 'server/auth.config.ts')
     const clientPath = join(nuxt.options.srcDir, 'auth.config.ts')
 
-    const serverTemplate = `import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
+    const serverTemplate = `import { defineServerAuth } from 'better-auth-nuxt/config'
 
 export default defineServerAuth({
   emailAndPassword: { enabled: true },
 })
 `
 
-    const clientTemplate = `import { defineClientAuth } from '@onmax/nuxt-better-auth/config'
+    const clientTemplate = `import { defineClientAuth } from 'better-auth-nuxt/config'
 
 export default defineClientAuth({})
 `
@@ -324,7 +325,7 @@ export { db }`
           { convexUrl },
         )
         databaseCode = `import { useRuntimeConfig } from '#imports'
-import { createConvexHttpAdapter } from '@onmax/nuxt-better-auth/adapters/convex'
+import { createConvexHttpAdapter } from 'better-auth-nuxt/adapters/convex'
 import { api } from '#convex/api'
 
 export function createDatabase() {
@@ -393,7 +394,7 @@ interface _AugmentedServerAuthContext {
   ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : 'db: unknown'}
 }
 
-declare module '@onmax/nuxt-better-auth/config' {
+declare module 'better-auth-nuxt/config' {
   import type { BetterAuthOptions } from 'better-auth'
   type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
   export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: _AugmentedServerAuthContext) => T)): (ctx: _AugmentedServerAuthContext) => T
@@ -443,6 +444,62 @@ declare module '#nuxt-better-auth' {
 `,
     })
 
+    // Client config extension via hook
+    const extendedClientConfig: ClientExtendConfig = {}
+    await nuxt.callHook('better-auth:client:extend', extendedClientConfig)
+
+    const hasClientExtensions = extendedClientConfig.plugins && extendedClientConfig.plugins.length > 0
+
+    if (hasClientExtensions) {
+      // Generate import statements for each plugin
+      const pluginImports = extendedClientConfig.plugins!.map((plugin, index) => {
+        const importName = plugin.name || `plugin${index}`
+        return plugin.name
+          ? `import { ${plugin.name} as ${importName} } from '${plugin.from}'`
+          : `import ${importName} from '${plugin.from}'`
+      }).join('\n')
+
+      const pluginNames = extendedClientConfig.plugins!.map((plugin, index) => {
+        return plugin.name || `plugin${index}`
+      }).join(', ')
+
+      // Generate a wrapper that merges user config with extended plugins
+      const clientExtensionsCode = `
+import createUserAuthClient from '${clientConfigPath}'
+import { createAuthClient } from 'better-auth/vue'
+${pluginImports}
+
+// Extended plugins from better-auth:client:extend hook
+const extendedPlugins = [${pluginNames}]
+
+export default function createAppAuthClient(baseURL) {
+  const ctx = { siteUrl: baseURL }
+  const userConfig = typeof createUserAuthClient === 'function'
+    ? (() => {
+        // Call the user's defineClientAuth result to get the client
+        const result = createUserAuthClient(baseURL)
+        // If it returns a client directly, we need to recreate with merged plugins
+        return result
+      })()
+    : createUserAuthClient
+
+  // Merge extended plugins with user plugins
+  return createAuthClient({
+    baseURL,
+    ...userConfig,
+    plugins: [...extendedPlugins, ...(userConfig.plugins || [])],
+  })
+}
+`
+      const clientExtTemplate = addTemplate({
+        filename: 'better-auth/client-extended.mjs',
+        getContents: () => clientExtensionsCode,
+        write: true,
+      })
+      nuxt.options.alias['#auth/client'] = clientExtTemplate.dst
+      consola.info('Client config extended via better-auth:client:extend hook')
+    }
+
     // HMR
     nuxt.hook('builder:watch', async (_event, relativePath) => {
       if (relativePath.includes('auth.config')) {
@@ -481,9 +538,9 @@ declare module '#nuxt-better-auth' {
     const isProduction = process.env.NODE_ENV === 'production' || !nuxt.options.dev
     if (!isProduction && !clientOnly) {
       // Devtools UI requires Nuxt UI components (UTable, UTabs, etc.)
-      if (!hasNuxtModule('@nuxt/ui'))
-        await installModule('@nuxt/ui')
-      setupDevTools(nuxt)
+      // if (!hasNuxtModule('@nuxt/ui'))
+      //   await installModule('@nuxt/ui')
+      // setupDevTools(nuxt)
       addServerHandler({ route: '/api/_better-auth/config', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/config.get') })
       if (hasHubDb) {
         addServerHandler({ route: '/api/_better-auth/sessions', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/sessions.get') })
@@ -491,9 +548,9 @@ declare module '#nuxt-better-auth' {
         addServerHandler({ route: '/api/_better-auth/users', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/users.get') })
         addServerHandler({ route: '/api/_better-auth/accounts', method: 'GET', handler: resolver.resolve('./runtime/server/api/_better-auth/accounts.get') })
       }
-      extendPages((pages) => {
-        pages.push({ name: 'better-auth-devtools', path: '/__better-auth-devtools', file: resolver.resolve('./runtime/app/pages/__better-auth-devtools.vue') })
-      })
+      // extendPages((pages) => {
+      //   pages.push({ name: 'better-auth-devtools', path: '/__better-auth-devtools', file: resolver.resolve('./runtime/app/pages/__better-auth-devtools.vue') })
+      // })
     }
 
     nuxt.hook('pages:extend', (pages) => {
