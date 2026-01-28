@@ -56,10 +56,10 @@ export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: 
   return typeof config === 'function' ? config : () => config
 }
 
-export function defineClientAuth<T extends ClientAuthConfig>(config: T | ((ctx: ClientAuthContext) => T)): (baseURL: string) => ReturnType<typeof createAuthClient<T>> {
+export function defineClientAuth<T extends ClientAuthConfig>(config: T | ((ctx: ClientAuthContext) => T)): (baseURL: string) => T & { baseURL: string } {
   return (baseURL: string) => {
     const ctx: ClientAuthContext = { siteUrl: baseURL }
     const resolved = typeof config === 'function' ? config(ctx) : config
-    return createAuthClient({ ...resolved, baseURL })
+    return { ...resolved, baseURL }
   }
 }

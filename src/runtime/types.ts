@@ -1,4 +1,4 @@
-import type { NitroRouteRules } from 'nitropack/types'
+import type { NitroRouteRules } from 'nitro/types'
 import type { AuthSession, AuthUser } from './types/augment'
 
 // Re-export augmentable types

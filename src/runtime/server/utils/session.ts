@@ -1,6 +1,6 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import type { AuthSession, AuthUser, RequireSessionOptions } from '../../types'
-import { createError } from 'h3'
+import { HTTPError } from 'nitro/h3'
 import { matchesUser } from '../../utils/match-user'
 import { serverAuth } from './auth'
 
@@ -16,17 +16,17 @@ export async function requireUserSession(event: H3Event, options?: RequireSessio
   const session = await getUserSession(event)
 
   if (!session)
-    throw createError({ statusCode: 401, statusMessage: 'Authentication required' })
+    throw new HTTPError('Authentication required', { status: 401 })
 
   if (options?.user) {
     if (!matchesUser(session.user, options.user))
-      throw createError({ statusCode: 403, statusMessage: 'Access denied' })
+      throw new HTTPError('Access denied', { status: 403 })
   }
 
   if (options?.rule) {
     const allowed = await options.rule({ user: session.user, session: session.session })
     if (!allowed)
-      throw createError({ statusCode: 403, statusMessage: 'Access denied' })
+      throw new HTTPError('Access denied', { status: 403 })
   }
 
   return session

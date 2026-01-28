@@ -1,7 +1,8 @@
 import type { AuthMeta, AuthMode, AuthRouteRules } from '../../types'
-import { createError, defineEventHandler, getRequestURL } from 'h3'
-import { getRouteRules } from 'nitropack/runtime'
+import { getRouteRules } from 'nitro/app'
+import { defineEventHandler, getRequestURL, HTTPError } from 'nitro/h3'
 import { matchesUser } from '../../utils/match-user'
+import { getUserSession, requireUserSession } from '../utils/session'
 
 export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
   if (path.startsWith('/api/auth/'))
     return
 
-  const rules = getRouteRules(event) as AuthRouteRules
+  const rules = getRouteRules(event.req.method!, path) as AuthRouteRules
   if (!rules.auth)
     return
 
@@ -22,7 +23,7 @@ export default defineEventHandler(async (event) => {
   if (mode === 'guest') {
     const session = await getUserSession(event)
     if (session)
-      throw createError({ statusCode: 403, statusMessage: 'Authenticated users not allowed' })
+      throw new HTTPError('Authenticated users not allowed', { status: 403 })
     return
   }
 
@@ -31,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
     if (typeof auth === 'object' && auth.user) {
       if (!matchesUser(session.user, auth.user))
-        throw createError({ statusCode: 403, statusMessage: 'Access denied' })
+        throw new HTTPError('Access denied', { status: 403 })
     }
   }
 })
