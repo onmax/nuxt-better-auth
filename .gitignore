@@ -16,6 +16,9 @@ node_modules
 # Generated dirs
 dist
 
+# Package archives
+*.tgz
+
 # Nuxt
 .nuxt
 .output
