@@ -1,18 +1,22 @@
-import type { AppAuthClient, AuthSession, AuthUser } from '#nuxt-better-auth'
+import type { AuthSession, AuthUser } from '#nuxt-better-auth'
 import type { ComputedRef, Ref } from 'vue'
-import createAppAuthClient from '#auth/client'
+import getClientConfig from '#auth/client'
 import { computed, nextTick, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
+import { createAuthClient } from 'better-auth/vue'
+
+// Create the actual auth client from config
+type AuthClient = ReturnType<typeof createAuthClient>
 
 export interface SignOutOptions { onSuccess?: () => void | Promise<void> }
 
 export interface UseUserSessionReturn {
-  client: AppAuthClient | null
+  client: AuthClient | null
   session: Ref<AuthSession | null>
   user: Ref<AuthUser | null>
   loggedIn: ComputedRef<boolean>
   ready: ComputedRef<boolean>
-  signIn: NonNullable<AppAuthClient>['signIn']
-  signUp: NonNullable<AppAuthClient>['signUp']
+  signIn: NonNullable<AuthClient>['signIn']
+  signUp: NonNullable<AuthClient>['signUp']
   signOut: (options?: SignOutOptions) => Promise<void>
   waitForSession: () => Promise<void>
   fetchSession: (options?: { headers?: HeadersInit, force?: boolean }) => Promise<void>
@@ -20,11 +24,13 @@ export interface UseUserSessionReturn {
 }
 
 // Singleton client instance to ensure consistent state across all useUserSession calls
-let _client: AppAuthClient | null = null
-function getClient(baseURL: string): AppAuthClient {
-  if (!_client)
-    _client = createAppAuthClient(baseURL)
-  return _client
+let _client: AuthClient | null = null
+function getClient(baseURL: string): AuthClient {
+  if (!_client) {
+    const config = getClientConfig(baseURL)
+    _client = createAuthClient(config)
+  }
+  return _client!
 }
 
 export function useUserSession(): UseUserSessionReturn {
@@ -32,8 +38,8 @@ export function useUserSession(): UseUserSessionReturn {
   const requestURL = useRequestURL()
 
   // Client only - create better-auth client for client-side operations (singleton)
-  const client: AppAuthClient | null = import.meta.client
-    ? getClient(runtimeConfig.public.siteUrl || requestURL.origin)
+  const client: AuthClient | null = import.meta.client
+    ? getClient((runtimeConfig.public.siteUrl as string) || requestURL.origin)
     : null
 
   // Shared state via useState for SSR hydration
@@ -99,8 +105,8 @@ export function useUserSession(): UseUserSessionReturn {
   }
 
   // Wrap signIn methods to wait for session sync before calling onSuccess
-  type SignIn = NonNullable<AppAuthClient>['signIn']
-  type SignUp = NonNullable<AppAuthClient>['signUp']
+  type SignIn = NonNullable<AuthClient>['signIn']
+  type SignUp = NonNullable<AuthClient>['signUp']
 
   // Wraps onSuccess callback to sync session before executing
   function wrapOnSuccess(cb: (ctx: unknown) => void | Promise<void>) {

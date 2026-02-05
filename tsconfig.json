@@ -1,16 +1,3 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "types": ["node"],
-    "strict": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true
-  },
-  "include": ["src/module.ts", "src/schema-generator.ts", "src/runtime/types.ts", "src/runtime/types/**/*.ts", "src/runtime/config.ts"],
-  "exclude": ["dist", "node_modules", "playground", "src/runtime/app", "src/runtime/server"]
+  "extends": "./.nuxt/tsconfig.json"
 }

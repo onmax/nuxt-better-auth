@@ -1,0 +1,6 @@
+imports.autoImport=false
+typescript.includeWorkspace=true
+abckit.npm=true
+experimental.typescriptBundlerResolution=true
+setups.@onmax/nuxt-better-auth="0.0.2-alpha.19"
+setups.better-auth-nuxt="0.0.10-beta.21"

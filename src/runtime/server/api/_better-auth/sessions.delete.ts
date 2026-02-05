@@ -1,4 +1,4 @@
-import { createError, defineEventHandler, readBody } from 'h3'
+import { defineEventHandler, HTTPError, readBody } from 'nitro/h3'
 import { z } from 'zod'
 
 const deleteSessionSchema = z.object({
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 
     const { db, schema } = await import('@nuxthub/db')
     if (!schema.session)
-      throw createError({ statusCode: 500, message: 'Session table not found' })
+      throw new HTTPError('Session table not found', { status: 500 })
 
     const { eq } = await import('drizzle-orm')
     await db.delete(schema.session).where(eq(schema.session.id, body.id))
@@ -20,9 +20,9 @@ export default defineEventHandler(async (event) => {
   }
   catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      throw createError({ statusCode: 400, message: error.errors[0]?.message || 'Invalid request' })
+      throw new HTTPError(error.errors[0]?.message || 'Invalid request', { status: 400 })
     }
     console.error('[DevTools] Delete session failed:', error)
-    throw createError({ statusCode: 500, message: 'Failed to delete session' })
+    throw new HTTPError('Failed to delete session', { status: 500 })
   }
 })

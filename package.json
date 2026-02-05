@@ -1,7 +1,7 @@
 {
-  "name": "@onmax/nuxt-better-auth",
+  "name": "better-auth-nuxt",
   "type": "module",
-  "version": "0.0.2-alpha.19",
+  "version": "0.0.10-beta.25",
   "packageManager": "pnpm@10.15.1",
   "description": "Nuxt module for Better Auth integration with NuxtHub, route protection, session management, and role-based access",
   "author": "onmax",
@@ -54,10 +54,10 @@
     "prepack": "nuxt-module-build build",
     "dev": "pnpm dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxi prepare playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "dev:docs": "nuxi dev docs",
     "build:docs": "nuxi build docs",
-    "release": "bumpp --push --no-push-all",
+    "release": "pnpm publish --no-git-checks --access public --tag beta",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "vue-tsc --noEmit",
@@ -80,8 +80,6 @@
   },
   "dependencies": {
     "@better-auth/cli": "^1.5.0-beta.3",
-    "@nuxt/kit": "^4.2.2",
-    "@nuxt/ui": "^4.2.1",
     "defu": "^6.1.4",
     "jiti": "^2.4.2",
     "pathe": "^2.0.3",
@@ -93,9 +91,11 @@
     "@libsql/client": "^0.15.15",
     "@nuxt/devtools": "^3.1.1",
     "@nuxt/devtools-kit": "^3.1.1",
+    "@nuxt/kit": "https://pkg.pr.new/@nuxt/kit@33005",
     "@nuxt/module-builder": "^1.0.2",
-    "@nuxt/schema": "^4.2.2",
+    "@nuxt/schema": "https://pkg.pr.new/@nuxt/schema@33005",
     "@nuxt/test-utils": "^3.21.0",
+    "@nuxt/ui": "^4.2.1",
     "@nuxthub/core": "^0.10.5",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "latest",
@@ -107,8 +107,9 @@
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.38.4",
     "eslint": "^9.39.1",
+    "nitro": "3.0.1-alpha.2",
     "npm-agentskills": "https://pkg.pr.new/onmax/npm-agentskills@394499e",
-    "nuxt": "^4.2.2",
+    "nuxt": "https://pkg.pr.new/nuxt@33005",
     "tinyexec": "^1.0.2",
     "typescript": "~5.9.3",
     "vitest": "^4.0.15",
@@ -129,6 +130,10 @@
       "unenv@2.0.0-rc.24": "patches/unenv@2.0.0-rc.24.patch"
     },
     "overrides": {
+      "@nuxt/kit": "https://pkg.pr.new/@nuxt/kit@33005",
+      "@nuxt/schema": "https://pkg.pr.new/@nuxt/schema@33005",
+      "nitro": "3.0.1-alpha.2",
+      "nuxt": "https://pkg.pr.new/nuxt@33005",
       "reka-ui": "^2.6.1"
     }
   }
