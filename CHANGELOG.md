@@ -1,5 +1,7 @@
 # Changelog
 
+This changelog is incomplete for alpha releases. Use the GitHub Releases page for full history.
+
 ## 0.0.2-alpha.0
 
 ### Fixed
