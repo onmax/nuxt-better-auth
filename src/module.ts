@@ -3,6 +3,7 @@ import type { BetterAuthPlugin } from 'better-auth'
 import type { BetterAuthModuleOptions } from './runtime/config'
 import type { AuthRouteRules } from './runtime/types'
 import type { CasingOption } from './schema-generator'
+import type { ClientExtendConfig } from './types/hooks'
 import { randomBytes } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
@@ -436,12 +437,59 @@ export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptio
     addTypeTemplate({
       filename: 'types/nuxt-better-auth-client.d.ts',
       getContents: () => `
-import type createAppAuthClient from '${clientConfigPath}'
+import type { createAuthClient } from 'better-auth/vue'
+import type getClientConfig from '${clientConfigPath}'
+type _ClientConfig = ReturnType<typeof getClientConfig>
 declare module '#nuxt-better-auth' {
-  export type AppAuthClient = ReturnType<typeof createAppAuthClient>
+  export type AppAuthClient = ReturnType<(typeof createAuthClient)<_ClientConfig>>
 }
 `,
     })
+
+    // Client config extension via hook
+    const extendedClientConfig: ClientExtendConfig = {}
+    await nuxt.callHook('better-auth:client:extend', extendedClientConfig)
+
+    const hasClientExtensions = extendedClientConfig.plugins && extendedClientConfig.plugins.length > 0
+
+    if (hasClientExtensions) {
+      const pluginImports = extendedClientConfig.plugins!.map((plugin, index) => {
+        const importName = plugin.name || `plugin${index}`
+        return plugin.name
+          ? `import { ${plugin.name} as ${importName} } from '${plugin.from}'`
+          : `import ${importName} from '${plugin.from}'`
+      }).join('\n')
+
+      const pluginInvocations = extendedClientConfig.plugins!.map((plugin, index) => {
+        const importName = plugin.name || `plugin${index}`
+        if (plugin.options)
+          return `${importName}(${JSON.stringify(plugin.options)})`
+        return `${importName}()`
+      }).join(', ')
+
+      const clientExtensionsCode = `
+import getUserClientConfig from '${clientConfigPath}'
+${pluginImports}
+
+// Extended plugins from better-auth:client:extend hook
+const extendedPlugins = [${pluginInvocations}]
+
+export default function getClientConfig(baseURL) {
+  const userConfig = getUserClientConfig(baseURL)
+  return {
+    ...userConfig,
+    plugins: [...extendedPlugins, ...(userConfig.plugins || [])],
+  }
+}
+`
+      const clientExtTemplate = addTemplate({
+        filename: 'better-auth/client-extended.mjs',
+        getContents: () => clientExtensionsCode,
+        write: true,
+      })
+      nuxt.options.alias['#auth/client'] = clientExtTemplate.dst
+      consola.info('Client config extended via better-auth:client:extend hook')
+    }
 
     // HMR
     nuxt.hook('builder:watch', async (_event, relativePath) => {
