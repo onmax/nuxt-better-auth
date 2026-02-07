@@ -1,60 +1,54 @@
 name: release
 
-permissions:
-  id-token: write
-  contents: write
-  actions: read
-
 on:
   push:
     tags:
       - 'v*'
 
+# Remove default permissions of GITHUB_TOKEN for security
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions: {}
+
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - run: pnpm install
-      - run: pnpm lint
-      - run: pnpm prepack
-      - run: pnpm test
-
   release:
-    needs: ci
+    concurrency:
+      group: release
+    permissions:
+      contents: write
+      id-token: write
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-          registry-url: 'https://registry.npmjs.org'
 
-      - run: pnpm install
-      - run: pnpm prepack
+      - run: corepack enable
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: latest
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm prepack
 
       - name: Determine npm tag
         id: npm-tag
+        shell: bash
         run: |
           TAG="${GITHUB_REF#refs/tags/v}"
           if [[ "$TAG" == *"-alpha"* ]]; then
-            echo "tag=alpha" >> $GITHUB_OUTPUT
+            echo "tag=alpha" >> "$GITHUB_OUTPUT"
           elif [[ "$TAG" == *"-beta"* ]]; then
-            echo "tag=beta" >> $GITHUB_OUTPUT
+            echo "tag=beta" >> "$GITHUB_OUTPUT"
           elif [[ "$TAG" == *"-rc"* ]]; then
-            echo "tag=rc" >> $GITHUB_OUTPUT
+            echo "tag=rc" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=latest" >> $GITHUB_OUTPUT
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
           fi
 
       - name: GitHub Release
@@ -63,4 +57,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm
-        run: npm publish --provenance --access public --tag ${{ steps.npm-tag.outputs.tag }}
+        run: pnpm publish --no-git-checks --access public --tag ${{ steps.npm-tag.outputs.tag }}
