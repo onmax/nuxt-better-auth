@@ -8,6 +8,7 @@ definePageMeta({ layout: 'docs' })
 const route = useRoute()
 const { locale, isEnabled, t } = useDocusI18n()
 const appConfig = useAppConfig()
+const site = useSiteConfig()
 const navigation = inject<Ref<ContentNavigationItem[]>>('navigation')
 
 const collectionName = computed(() => isEnabled.value ? `docs_${locale.value}` : 'docs')
@@ -23,14 +24,21 @@ if (!page.value)
 const title = page.value.seo?.title || page.value.title
 const description = page.value.seo?.description || page.value.description
 
-useSeoMeta({ title, ogTitle: title, description, ogDescription: description })
+const ogImageUrl = computed(() => new URL('/og.png', site.url).toString())
+
+useSeoMeta({
+  title,
+  ogTitle: title,
+  description,
+  ogDescription: description,
+  ogImage: ogImageUrl,
+  twitterImage: ogImageUrl,
+})
 
 const headline = ref(findPageHeadline(navigation?.value, page.value?.path))
 watch(() => navigation?.value, () => {
   headline.value = findPageHeadline(navigation?.value, page.value?.path) || headline.value
 })
-
-defineOgImageComponent('Docs', { headline: headline.value })
 
 const github = computed(() => appConfig.github || null)
 
