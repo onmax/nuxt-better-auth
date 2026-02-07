@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  // Used by useSiteConfig() and for absolute OG URLs.
   site: {
     url: 'https://nuxt-better-auth.onmax.me',
     name: 'Nuxt Better Auth',
@@ -22,8 +23,8 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
       meta: [
         { name: 'twitter:card', content: 'summary_large_image' },
-        { property: 'og:image', content: 'https://better-auth.nuxtjs.org/og.png' },
-        { name: 'twitter:image', content: 'https://better-auth.nuxtjs.org/og.png' },
+        { property: 'og:image', content: 'https://nuxt-better-auth.onmax.me/og.png' },
+        { name: 'twitter:image', content: 'https://nuxt-better-auth.onmax.me/og.png' },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
       ],
