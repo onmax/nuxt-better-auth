@@ -23,7 +23,7 @@ const { loggedIn } = useUserSession()
           Official demo to showcase
           <a href="https://better-auth.com" target="_blank" class="italic underline">better-auth.</a>
           features using
-          <a href="https://nuxt-better-auth.onmax.me" target="_blank" class="italic underline">nuxt-better-auth.</a>
+          <a href="https://better-auth.nuxtjs.org" target="_blank" class="italic underline">nuxt-better-auth.</a>
         </p>
       </div>
       <div class="md:w-10/12 w-full flex flex-col gap-4">

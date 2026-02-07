@@ -127,7 +127,7 @@ async function handleSignUp() {
       <div class="flex justify-center w-full border-t pt-4">
         <p class="text-center text-xs text-neutral-500">
           built with
-          <a href="https://nuxt-better-auth.onmax.me/" class="underline" target="_blank">
+          <a href="https://better-auth.nuxtjs.org" class="underline" target="_blank">
             <span class="dark:text-white/70 cursor-pointer">nuxt-better-auth.</span>
           </a>
         </p>

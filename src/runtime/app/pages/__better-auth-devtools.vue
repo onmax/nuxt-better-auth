@@ -218,7 +218,7 @@ function getAccountActions(row: AccountRow) {
       </div>
       <div class="flex items-center">
         <a href="https://www.better-auth.com/docs" target="_blank" class="header-link border-r border-border">Docs</a>
-        <a href="https://github.com/onmax/nuxt-better-auth" target="_blank" class="header-link">
+        <a href="https://github.com/nuxt-modules/better-auth" target="_blank" class="header-link">
           <UIcon name="i-simple-icons-github" class="size-4" />
         </a>
       </div>

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   site: {
-    url: 'https://nuxt-better-auth.onmax.me',
+    url: 'https://better-auth.nuxtjs.org',
     name: 'Nuxt Better Auth',
     description: 'Nuxt module for Better Auth with auto schema generation, route protection, and session management.',
     defaultLocale: 'en',

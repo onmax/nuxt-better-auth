@@ -76,14 +76,14 @@ function getCodeBlock(tab: { name: string, code: string }) {
                     <span class="italic text-amber-600">x</span>
                   </p>
                   <p class="relative inline tracking-tight opacity-90 md:text-sm text-xs dark:text-white font-mono text-black select-all">
-                    npx nuxi module add <span class="relative dark:text-fuchsia-300 text-fuchsia-800">@onmax/nuxt-better-auth@alpha</span>
+                    npx nuxi module add <span class="relative dark:text-fuchsia-300 text-fuchsia-800">@nuxtjs/better-auth@alpha</span>
                   </p>
                 </div>
                 <div class="flex gap-2 items-center">
-                  <NuxtLink to="https://www.npmjs.com/package/@onmax/nuxt-better-auth" target="_blank" class="opacity-60 hover:opacity-100 transition-opacity">
+                  <NuxtLink to="https://www.npmjs.com/package/@nuxtjs/better-auth" target="_blank" class="opacity-60 hover:opacity-100 transition-opacity">
                     <UIcon name="i-simple-icons-npm" class="size-4 text-red-500" />
                   </NuxtLink>
-                  <NuxtLink to="https://github.com/onmax/nuxt-better-auth" target="_blank" class="opacity-60 hover:opacity-100 transition-opacity">
+                  <NuxtLink to="https://github.com/nuxt-modules/better-auth" target="_blank" class="opacity-60 hover:opacity-100 transition-opacity">
                     <UIcon name="i-simple-icons-github" class="size-4" />
                   </NuxtLink>
                 </div>
@@ -99,7 +99,7 @@ function getCodeBlock(tab: { name: string, code: string }) {
                 Get Started
               </NuxtLink>
               <NuxtLink
-                to="https://github.com/onmax/nuxt-better-auth"
+                to="https://github.com/nuxt-modules/better-auth"
                 target="_blank"
                 class="group relative hidden p-px text-xs font-semibold leading-6 text-white no-underline md:inline-block"
               >
@@ -114,7 +114,7 @@ function getCodeBlock(tab: { name: string, code: string }) {
               </NuxtLink>
               <!-- Mobile GitHub button -->
               <NuxtLink
-                to="https://github.com/onmax/nuxt-better-auth"
+                to="https://github.com/nuxt-modules/better-auth"
                 target="_blank"
                 class="flex items-center gap-2 rounded-none bg-zinc-950 px-4 py-2 text-xs font-semibold text-white ring-1 ring-white/10 md:hidden"
               >
@@ -203,7 +203,7 @@ function getCodeBlock(tab: { name: string, code: string }) {
                       <!-- Demo CTA (bottom-right) -->
                       <motion.div layout class="self-end mt-3">
                         <NuxtLink
-                          to="https://demo-nuxt-better-auth.onmax.me/"
+                          to="https://demo.better-auth.nuxtjs.org"
                           target="_blank"
                           class="shadow-md border dark:border-stone-700 border-stone-300 mb-4 ml-auto mr-4 mt-auto flex cursor-pointer items-center gap-2 px-3 py-1 transition-all ease-in-out hover:opacity-70"
                         >
