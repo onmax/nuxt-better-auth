@@ -144,7 +144,7 @@ async function promptForSecret(rootDir: string): Promise<string | undefined> {
 export type { BetterAuthModuleOptions } from './runtime/config'
 
 export default defineNuxtModule<BetterAuthModuleOptions>({
-  meta: { name: '@onmax/nuxt-better-auth', version, configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
+  meta: { name: '@nuxtjs/better-auth', version, configKey: 'auth', compatibility: { nuxt: '>=3.0.0' } },
   defaults: {
     clientOnly: false,
     serverConfig: 'server/auth.config',
@@ -161,14 +161,14 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const serverPath = join(nuxt.options.rootDir, 'server/auth.config.ts')
     const clientPath = join(nuxt.options.srcDir, 'auth.config.ts')
 
-    const serverTemplate = `import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
+    const serverTemplate = `import { defineServerAuth } from '@nuxtjs/better-auth/config'
 
 export default defineServerAuth({
   emailAndPassword: { enabled: true },
 })
 `
 
-    const clientTemplate = `import { defineClientAuth } from '@onmax/nuxt-better-auth/config'
+    const clientTemplate = `import { defineClientAuth } from '@nuxtjs/better-auth/config'
 
 export default defineClientAuth({})
 `
@@ -215,6 +215,18 @@ export default defineClientAuth({})
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
     const hasHubDb = !clientOnly && hasNuxtHub && !!hub?.db
+
+    // Nitro rollup can choke on libsql optional deps on non-Linux platforms
+    // (e.g. trying to resolve @libsql/linux-x64-gnu on macOS). Externalize it
+    // when NuxtHub DB is enabled so runtime can resolve the correct platform binding.
+    if (hasHubDb) {
+      nuxt.options.nitro = nuxt.options.nitro || {}
+      nuxt.options.nitro.externals = defu(nuxt.options.nitro.externals as Record<string, unknown>, { external: [] }) as { external?: string[], trace?: boolean }
+      const existing = Array.isArray(nuxt.options.nitro.externals.external) ? nuxt.options.nitro.externals.external : []
+      nuxt.options.nitro.externals.external = Array.from(new Set([...existing, 'libsql']))
+      if (isTest)
+        nuxt.options.nitro.externals.trace = false
+    }
 
     // Convex detection
     const hasConvex = hasNuxtModule('nuxt-convex', nuxt)
@@ -324,7 +336,7 @@ export { db }`
           { convexUrl },
         )
         databaseCode = `import { useRuntimeConfig } from '#imports'
-import { createConvexHttpAdapter } from '@onmax/nuxt-better-auth/adapters/convex'
+import { createConvexHttpAdapter } from '@nuxtjs/better-auth/adapters/convex'
 import { api } from '#convex/api'
 
 export function createDatabase() {
@@ -393,7 +405,7 @@ interface _AugmentedServerAuthContext {
   ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : 'db: unknown'}
 }
 
-declare module '@onmax/nuxt-better-auth/config' {
+declare module '@nuxtjs/better-auth/config' {
   import type { BetterAuthOptions } from 'better-auth'
   type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
   export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: _AugmentedServerAuthContext) => T)): (ctx: _AugmentedServerAuthContext) => T

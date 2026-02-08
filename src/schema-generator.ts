@@ -194,7 +194,7 @@ export async function loadUserAuthConfig(configPath: string, throwOnError = fals
     if (typeof configFn === 'function') {
       return configFn({ runtimeConfig: {}, db: null })
     }
-    consola.warn('[@onmax/nuxt-better-auth] auth.config.ts does not export default. Expected: export default defineServerAuth(...)')
+    consola.warn('[@nuxtjs/better-auth] auth.config.ts does not export default. Expected: export default defineServerAuth(...)')
     if (throwOnError) {
       throw new Error('auth.config.ts must export default defineServerAuth(...)')
     }
@@ -204,7 +204,7 @@ export async function loadUserAuthConfig(configPath: string, throwOnError = fals
     if (throwOnError) {
       throw new Error(`Failed to load auth config: ${error instanceof Error ? error.message : error}`)
     }
-    consola.error('[@onmax/nuxt-better-auth] Failed to load auth config for schema generation. Schema may be incomplete:', error)
+    consola.error('[@nuxtjs/better-auth] Failed to load auth config for schema generation. Schema may be incomplete:', error)
     return {}
   }
   finally {

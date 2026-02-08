@@ -37,7 +37,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteUrl: 'https://demo-nuxt-better-auth.onmax.me',
+      siteUrl: 'https://demo.better-auth.nuxtjs.org',
     },
   },
 
@@ -66,7 +66,7 @@ export default defineNuxtConfig({
       nodeCompat: true,
       wrangler: {
         name: 'nuxt-better-auth-demo',
-        routes: [{ pattern: 'demo-nuxt-better-auth.onmax.me', zone_name: 'onmax.me', custom_domain: true }],
+        routes: [{ pattern: 'demo.better-auth.nuxtjs.org', zone_name: 'nuxtjs.org', custom_domain: true }],
         observability: { enabled: true, logs: { enabled: true, invocation_logs: true } },
       },
     },

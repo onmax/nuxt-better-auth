@@ -8,7 +8,7 @@ const isDocsPage = computed(() => route.path.startsWith('/getting-started') || r
 
 const navLinks = [
   { name: 'docs', path: '/getting-started' },
-  { name: 'demo', path: 'https://demo-nuxt-better-auth.onmax.me', external: true },
+  { name: 'demo', path: 'https://demo.better-auth.nuxtjs.org', external: true },
   { name: 'better-auth', path: 'https://www.better-auth.com', external: true },
 ]
 </script>
@@ -59,7 +59,7 @@ const navLinks = [
         </template>
         <li class="relative group list-none h-full">
           <NuxtLink
-            to="https://github.com/onmax/nuxt-better-auth"
+            to="https://github.com/nuxt-modules/better-auth"
             target="_blank"
             class="flex items-center h-full px-5 border-l border-[var(--ui-border)] text-muted transition-colors group-hover:text-[var(--ui-text)]"
             aria-label="GitHub"

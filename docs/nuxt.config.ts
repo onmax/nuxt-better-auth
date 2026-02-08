@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 
   // Used by useSiteConfig() and for absolute OG URLs.
   site: {
-    url: 'https://nuxt-better-auth.onmax.me',
+    url: 'https://better-auth.nuxtjs.org',
     name: 'Nuxt Better Auth',
     description: 'Nuxt module for Better Auth with auto schema generation, route protection, and session management.',
     defaultLocale: 'en',
