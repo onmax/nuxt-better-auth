@@ -1,5 +1,5 @@
 import type { BetterAuthOptions } from 'better-auth'
-import type { ClientOptions } from 'better-auth/client'
+import type { BetterAuthClientOptions } from 'better-auth/client'
 import type { CasingOption } from '../schema-generator'
 import type { ServerAuthContext } from './types/augment'
 import { createAuthClient } from 'better-auth/vue'
@@ -12,7 +12,7 @@ export interface ClientAuthContext {
 }
 
 export type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
-export type ClientAuthConfig = Omit<ClientOptions, 'baseURL'> & { baseURL?: string }
+export type ClientAuthConfig = Omit<BetterAuthClientOptions, 'baseURL'> & { baseURL?: string }
 
 export type ServerAuthConfigFn = (ctx: ServerAuthContext) => ServerAuthConfig
 export type ClientAuthConfigFn = (ctx: ClientAuthContext) => ClientAuthConfig
