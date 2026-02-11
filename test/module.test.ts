@@ -14,6 +14,11 @@ describe('nuxt-better-auth module', async () => {
       expect(html).toContain('Not logged in')
     })
 
+    it('does not expose devtools config endpoint in production', async () => {
+      const response = await fetch(url('/api/_better-auth/config'))
+      expect(response.status).toBe(404)
+    })
+
     it('exposes runtime database metadata as nuxthub', async () => {
       const response = await $fetch('/api/test/config') as { useDatabase: boolean, databaseProvider: string }
       expect(response.useDatabase).toBe(true)

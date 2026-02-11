@@ -1,9 +1,22 @@
 import { withoutProtocol } from 'ufo'
 import { describe, expect, it } from 'vitest'
 
-function validateURL(url: string): string {
+function normalizeLoopbackOrigin(origin: string, isDev: boolean): string {
+  if (!isDev)
+    return origin
+
+  const parsed = new URL(origin)
+  if (parsed.hostname === '127.0.0.1' || parsed.hostname === '::1' || parsed.hostname === '[::1]') {
+    parsed.hostname = 'localhost'
+    return parsed.origin
+  }
+
+  return origin
+}
+
+function validateURL(url: string, isDev: boolean): string {
   try {
-    return new URL(url).origin
+    return normalizeLoopbackOrigin(new URL(url).origin, isDev)
   }
   catch {
     throw new Error(`Invalid siteUrl: "${url}". Must be a valid URL.`)
@@ -56,7 +69,14 @@ function getNitroOrigin(options: GetNitroOriginOptions): string | undefined {
   if (!host)
     return undefined
 
-  if (host.includes(':') && !host.startsWith('[')) {
+  if (host.startsWith('[') && host.includes(']:')) {
+    const lastBracketColon = host.lastIndexOf(']:')
+    const extractedPort = host.slice(lastBracketColon + 2)
+    host = host.slice(0, lastBracketColon + 1)
+    if (extractedPort)
+      port = extractedPort
+  }
+  else if (host.includes(':') && !host.startsWith('[')) {
     const hostParts = host.split(':')
     port = hostParts.pop()
     host = hostParts.join(':')
@@ -69,19 +89,19 @@ function getNitroOrigin(options: GetNitroOriginOptions): string | undefined {
 // Mock of getBaseURL logic for unit testing
 function getBaseURL(config: { public: { siteUrl?: unknown } }, nitroOriginOptions: GetNitroOriginOptions): string {
   if (config.public.siteUrl && typeof config.public.siteUrl === 'string')
-    return validateURL(config.public.siteUrl)
+    return validateURL(config.public.siteUrl, nitroOriginOptions.isDev)
 
   const nitroOrigin = getNitroOrigin(nitroOriginOptions)
   if (nitroOrigin)
-    return validateURL(nitroOrigin)
+    return validateURL(nitroOrigin, nitroOriginOptions.isDev)
 
   const env = nitroOriginOptions.env
   if (env.VERCEL_URL)
-    return validateURL(`https://${env.VERCEL_URL}`)
+    return validateURL(`https://${env.VERCEL_URL}`, nitroOriginOptions.isDev)
   if (env.CF_PAGES_URL)
-    return validateURL(`https://${env.CF_PAGES_URL}`)
+    return validateURL(`https://${env.CF_PAGES_URL}`, nitroOriginOptions.isDev)
   if (env.URL)
-    return validateURL(env.URL.startsWith('http') ? env.URL : `https://${env.URL}`)
+    return validateURL(env.URL.startsWith('http') ? env.URL : `https://${env.URL}`, nitroOriginOptions.isDev)
 
   if (nitroOriginOptions.isDev)
     return 'http://localhost:3000'
@@ -149,5 +169,25 @@ describe('getBaseURL', () => {
 
   it('handles IPv6 addresses', () => {
     expect(getBaseURL({ public: {} }, { isDev: false, isPrerender: false, env: {}, requestHost: '[::1]:3000', requestProtocol: 'http' })).toBe('http://[::1]:3000')
+  })
+
+  it('normalizes 127.0.0.1 to localhost in dev', () => {
+    expect(getBaseURL({ public: {} }, { isDev: true, isPrerender: false, env: {}, requestHost: '127.0.0.1:3000', requestProtocol: 'http' })).toBe('http://localhost:3000')
+  })
+
+  it('normalizes ::1 to localhost in dev', () => {
+    expect(getBaseURL({ public: {} }, { isDev: true, isPrerender: false, env: {}, requestHost: '[::1]:3000', requestProtocol: 'http' })).toBe('http://localhost:3000')
+  })
+
+  it('normalizes explicit loopback siteUrl in dev', () => {
+    expect(getBaseURL({ public: { siteUrl: 'http://127.0.0.1:3000' } }, { isDev: true, isPrerender: false, env: {} })).toBe('http://localhost:3000')
+  })
+
+  it('does not normalize loopback hosts in production', () => {
+    expect(getBaseURL({ public: {} }, { isDev: false, isPrerender: false, env: {}, requestHost: '127.0.0.1:3000', requestProtocol: 'http' })).toBe('http://127.0.0.1:3000')
+  })
+
+  it('does not alter non-loopback hosts in dev', () => {
+    expect(getBaseURL({ public: {} }, { isDev: true, isPrerender: false, env: {}, requestHost: 'myapp.local:3000', requestProtocol: 'http' })).toBe('http://myapp.local:3000')
   })
 })
