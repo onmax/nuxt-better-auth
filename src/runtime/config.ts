@@ -1,5 +1,6 @@
 import type { BetterAuthOptions } from 'better-auth'
 import type { BetterAuthClientOptions } from 'better-auth/client'
+import type { DatabaseProvider } from '../database-provider'
 import type { CasingOption } from '../schema-generator'
 import type { ServerAuthContext } from './types/augment'
 import { createAuthClient } from 'better-auth/vue'
@@ -31,6 +32,13 @@ export interface BetterAuthModuleOptions {
   }
   /** Enable KV secondary storage for sessions. Requires hub.kv: true */
   secondaryStorage?: boolean
+  /** Database backend selection and provider-specific options */
+  database?: {
+    /** Explicit database provider. Default: auto (nuxthub when available, otherwise none) */
+    provider?: DatabaseProvider
+    /** Convex deployment URL override (highest priority for Convex provider) */
+    convexUrl?: string
+  }
   /** Schema generation options. Must match drizzleAdapter config. */
   schema?: {
     /** Plural table names: user → users. Default: false */
@@ -44,6 +52,7 @@ export interface BetterAuthModuleOptions {
 export interface AuthRuntimeConfig {
   redirects: { login: string, guest: string }
   useDatabase: boolean
+  databaseProvider: DatabaseProvider
   clientOnly: boolean
 }
 
