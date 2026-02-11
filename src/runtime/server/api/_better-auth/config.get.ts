@@ -6,9 +6,12 @@ export default defineEventHandler(async (event) => {
   try {
     const auth = serverAuth(event)
     const options = auth.options
+    const authContext = await ((auth as { $context?: Promise<{ trustedOrigins?: string[] }> | { trustedOrigins?: string[] } }).$context)
     const runtimeConfig = useRuntimeConfig()
     const publicAuth = runtimeConfig.public?.auth as { redirects?: { login?: string, guest?: string }, useDatabase?: boolean } | undefined
     const privateAuth = runtimeConfig.auth as { secondaryStorage?: boolean } | undefined
+    const configuredTrustedOrigins = Array.isArray(options.trustedOrigins) ? options.trustedOrigins : []
+    const effectiveTrustedOrigins = authContext?.trustedOrigins || configuredTrustedOrigins
 
     // Session config with sensible defaults display
     const sessionConfig = options.session || {}
@@ -29,7 +32,8 @@ export default defineEventHandler(async (event) => {
           basePath: options.basePath || '/api/auth',
           socialProviders: Object.keys(options.socialProviders || {}),
           plugins: (options.plugins || []).map((p: { id?: string }) => p.id || 'unknown'),
-          trustedOrigins: options.trustedOrigins || [],
+          trustedOrigins: effectiveTrustedOrigins,
+          configuredTrustedOrigins,
           session: {
             expiresIn: `${expiresInDays} days`,
             updateAge: `${updateAgeDays} days`,

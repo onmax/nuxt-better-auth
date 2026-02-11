@@ -11,10 +11,37 @@ import { withoutProtocol } from 'ufo'
 type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
 
 let _auth: AuthInstance | null = null
+let _baseURLInferenceLogged = false
+
+function normalizeLoopbackOrigin(origin: string): string {
+  if (!import.meta.dev)
+    return origin
+
+  try {
+    const url = new URL(origin)
+    if (url.hostname === '127.0.0.1' || url.hostname === '::1' || url.hostname === '[::1]') {
+      url.hostname = 'localhost'
+      return url.origin
+    }
+  }
+  catch {
+    // Invalid URL is handled by validateURL.
+  }
+
+  return origin
+}
+
+function logInferredBaseURL(baseURL: string, source: string): void {
+  if (!import.meta.dev || _baseURLInferenceLogged)
+    return
+
+  _baseURLInferenceLogged = true
+  console.warn(`[nuxt-better-auth] Using inferred baseURL "${baseURL}" from ${source}. Set runtimeConfig.public.siteUrl for deterministic OAuth callbacks.`)
+}
 
 function validateURL(url: string): string {
   try {
-    return new URL(url).origin
+    return normalizeLoopbackOrigin(new URL(url).origin)
   }
   catch {
     throw new Error(`Invalid siteUrl: "${url}". Must be a valid URL.`)
@@ -58,7 +85,14 @@ function getNitroOrigin(e?: H3Event): string | undefined {
   if (!host)
     return undefined
 
-  if (host.includes(':') && !host.startsWith('[')) {
+  if (host.startsWith('[') && host.includes(']:')) {
+    const lastBracketColon = host.lastIndexOf(']:')
+    const extractedPort = host.slice(lastBracketColon + 2)
+    host = host.slice(0, lastBracketColon + 1)
+    if (extractedPort)
+      port = extractedPort
+  }
+  else if (host.includes(':') && !host.startsWith('[')) {
     const hostParts = host.split(':')
     port = hostParts.pop()
     host = hostParts.join(':')
@@ -77,20 +111,35 @@ function getBaseURL(event?: H3Event): string {
 
   // 2. Nitro origin detection (handles dev proxy, request headers)
   const nitroOrigin = getNitroOrigin(event)
-  if (nitroOrigin)
-    return validateURL(nitroOrigin)
+  if (nitroOrigin) {
+    const inferredBaseURL = validateURL(nitroOrigin)
+    logInferredBaseURL(inferredBaseURL, 'Nitro/request origin detection')
+    return inferredBaseURL
+  }
 
   // 3. Platform env vars (fallback for non-request contexts)
-  if (process.env.VERCEL_URL)
-    return validateURL(`https://${process.env.VERCEL_URL}`)
-  if (process.env.CF_PAGES_URL)
-    return validateURL(`https://${process.env.CF_PAGES_URL}`)
-  if (process.env.URL)
-    return validateURL(process.env.URL.startsWith('http') ? process.env.URL : `https://${process.env.URL}`)
+  if (process.env.VERCEL_URL) {
+    const inferredBaseURL = validateURL(`https://${process.env.VERCEL_URL}`)
+    logInferredBaseURL(inferredBaseURL, 'VERCEL_URL')
+    return inferredBaseURL
+  }
+  if (process.env.CF_PAGES_URL) {
+    const inferredBaseURL = validateURL(`https://${process.env.CF_PAGES_URL}`)
+    logInferredBaseURL(inferredBaseURL, 'CF_PAGES_URL')
+    return inferredBaseURL
+  }
+  if (process.env.URL) {
+    const inferredBaseURL = validateURL(process.env.URL.startsWith('http') ? process.env.URL : `https://${process.env.URL}`)
+    logInferredBaseURL(inferredBaseURL, 'URL')
+    return inferredBaseURL
+  }
 
   // 4. Dev fallback
-  if (import.meta.dev)
-    return 'http://localhost:3000'
+  if (import.meta.dev) {
+    const inferredBaseURL = 'http://localhost:3000'
+    logInferredBaseURL(inferredBaseURL, 'development fallback')
+    return inferredBaseURL
+  }
 
   throw new Error('siteUrl required. Set NUXT_PUBLIC_SITE_URL.')
 }

@@ -36,6 +36,10 @@ export function setupRuntimeConfig(input: SetupRuntimeConfigInput): { secondaryS
   const secondaryStorageEnabled = resolveSecondaryStorageEnabled(input)
 
   nuxt.options.runtimeConfig.public = nuxt.options.runtimeConfig.public || {}
+  const configuredSiteUrl = nuxt.options.runtimeConfig.public.siteUrl as string | undefined
+  if (!configuredSiteUrl && process.env.NUXT_PUBLIC_SITE_URL)
+    nuxt.options.runtimeConfig.public.siteUrl = process.env.NUXT_PUBLIC_SITE_URL
+
   nuxt.options.runtimeConfig.public.auth = defu(nuxt.options.runtimeConfig.public.auth as Record<string, unknown>, {
     redirects: { login: options.redirects?.login ?? '/login', guest: options.redirects?.guest ?? '/' },
     useDatabase: databaseProvider !== 'none',
@@ -44,9 +48,9 @@ export function setupRuntimeConfig(input: SetupRuntimeConfigInput): { secondaryS
   }) as AuthRuntimeConfig
 
   if (clientOnly) {
-    const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || (nuxt.options.runtimeConfig.public.siteUrl as string)
+    const siteUrl = nuxt.options.runtimeConfig.public.siteUrl as string | undefined
     if (!siteUrl)
-      consola.warn('clientOnly mode: NUXT_PUBLIC_SITE_URL should be set to your frontend URL')
+      consola.warn('clientOnly mode: set runtimeConfig.public.siteUrl (or NUXT_PUBLIC_SITE_URL) to your frontend URL')
     consola.info('clientOnly mode enabled - server utilities (serverAuth, getUserSession, requireUserSession) are not available')
     return { secondaryStorageEnabled }
   }
