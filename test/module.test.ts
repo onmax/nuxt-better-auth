@@ -14,17 +14,9 @@ describe('nuxt-better-auth module', async () => {
       expect(html).toContain('Not logged in')
     })
 
-    it('exposes effective trusted origins in devtools config', async () => {
-      const response = await $fetch('/api/_better-auth/config') as {
-        config: {
-          server: {
-            trustedOrigins: string[]
-            configuredTrustedOrigins: string[]
-          }
-        }
-      }
-      expect(response.config.server.trustedOrigins).toContain('http://localhost:3000')
-      expect(response.config.server.configuredTrustedOrigins).toEqual([])
+    it('does not expose devtools config endpoint in production', async () => {
+      const response = await fetch(url('/api/_better-auth/config'))
+      expect(response.status).toBe(404)
     })
 
     it('exposes runtime database metadata as nuxthub', async () => {
