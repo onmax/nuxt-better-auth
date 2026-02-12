@@ -5,5 +5,3 @@
 ./config:
   defineClientAuth: function
   defineServerAuth: function
-./adapters/convex:
-  createConvexHttpAdapter: function

@@ -1,10 +1,9 @@
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { getAuthTables } from 'better-auth/db'
-import { twoFactor } from 'better-auth/plugins'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { defineClientAuth, defineServerAuth } from '../src/runtime/config'
-import { generateConvexSchema, generateDrizzleSchema, loadUserAuthConfig } from '../src/schema-generator'
+import { generateDrizzleSchema, loadUserAuthConfig } from '../src/schema-generator'
 
 const TEST_DIR = join(import.meta.dirname, '.test-configs')
 
@@ -90,17 +89,6 @@ describe('getAuthTables with secondaryStorage', () => {
     const tables = getAuthTables({})
     expect(tables).toHaveProperty('session')
     expect(tables).toHaveProperty('user')
-  })
-})
-
-describe('generateConvexSchema', () => {
-  it('includes plugin tables when plugin config is merged', async () => {
-    const userConfig = {}
-    const extendedPlugins = [twoFactor()]
-    const authOptions = { ...userConfig, plugins: extendedPlugins }
-    const schema = await generateConvexSchema(authOptions)
-
-    expect(schema).toContain('twoFactor: defineTable')
   })
 })
 

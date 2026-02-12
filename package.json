@@ -26,10 +26,6 @@
     "./config": {
       "types": "./dist/runtime/config.d.ts",
       "import": "./dist/runtime/config.js"
-    },
-    "./adapters/convex": {
-      "types": "./dist/runtime/adapters/convex.d.ts",
-      "import": "./dist/runtime/adapters/convex.js"
     }
   },
   "main": "./dist/module.mjs",
@@ -40,9 +36,6 @@
       ],
       "config": [
         "./dist/runtime/config.d.ts"
-      ],
-      "adapters/convex": [
-        "./dist/runtime/adapters/convex.d.ts"
       ]
     }
   },
@@ -67,14 +60,10 @@
   },
   "peerDependencies": {
     "@nuxthub/core": ">=0.10.5",
-    "better-auth": ">=1.0.0",
-    "convex": ">=1.25.0"
+    "better-auth": ">=1.0.0"
   },
   "peerDependenciesMeta": {
     "@nuxthub/core": {
-      "optional": true
-    },
-    "convex": {
       "optional": true
     }
   },
