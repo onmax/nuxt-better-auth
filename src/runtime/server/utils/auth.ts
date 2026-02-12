@@ -1,4 +1,4 @@
-import type { Auth } from 'better-auth'
+import type { Auth, BetterAuthOptions } from 'better-auth'
 import type { H3Event } from 'h3'
 import { createDatabase, db } from '#auth/database'
 import { createSecondaryStorage } from '#auth/secondary-storage'
@@ -8,7 +8,7 @@ import { getRequestHost, getRequestProtocol } from 'h3'
 import { useRuntimeConfig } from 'nitropack/runtime'
 import { withoutProtocol } from 'ufo'
 
-type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
+type AuthInstance = Auth<BetterAuthOptions>
 
 let _auth: AuthInstance | null = null
 let _baseURLInferenceLogged = false
@@ -24,9 +24,7 @@ function normalizeLoopbackOrigin(origin: string): string {
       return url.origin
     }
   }
-  catch {
-    // Invalid URL is handled by validateURL.
-  }
+  catch {}
 
   return origin
 }
@@ -48,11 +46,6 @@ function validateURL(url: string): string {
   }
 }
 
-/**
- * Get the Nitro origin URL.
- * Adapted from nuxt-site-config by @harlan-zw
- * @see https://github.com/harlan-zw/nuxt-site-config/blob/main/packages/kit/src/util.ts
- */
 function getNitroOrigin(e?: H3Event): string | undefined {
   const cert = process.env.NITRO_SSL_CERT
   const key = process.env.NITRO_SSL_KEY
@@ -78,9 +71,7 @@ function getNitroOrigin(e?: H3Event): string | undefined {
       protocol = getRequestProtocol(e, { xForwardedProto: true }) || protocol
     }
   }
-  catch {
-    // JSON parse failed, continue with env fallbacks
-  }
+  catch {}
 
   if (!host)
     return undefined
@@ -105,11 +96,9 @@ function getNitroOrigin(e?: H3Event): string | undefined {
 function getBaseURL(event?: H3Event): string {
   const config = useRuntimeConfig()
 
-  // 1. Explicit config (highest priority)
   if (config.public.siteUrl && typeof config.public.siteUrl === 'string')
     return validateURL(config.public.siteUrl)
 
-  // 2. Nitro origin detection (handles dev proxy, request headers)
   const nitroOrigin = getNitroOrigin(event)
   if (nitroOrigin) {
     const inferredBaseURL = validateURL(nitroOrigin)
@@ -117,7 +106,6 @@ function getBaseURL(event?: H3Event): string {
     return inferredBaseURL
   }
 
-  // 3. Platform env vars (fallback for non-request contexts)
   if (process.env.VERCEL_URL) {
     const inferredBaseURL = validateURL(`https://${process.env.VERCEL_URL}`)
     logInferredBaseURL(inferredBaseURL, 'VERCEL_URL')
@@ -134,7 +122,6 @@ function getBaseURL(event?: H3Event): string {
     return inferredBaseURL
   }
 
-  // 4. Dev fallback
   if (import.meta.dev) {
     const inferredBaseURL = 'http://localhost:3000'
     logInferredBaseURL(inferredBaseURL, 'development fallback')
@@ -144,7 +131,6 @@ function getBaseURL(event?: H3Event): string {
   throw new Error('siteUrl required. Set NUXT_PUBLIC_SITE_URL.')
 }
 
-/** Returns Better Auth instance. Pass event for accurate URL detection on first call. */
 export function serverAuth(event?: H3Event): AuthInstance {
   if (_auth)
     return _auth
@@ -156,12 +142,12 @@ export function serverAuth(event?: H3Event): AuthInstance {
   const userConfig = createServerAuth({ runtimeConfig, db })
 
   _auth = betterAuth({
-    ...userConfig,
+    ...(userConfig as unknown as BetterAuthOptions),
     ...(database && { database }),
     secondaryStorage: createSecondaryStorage(),
     secret: runtimeConfig.betterAuthSecret,
     baseURL: siteUrl,
-  })
+  }) as AuthInstance
 
   return _auth
 }

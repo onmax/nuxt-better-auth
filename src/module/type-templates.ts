@@ -1,13 +1,13 @@
 import { addTypeTemplate } from '@nuxt/kit'
+import { nuxtBetterAuthInferTemplate } from './templates/nuxt-better-auth-infer-template'
 
 interface RegisterServerTypeTemplatesInput {
-  serverConfigPath: string
   hasHubDb: boolean
   runtimeTypesPath: string
 }
 
 export function registerServerTypeTemplates(input: RegisterServerTypeTemplatesInput): void {
-  const { serverConfigPath, hasHubDb, runtimeTypesPath } = input
+  const { hasHubDb, runtimeTypesPath } = input
 
   addTypeTemplate({
     filename: 'types/auth-secondary-storage.d.ts',
@@ -36,34 +36,9 @@ declare module '#auth/database' {
 
   addTypeTemplate({
     filename: 'types/nuxt-better-auth-infer.d.ts',
-    getContents: () => `
-import type { InferUser, InferSession, InferPluginTypes } from 'better-auth'
-import type { RuntimeConfig } from 'nuxt/schema'
-import type createServerAuth from '${serverConfigPath}'
-
-type _Config = ReturnType<typeof createServerAuth>
-
-declare module '#nuxt-better-auth' {
-  interface AuthUser extends InferUser<_Config> {}
-  interface AuthSession extends InferSession<_Config> {}
-  interface ServerAuthContext {
-    runtimeConfig: RuntimeConfig
-    ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : ''}
-  }
-  type PluginTypes = InferPluginTypes<_Config>
-}
-
-interface _AugmentedServerAuthContext {
-  runtimeConfig: RuntimeConfig
-  ${hasHubDb ? `db: typeof import('@nuxthub/db')['db']` : 'db: unknown'}
-}
-
-declare module '@onmax/nuxt-better-auth/config' {
-  import type { BetterAuthOptions } from 'better-auth'
-  type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
-  export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: _AugmentedServerAuthContext) => T)): (ctx: _AugmentedServerAuthContext) => T
-}
-`,
+    getContents: () => nuxtBetterAuthInferTemplate
+      .replaceAll('__RUNTIME_TYPES_PATH__', runtimeTypesPath)
+      .replaceAll('__DB_TYPE__', hasHubDb ? `typeof import('@nuxthub/db')['db']` : 'unknown'),
   }, { nuxt: true, nitro: true, node: true })
 
   addTypeTemplate({

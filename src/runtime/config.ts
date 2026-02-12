@@ -5,20 +5,20 @@ import type { CasingOption } from '../schema-generator'
 import type { ServerAuthContext } from './types/augment'
 import { createAuthClient } from 'better-auth/vue'
 
-// Re-export for declaration merging with generated types
 export type { ServerAuthContext }
 
 export interface ClientAuthContext {
   siteUrl: string
 }
 
-export type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
+export type ServerAuthConfigBase = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL' | 'plugins'>
+export type ServerAuthConfig = ServerAuthConfigBase
 export type ClientAuthConfig = Omit<BetterAuthClientOptions, 'baseURL'> & { baseURL?: string }
+type ServerAuthConfigWithPlugins = ServerAuthConfigBase & { plugins: readonly unknown[] }
 
 export type ServerAuthConfigFn = (ctx: ServerAuthContext) => ServerAuthConfig
 export type ClientAuthConfigFn = (ctx: ClientAuthContext) => ClientAuthConfig
 
-// Module options for nuxt.config.ts
 export interface BetterAuthModuleOptions {
   /** Client-only mode - skip server setup for external auth backends */
   clientOnly?: boolean
@@ -58,7 +58,6 @@ export interface BetterAuthModuleOptions {
   }
 }
 
-// Runtime config type for public.auth
 export interface AuthRuntimeConfig {
   redirects: { login: string, guest: string }
   useDatabase: boolean
@@ -67,12 +66,15 @@ export interface AuthRuntimeConfig {
   session: { skipHydratedSsrGetSession: boolean }
 }
 
-// Private runtime config (server-only)
 export interface AuthPrivateRuntimeConfig {
   secondaryStorage: boolean
 }
 
-export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T {
+export function defineServerAuth<const R extends ServerAuthConfigWithPlugins>(config: R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R extends ServerAuthConfigWithPlugins>(config: (ctx: ServerAuthContext) => R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R extends ServerAuthConfigBase>(config: R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R extends ServerAuthConfigBase>(config: (ctx: ServerAuthContext) => R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<T extends ServerAuthConfigBase>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T {
   return typeof config === 'function' ? config : () => config
 }
 

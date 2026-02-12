@@ -3,6 +3,7 @@ import type { AuthSession, AuthUser } from './types/augment'
 
 // Re-export augmentable types
 export type { AuthSession, AuthUser, ServerAuthContext, UserSessionComposable } from './types/augment'
+export type { BetterAuthConfigFromServerConfig, SessionFieldsFromConfig, UserFieldsFromConfig } from './types/infer'
 
 // Re-export better-auth types for $Infer access
 export type { Auth, InferPluginTypes, InferSession, InferUser } from 'better-auth'

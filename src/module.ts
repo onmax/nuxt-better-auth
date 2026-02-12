@@ -164,7 +164,6 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
       nuxt.options.alias['#auth/database'] = databaseTemplate.dst
 
       registerServerTypeTemplates({
-        serverConfigPath,
         hasHubDb,
         runtimeTypesPath: resolver.resolve('./runtime/types'),
       })
