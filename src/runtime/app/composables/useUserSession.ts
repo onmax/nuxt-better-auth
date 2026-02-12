@@ -1,9 +1,12 @@
 import type { AppAuthClient, AuthSession, AuthUser } from '#nuxt-better-auth'
 import type { ComputedRef, Ref } from 'vue'
 import createAppAuthClient from '#auth/client'
-import { computed, nextTick, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
+import { computed, nextTick, useNuxtApp, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
 
 export interface SignOutOptions { onSuccess?: () => void | Promise<void> }
+interface RuntimeFlags { client: boolean, server: boolean }
+
+let _sessionSignalListenerBound = false
 
 export interface UseUserSessionReturn {
   client: AppAuthClient | null
@@ -27,12 +30,37 @@ function getClient(baseURL: string): AppAuthClient {
   return _client
 }
 
+function getRuntimeFlags(): RuntimeFlags {
+  const globalFlags = (globalThis as { __NUXT_BETTER_AUTH_TEST_FLAGS__?: RuntimeFlags }).__NUXT_BETTER_AUTH_TEST_FLAGS__
+  if (globalFlags)
+    return globalFlags
+  return { client: Boolean(import.meta.client), server: Boolean(import.meta.server) }
+}
+
+function ensureSessionSignalListener(client: AppAuthClient, onSignal: () => Promise<void>) {
+  if (_sessionSignalListenerBound)
+    return
+
+  const store = (client as any).$store as { listen?: (signal: string, cb: () => void | Promise<void>) => unknown } | undefined
+  if (!store?.listen)
+    return
+
+  _sessionSignalListenerBound = true
+  store.listen('$sessionSignal', async () => {
+    try {
+      await onSignal()
+    }
+    catch {}
+  })
+}
+
 export function useUserSession(): UseUserSessionReturn {
+  const runtimeFlags = getRuntimeFlags()
   const runtimeConfig = useRuntimeConfig()
   const requestURL = useRequestURL()
 
   // Client only - create better-auth client for client-side operations (singleton)
-  const client: AppAuthClient | null = import.meta.client
+  const client: AppAuthClient | null = runtimeFlags.client
     ? getClient(runtimeConfig.public.siteUrl || requestURL.origin)
     : null
 
@@ -42,6 +70,28 @@ export function useUserSession(): UseUserSessionReturn {
   const authReady = useState('auth:ready', () => false)
   const ready = computed(() => authReady.value)
   const loggedIn = computed(() => Boolean(session.value && user.value))
+
+  const nuxtApp = useNuxtApp()
+  const skipHydratedSsrGetSession = computed(() => {
+    const authConfig = runtimeConfig.public.auth as { session?: { skipHydratedSsrGetSession?: boolean } } | undefined
+    return Boolean(authConfig?.session?.skipHydratedSsrGetSession)
+  })
+  const shouldSkipInitialClientSessionFetch = computed(() => {
+    if (!skipHydratedSsrGetSession.value)
+      return false
+    if (!runtimeFlags.client)
+      return false
+    if (!nuxtApp.payload.serverRendered)
+      return false
+    // Don't skip for prerendered/cached payloads; we want a real session check after mount.
+    if (nuxtApp.payload.prerenderedAt || nuxtApp.payload.isCached)
+      return false
+    // SSR already hydrated state: avoid duplicate /api/auth/get-session on first paint.
+    return Boolean(session.value && user.value)
+  })
+
+  if (shouldSkipInitialClientSessionFetch.value && !authReady.value)
+    authReady.value = true
 
   function clearSession() {
     session.value = null
@@ -55,7 +105,7 @@ export function useUserSession(): UseUserSessionReturn {
 
   // On client, subscribe to better-auth's reactive session store
   // This auto-updates when signIn/signUp/signOut triggers the session signal
-  if (import.meta.client && client) {
+  if (runtimeFlags.client && client && !shouldSkipInitialClientSessionFetch.value) {
     const clientSession = client.useSession()
 
     // Sync better-auth's reactive session to our useState
@@ -161,7 +211,7 @@ export function useUserSession(): UseUserSessionReturn {
 
   async function fetchSession(options: { headers?: HeadersInit, force?: boolean } = {}) {
     // On server, session is already fetched by server middleware - nothing to do
-    if (import.meta.server) {
+    if (runtimeFlags.server) {
       if (!authReady.value)
         authReady.value = true
       return
@@ -194,6 +244,10 @@ export function useUserSession(): UseUserSessionReturn {
           authReady.value = true
       }
     }
+  }
+
+  if (runtimeFlags.client && client && shouldSkipInitialClientSessionFetch.value) {
+    ensureSessionSignalListener(client, () => fetchSession({ force: true }))
   }
 
   async function signOut(options?: SignOutOptions) {

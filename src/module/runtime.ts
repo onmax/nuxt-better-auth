@@ -45,6 +45,9 @@ export function setupRuntimeConfig(input: SetupRuntimeConfigInput): { secondaryS
     useDatabase: databaseProvider !== 'none',
     databaseProvider,
     clientOnly,
+    session: {
+      skipHydratedSsrGetSession: options.session?.skipHydratedSsrGetSession ?? false,
+    },
   }) as AuthRuntimeConfig
 
   if (clientOnly) {
