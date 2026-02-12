@@ -30,6 +30,16 @@ export interface BetterAuthModuleOptions {
     login?: string // default: '/login'
     guest?: string // default: '/'
   }
+  session?: {
+    /**
+     * When enabled, and session/user are already hydrated from SSR, skip the initial
+     * client `/api/auth/get-session` bootstrap request. This also skips Better Auth's
+     * session refresh manager on those pages.
+     *
+     * Default: false
+     */
+    skipHydratedSsrGetSession?: boolean
+  }
   /** Enable KV secondary storage for sessions. Requires hub.kv: true */
   secondaryStorage?: boolean
   /** Database backend selection and provider-specific options */
@@ -54,6 +64,7 @@ export interface AuthRuntimeConfig {
   useDatabase: boolean
   databaseProvider: DatabaseProvider
   clientOnly: boolean
+  session: { skipHydratedSsrGetSession: boolean }
 }
 
 // Private runtime config (server-only)
