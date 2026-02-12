@@ -19,7 +19,7 @@ export interface UseUserSessionReturn {
   signOut: (options?: SignOutOptions) => Promise<void>
   waitForSession: () => Promise<void>
   fetchSession: (options?: { headers?: HeadersInit, force?: boolean }) => Promise<void>
-  updateUser: (updates: Partial<AuthUser>) => void
+  updateUser: (updates: Partial<AuthUser>) => Promise<void>
 }
 
 // Singleton client instance to ensure consistent state across all useUserSession calls
@@ -98,9 +98,20 @@ export function useUserSession(): UseUserSessionReturn {
     user.value = null
   }
 
-  function updateUser(updates: Partial<AuthUser>) {
-    if (user.value)
-      user.value = { ...user.value, ...updates }
+  async function updateUser(updates: Partial<AuthUser>) {
+    if (!user.value)
+      return
+    const prev = user.value
+    user.value = { ...user.value, ...updates }
+    if (client) {
+      try {
+        await (client as any).updateUser(updates)
+      }
+      catch (e) {
+        user.value = prev
+        throw e
+      }
+    }
   }
 
   // On client, subscribe to better-auth's reactive session store

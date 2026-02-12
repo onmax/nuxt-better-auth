@@ -36,7 +36,7 @@ const sessionAtom = ref<SessionState>({
   error: null,
 })
 
-const mockClient = {
+const mockClient: Record<string, any> = {
   useSession: vi.fn(() => sessionAtom),
   getSession: vi.fn(async () => ({ data: null })),
   $store: {
@@ -201,6 +201,36 @@ describe('useUserSession hydration bootstrap', () => {
     expect(mockClient.getSession).toHaveBeenCalledOnce()
     expect(auth.session.value).toEqual({ id: 'session-2', ipAddress: '127.0.0.1' })
     expect(auth.user.value).toEqual({ id: 'user-2', email: 'user@example.com' })
+  })
+
+  it('updateUser persists to server and updates local state optimistically', async () => {
+    mockClient.updateUser = vi.fn(async () => ({ data: { status: true } }))
+    const useUserSession = await loadUseUserSession()
+    const auth = useUserSession()
+    auth.user.value = { id: 'user-1', name: 'Old', email: 'a@b.com' }
+    await auth.updateUser({ name: 'New' })
+    expect(mockClient.updateUser).toHaveBeenCalledWith({ name: 'New' })
+    expect(auth.user.value!.name).toBe('New')
+  })
+
+  it('updateUser reverts local state on server error', async () => {
+    mockClient.updateUser = vi.fn(async () => {
+      throw new Error('fail')
+    })
+    const useUserSession = await loadUseUserSession()
+    const auth = useUserSession()
+    auth.user.value = { id: 'user-1', name: 'Old', email: 'a@b.com' }
+    await expect(auth.updateUser({ name: 'New' })).rejects.toThrow('fail')
+    expect(auth.user.value!.name).toBe('Old')
+  })
+
+  it('updateUser only updates local state on server (no client)', async () => {
+    setRuntimeFlags({ client: false, server: true })
+    const useUserSession = await loadUseUserSession()
+    const auth = useUserSession()
+    auth.user.value = { id: 'user-1', name: 'Old', email: 'a@b.com' }
+    await auth.updateUser({ name: 'New' })
+    expect(auth.user.value!.name).toBe('New')
   })
 
   it('syncs session on $sessionSignal when option is enabled and SSR payload is hydrated', async () => {
