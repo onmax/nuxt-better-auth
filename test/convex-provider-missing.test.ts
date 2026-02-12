@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { describe, expect, it } from 'vitest'
 import { x } from 'tinyexec'
+import { describe, expect, it } from 'vitest'
 
 describe('convex provider', () => {
   it('throws when provider is selected but not registered', async () => {

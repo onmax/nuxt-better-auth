@@ -1,8 +1,8 @@
-import type { BetterAuthOptions } from 'better-auth'
 import type { Nuxt } from '@nuxt/schema'
-import type { BetterAuthModuleOptions } from '../runtime/config'
+import type { BetterAuthOptions } from 'better-auth'
 import type { DatabaseProvider } from '../database-provider'
 import type { DbDialect } from '../module/hub'
+import type { BetterAuthModuleOptions } from '../runtime/config'
 
 export interface BetterAuthDatabaseProviderBuildContext {
   hubDialect: DbDialect
