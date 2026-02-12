@@ -12,8 +12,10 @@ export interface ClientAuthContext {
   siteUrl: string
 }
 
-export type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
+export type ServerAuthConfigBase = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL' | 'plugins'>
+export type ServerAuthConfig = ServerAuthConfigBase
 export type ClientAuthConfig = Omit<BetterAuthClientOptions, 'baseURL'> & { baseURL?: string }
+type ServerAuthConfigWithPlugins = ServerAuthConfigBase & { plugins: readonly unknown[] }
 
 export type ServerAuthConfigFn = (ctx: ServerAuthContext) => ServerAuthConfig
 export type ClientAuthConfigFn = (ctx: ClientAuthContext) => ClientAuthConfig
@@ -72,7 +74,11 @@ export interface AuthPrivateRuntimeConfig {
   secondaryStorage: boolean
 }
 
-export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T {
+export function defineServerAuth<const R extends ServerAuthConfigWithPlugins>(config: R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R extends ServerAuthConfigWithPlugins>(config: (ctx: ServerAuthContext) => R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R extends ServerAuthConfigBase>(config: R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R extends ServerAuthConfigBase>(config: (ctx: ServerAuthContext) => R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<T extends ServerAuthConfigBase>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T {
   return typeof config === 'function' ? config : () => config
 }
 
