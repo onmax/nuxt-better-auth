@@ -25,7 +25,7 @@ function customAdminLikePlugin() {
 
 export default defineServerAuth({
   emailAndPassword: { enabled: true },
-  plugins: [customAdminLikePlugin()],
+  plugins: [customAdminLikePlugin()] as const,
   user: {
     additionalFields: {
       internalCode: {
