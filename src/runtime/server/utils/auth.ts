@@ -1,5 +1,6 @@
 import type { Auth } from 'better-auth'
 import type { H3Event } from 'h3'
+import type { EffectiveDatabaseProviderId, ModuleDatabaseProviderId } from '../../config'
 import { createDatabase, db } from '#auth/database'
 import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
@@ -12,6 +13,8 @@ type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
 
 let _auth: AuthInstance | null = null
 let _baseURLInferenceLogged = false
+let _databaseSource: 'module' | 'user' = 'module'
+let _databaseProvider: EffectiveDatabaseProviderId = 'none'
 
 function normalizeLoopbackOrigin(origin: string): string {
   if (!import.meta.dev)
@@ -151,9 +154,14 @@ export function serverAuth(event?: H3Event): AuthInstance {
 
   const runtimeConfig = useRuntimeConfig()
   const siteUrl = getBaseURL(event)
+  const moduleDatabaseProvider = (
+    (runtimeConfig.public?.auth as { databaseProvider?: ModuleDatabaseProviderId } | undefined)?.databaseProvider
+  ) ?? 'none'
 
-  const database = createDatabase()
   const userConfig = createServerAuth({ runtimeConfig, db })
+  const database = userConfig.database ?? createDatabase()
+  _databaseSource = userConfig.database ? 'user' : 'module'
+  _databaseProvider = userConfig.database ? 'user' : moduleDatabaseProvider
 
   _auth = betterAuth({
     ...userConfig,
@@ -164,4 +172,12 @@ export function serverAuth(event?: H3Event): AuthInstance {
   })
 
   return _auth
+}
+
+export function getDatabaseSource(): 'module' | 'user' {
+  return _databaseSource
+}
+
+export function getDatabaseProvider(): EffectiveDatabaseProviderId {
+  return _databaseProvider
 }

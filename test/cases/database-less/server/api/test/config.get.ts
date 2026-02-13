@@ -1,9 +1,12 @@
-export default defineEventHandler(() => {
-  const runtimeConfig = useRuntimeConfig()
-  const auth = runtimeConfig.public.auth as { useDatabase?: boolean, databaseProvider?: string } | undefined
+import { getDatabaseProvider, getDatabaseSource, serverAuth } from '../../../../../../src/runtime/server/utils/auth'
+
+export default defineEventHandler((event) => {
+  serverAuth(event)
+  const databaseProvider = getDatabaseProvider()
 
   return {
-    useDatabase: auth?.useDatabase ?? false,
-    databaseProvider: auth?.databaseProvider ?? 'none',
+    useDatabase: databaseProvider !== 'none',
+    databaseProvider,
+    databaseSource: getDatabaseSource(),
   }
 })
