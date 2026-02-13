@@ -44,5 +44,5 @@ export interface UserSessionComposable {
   fetchSession: (options?: { headers?: HeadersInit, force?: boolean }) => Promise<void>
   waitForSession: () => Promise<void>
   signOut: (options?: { onSuccess?: () => void | Promise<void> }) => Promise<void>
-  updateUser: (updates: Partial<AuthUser>) => void
+  updateUser: (updates: Partial<AuthUser>) => Promise<void>
 }

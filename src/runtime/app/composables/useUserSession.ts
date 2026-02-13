@@ -19,11 +19,13 @@ export interface UseUserSessionReturn {
   signOut: (options?: SignOutOptions) => Promise<void>
   waitForSession: () => Promise<void>
   fetchSession: (options?: { headers?: HeadersInit, force?: boolean }) => Promise<void>
-  updateUser: (updates: Partial<AuthUser>) => void
+  updateUser: (updates: Partial<AuthUser>) => Promise<void>
 }
 
 // Singleton client instance to ensure consistent state across all useUserSession calls
 let _client: AppAuthClient | null = null
+interface UpdateUserResponse { error?: unknown }
+
 function getClient(baseURL: string): AppAuthClient {
   if (!_client)
     _client = createAppAuthClient(baseURL)
@@ -98,9 +100,33 @@ export function useUserSession(): UseUserSessionReturn {
     user.value = null
   }
 
-  function updateUser(updates: Partial<AuthUser>) {
-    if (user.value)
-      user.value = { ...user.value, ...updates }
+  async function updateUser(updates: Partial<AuthUser>) {
+    if (!user.value)
+      return
+
+    const previousUser = user.value
+    user.value = { ...user.value, ...updates }
+
+    if (!client)
+      return
+
+    try {
+      const clientWithUpdateUser = client as AppAuthClient & { updateUser: (updates: Partial<AuthUser>) => Promise<UpdateUserResponse> }
+      const result = await clientWithUpdateUser.updateUser(updates)
+      if (result?.error) {
+        if (typeof result.error === 'string')
+          throw new Error(result.error)
+        if (result.error instanceof Error)
+          throw result.error
+        if (typeof result.error === 'object' && result.error && 'message' in result.error && typeof result.error.message === 'string')
+          throw new Error(result.error.message)
+        throw new Error('Failed to update user')
+      }
+    }
+    catch (error) {
+      user.value = previousUser
+      throw error
+    }
   }
 
   // On client, subscribe to better-auth's reactive session store
