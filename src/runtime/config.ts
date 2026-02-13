@@ -1,4 +1,4 @@
-import type { BetterAuthOptions } from 'better-auth'
+import type { BetterAuthOptions, BetterAuthPlugin } from 'better-auth'
 import type { BetterAuthClientOptions } from 'better-auth/client'
 import type { DatabaseProvider } from '../database-provider'
 import type { CasingOption } from '../schema-generator'
@@ -12,7 +12,9 @@ export interface ClientAuthContext {
   siteUrl: string
 }
 
-export type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
+export type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'> & {
+  plugins?: readonly BetterAuthPlugin[]
+}
 export type ClientAuthConfig = Omit<BetterAuthClientOptions, 'baseURL'> & { baseURL?: string }
 
 export type ServerAuthConfigFn = (ctx: ServerAuthContext) => ServerAuthConfig
@@ -72,6 +74,8 @@ export interface AuthPrivateRuntimeConfig {
   secondaryStorage: boolean
 }
 
+export function defineServerAuth<const R extends ServerAuthConfig>(config: R): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R extends ServerAuthConfig>(config: (ctx: ServerAuthContext) => R): (ctx: ServerAuthContext) => R
 export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T {
   return typeof config === 'function' ? config : () => config
 }
