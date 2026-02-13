@@ -10,7 +10,7 @@ import { withoutProtocol } from 'ufo'
 
 type AuthInstance = Auth<ReturnType<typeof createServerAuth>>
 
-let _auth: AuthInstance | null = null
+const _authCache = new Map<string, AuthInstance>()
 let _baseURLInferenceLogged = false
 
 function normalizeLoopbackOrigin(origin: string): string {
@@ -144,18 +144,21 @@ function getBaseURL(event?: H3Event): string {
   throw new Error('siteUrl required. Set NUXT_PUBLIC_SITE_URL.')
 }
 
-/** Returns Better Auth instance. Pass event for accurate URL detection on first call. */
+/** Returns Better Auth instance. Caches per resolved host (or single instance when siteUrl is explicit). */
 export function serverAuth(event?: H3Event): AuthInstance {
-  if (_auth)
-    return _auth
-
   const runtimeConfig = useRuntimeConfig()
   const siteUrl = getBaseURL(event)
+  const hasExplicitSiteUrl = runtimeConfig.public.siteUrl && typeof runtimeConfig.public.siteUrl === 'string'
+  const cacheKey = hasExplicitSiteUrl ? '__explicit__' : siteUrl
+
+  const cached = _authCache.get(cacheKey)
+  if (cached)
+    return cached
 
   const database = createDatabase()
   const userConfig = createServerAuth({ runtimeConfig, db })
 
-  _auth = betterAuth({
+  const auth = betterAuth({
     ...userConfig,
     ...(database && { database }),
     secondaryStorage: createSecondaryStorage(),
@@ -163,5 +166,6 @@ export function serverAuth(event?: H3Event): AuthInstance {
     baseURL: siteUrl,
   })
 
-  return _auth
+  _authCache.set(cacheKey, auth)
+  return auth
 }
