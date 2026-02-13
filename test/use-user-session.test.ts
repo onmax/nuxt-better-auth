@@ -108,6 +108,7 @@ describe('useUserSession hydration bootstrap', () => {
     mockClient.getSession.mockClear()
     mockClient.$store.listen.mockClear()
     mockClient.signOut.mockClear()
+    mockClient.updateUser = undefined
     mockClient.signIn.social.mockClear()
     mockClient.signIn.email.mockClear()
     mockClient.signUp.email.mockClear()
@@ -224,6 +225,15 @@ describe('useUserSession hydration bootstrap', () => {
     expect(auth.user.value!.name).toBe('Old')
   })
 
+  it('updateUser reverts local state when server returns an error payload', async () => {
+    mockClient.updateUser = vi.fn(async () => ({ error: { message: 'invalid user update' } }))
+    const useUserSession = await loadUseUserSession()
+    const auth = useUserSession()
+    auth.user.value = { id: 'user-1', name: 'Old', email: 'a@b.com' }
+
+    await expect(auth.updateUser({ name: 'New' })).rejects.toThrow('invalid user update')
+    expect(auth.user.value!.name).toBe('Old')
+  })
   it('updateUser only updates local state on server (no client)', async () => {
     setRuntimeFlags({ client: false, server: true })
     const useUserSession = await loadUseUserSession()

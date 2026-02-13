@@ -24,6 +24,8 @@ export interface UseUserSessionReturn {
 
 // Singleton client instance to ensure consistent state across all useUserSession calls
 let _client: AppAuthClient | null = null
+interface UpdateUserResponse { error?: unknown }
+
 function getClient(baseURL: string): AppAuthClient {
   if (!_client)
     _client = createAppAuthClient(baseURL)
@@ -101,16 +103,28 @@ export function useUserSession(): UseUserSessionReturn {
   async function updateUser(updates: Partial<AuthUser>) {
     if (!user.value)
       return
-    const prev = user.value
+    const previousUser = user.value
     user.value = { ...user.value, ...updates }
-    if (client) {
-      try {
-        await (client as any).updateUser(updates)
+
+    if (!client)
+      return
+
+    try {
+      const clientWithUpdateUser = client as AppAuthClient & { updateUser: (updates: Partial<AuthUser>) => Promise<UpdateUserResponse> }
+      const result = await clientWithUpdateUser.updateUser(updates)
+      if (result?.error) {
+        if (typeof result.error === 'string')
+          throw new Error(result.error)
+        if (result.error instanceof Error)
+          throw result.error
+        if (typeof result.error === 'object' && result.error && 'message' in result.error && typeof result.error.message === 'string')
+          throw new Error(result.error.message)
+        throw new Error('Failed to update user')
       }
-      catch (e) {
-        user.value = prev
-        throw e
-      }
+    }
+    catch (error) {
+      user.value = previousUser
+      throw error
     }
   }
 
