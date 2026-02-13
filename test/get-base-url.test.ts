@@ -118,44 +118,67 @@ function dedupeOrigins(origins: readonly string[]): string[] {
   return [...new Set(origins)]
 }
 
-function getDevLocalhostOrigin(options: GetNitroOriginOptions): string {
+function getDevTrustedOrigins(options: GetNitroOriginOptions): string[] {
   const fallbackOrigin = 'http://localhost:3000'
   const nitroOrigin = getNitroOrigin(options)
   if (!nitroOrigin)
-    return fallbackOrigin
+    return [fallbackOrigin]
 
   try {
     const parsed = new URL(nitroOrigin)
     const protocol = parsed.protocol === 'https:' ? 'https' : 'http'
     const port = parsed.port || '3000'
-    return `${protocol}://localhost:${port}`
+    const localhostOrigin = `${protocol}://localhost:${port}`
+    return dedupeOrigins([localhostOrigin, parsed.origin])
   }
   catch {
-    return fallbackOrigin
+    return [fallbackOrigin]
   }
 }
 
-function withDevLocalhostTrustedOrigin(
+function getRequestOrigin(request?: Request): string | undefined {
+  if (!request)
+    return undefined
+
+  try {
+    return new URL(request.url).origin
+  }
+  catch {
+    return undefined
+  }
+}
+
+function withDevTrustedOrigins(
   trustedOrigins: TrustedOrigins,
   options: GetNitroOriginOptions & { hasExplicitSiteUrl: boolean },
 ): TrustedOrigins {
   if (!options.isDev || !options.hasExplicitSiteUrl)
     return trustedOrigins
 
-  const localhostOrigin = getDevLocalhostOrigin(options)
-
-  if (Array.isArray(trustedOrigins))
-    return dedupeOrigins([...trustedOrigins, localhostOrigin])
+  const devOrigins = getDevTrustedOrigins(options)
+  const mergeOrigins = (origins: readonly (string | null | undefined)[], request?: Request): string[] => {
+    const validOrigins = origins.filter((origin): origin is string => typeof origin === 'string')
+    const requestOrigin = getRequestOrigin(request)
+    return dedupeOrigins(requestOrigin ? [...validOrigins, ...devOrigins, requestOrigin] : [...validOrigins, ...devOrigins])
+  }
 
   if (typeof trustedOrigins === 'function') {
     return async (request?: Request) => {
       const resolvedOrigins = await trustedOrigins(request)
-      const validOrigins = resolvedOrigins.filter((origin): origin is string => typeof origin === 'string')
-      return dedupeOrigins([...validOrigins, localhostOrigin])
+      return mergeOrigins(resolvedOrigins, request)
     }
   }
 
-  return [localhostOrigin]
+  if (Array.isArray(trustedOrigins)) {
+    const baseOrigins = mergeOrigins(trustedOrigins)
+    return async (request?: Request) => {
+      return mergeOrigins(baseOrigins, request)
+    }
+  }
+
+  return async (request?: Request) => {
+    return mergeOrigins([], request)
+  }
 }
 
 describe('getBaseURL', () => {
@@ -241,9 +264,9 @@ describe('getBaseURL', () => {
   })
 })
 
-describe('withDevLocalhostTrustedOrigin', () => {
-  it('appends detected localhost origin with detected port', () => {
-    const trustedOrigins = withDevLocalhostTrustedOrigin(undefined, {
+describe('withDevTrustedOrigins', () => {
+  it('adds detected localhost origin with detected port', async () => {
+    const trustedOrigins = withDevTrustedOrigins(undefined, {
       isDev: true,
       isPrerender: false,
       hasExplicitSiteUrl: true,
@@ -252,11 +275,15 @@ describe('withDevLocalhostTrustedOrigin', () => {
       },
     })
 
-    expect(trustedOrigins).toEqual(['http://localhost:4123'])
+    expect(typeof trustedOrigins).toBe('function')
+    if (typeof trustedOrigins !== 'function')
+      throw new Error('trustedOrigins should be a function')
+    const resolvedOrigins = await trustedOrigins()
+    expect(resolvedOrigins).toEqual(['http://localhost:4123', 'http://127.0.0.1:4123'])
   })
 
-  it('preserves and deduplicates configured trustedOrigins arrays', () => {
-    const trustedOrigins = withDevLocalhostTrustedOrigin(['https://foo.workers.dev', 'http://localhost:3001'], {
+  it('preserves and deduplicates configured trustedOrigins arrays', async () => {
+    const trustedOrigins = withDevTrustedOrigins(['https://foo.workers.dev', 'http://localhost:3001'], {
       isDev: true,
       isPrerender: false,
       hasExplicitSiteUrl: true,
@@ -266,17 +293,21 @@ describe('withDevLocalhostTrustedOrigin', () => {
       },
     })
 
-    expect(trustedOrigins).toEqual(['https://foo.workers.dev', 'http://localhost:3001'])
+    expect(typeof trustedOrigins).toBe('function')
+    if (typeof trustedOrigins !== 'function')
+      throw new Error('trustedOrigins should be a function')
+    const resolvedOrigins = await trustedOrigins()
+    expect(resolvedOrigins).toEqual(['https://foo.workers.dev', 'http://localhost:3001'])
   })
 
-  it('wraps trustedOrigins functions and appends localhost origin', async () => {
+  it('wraps trustedOrigins functions and appends dev origins', async () => {
     const trustedOriginsFn = vi.fn(async () => ['https://foo.workers.dev', undefined, null, 'http://localhost:3002'])
-    const trustedOrigins = withDevLocalhostTrustedOrigin(trustedOriginsFn, {
+    const trustedOrigins = withDevTrustedOrigins(trustedOriginsFn, {
       isDev: true,
       isPrerender: false,
       hasExplicitSiteUrl: true,
       env: {
-        NITRO_HOST: 'localhost',
+        NITRO_HOST: '192.168.1.50',
         NITRO_PORT: '3002',
       },
     })
@@ -287,11 +318,32 @@ describe('withDevLocalhostTrustedOrigin', () => {
     const resolvedOrigins = await trustedOrigins()
 
     expect(trustedOriginsFn).toHaveBeenCalledTimes(1)
-    expect(resolvedOrigins).toEqual(['https://foo.workers.dev', 'http://localhost:3002'])
+    expect(resolvedOrigins).toEqual(['https://foo.workers.dev', 'http://localhost:3002', 'http://192.168.1.50:3002'])
+  })
+
+  it('adds request origin for --host style access', async () => {
+    const trustedOrigins = withDevTrustedOrigins(undefined, {
+      isDev: true,
+      isPrerender: false,
+      hasExplicitSiteUrl: true,
+      env: {
+        NITRO_HOST: '0.0.0.0',
+        NITRO_PORT: '3000',
+      },
+    })
+
+    expect(typeof trustedOrigins).toBe('function')
+    if (typeof trustedOrigins !== 'function')
+      throw new Error('trustedOrigins should be a function')
+    const request = new Request('http://192.168.1.20:3000/api/auth/sign-in')
+    const resolvedOrigins = await trustedOrigins(request)
+
+    expect(resolvedOrigins).toContain('http://localhost:3000')
+    expect(resolvedOrigins).toContain('http://192.168.1.20:3000')
   })
 
   it('does not augment in production mode', () => {
-    const trustedOrigins = withDevLocalhostTrustedOrigin(undefined, {
+    const trustedOrigins = withDevTrustedOrigins(undefined, {
       isDev: false,
       isPrerender: false,
       hasExplicitSiteUrl: true,
@@ -306,7 +358,7 @@ describe('withDevLocalhostTrustedOrigin', () => {
 
   it('does not augment when siteUrl is not explicit', () => {
     const configuredTrustedOrigins = ['https://foo.workers.dev']
-    const trustedOrigins = withDevLocalhostTrustedOrigin(configuredTrustedOrigins, {
+    const trustedOrigins = withDevTrustedOrigins(configuredTrustedOrigins, {
       isDev: true,
       isPrerender: false,
       hasExplicitSiteUrl: false,

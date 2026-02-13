@@ -148,44 +148,67 @@ function dedupeOrigins(origins: readonly string[]): string[] {
   return [...new Set(origins)]
 }
 
-function getDevLocalhostOrigin(): string {
+function getDevTrustedOrigins(): string[] {
   const fallbackOrigin = 'http://localhost:3000'
   const nitroOrigin = getNitroOrigin()
   if (!nitroOrigin)
-    return fallbackOrigin
+    return [fallbackOrigin]
 
   try {
     const url = new URL(nitroOrigin)
     const protocol = url.protocol === 'https:' ? 'https' : 'http'
     const port = url.port || '3000'
-    return `${protocol}://localhost:${port}`
+    const localhostOrigin = `${protocol}://localhost:${port}`
+    return dedupeOrigins([localhostOrigin, url.origin])
   }
   catch {
-    return fallbackOrigin
+    return [fallbackOrigin]
   }
 }
 
-function withDevLocalhostTrustedOrigin(
+function getRequestOrigin(request?: Request): string | undefined {
+  if (!request)
+    return undefined
+
+  try {
+    return new URL(request.url).origin
+  }
+  catch {
+    return undefined
+  }
+}
+
+function withDevTrustedOrigins(
   trustedOrigins: BetterAuthOptions['trustedOrigins'] | undefined,
   hasExplicitSiteUrl: boolean,
 ): BetterAuthOptions['trustedOrigins'] | undefined {
   if (!import.meta.dev || !hasExplicitSiteUrl)
     return trustedOrigins
 
-  const localhostOrigin = getDevLocalhostOrigin()
-
-  if (Array.isArray(trustedOrigins))
-    return dedupeOrigins([...trustedOrigins, localhostOrigin])
+  const devOrigins = getDevTrustedOrigins()
+  const mergeOrigins = (origins: readonly (string | null | undefined)[], request?: Request): string[] => {
+    const validOrigins = origins.filter((origin): origin is string => typeof origin === 'string')
+    const requestOrigin = getRequestOrigin(request)
+    return dedupeOrigins(requestOrigin ? [...validOrigins, ...devOrigins, requestOrigin] : [...validOrigins, ...devOrigins])
+  }
 
   if (typeof trustedOrigins === 'function') {
     return async (request?: Request) => {
       const resolvedOrigins = await trustedOrigins(request)
-      const validOrigins = resolvedOrigins.filter((origin): origin is string => typeof origin === 'string')
-      return dedupeOrigins([...validOrigins, localhostOrigin])
+      return mergeOrigins(resolvedOrigins, request)
     }
   }
 
-  return [localhostOrigin]
+  if (Array.isArray(trustedOrigins)) {
+    const baseOrigins = mergeOrigins(trustedOrigins)
+    return async (request?: Request) => {
+      return mergeOrigins(baseOrigins, request)
+    }
+  }
+
+  return async (request?: Request) => {
+    return mergeOrigins([], request)
+  }
 }
 
 /** Returns Better Auth instance. Caches per resolved host (or single instance when siteUrl is explicit). */
@@ -201,7 +224,7 @@ export function serverAuth(event?: H3Event): AuthInstance {
 
   const database = createDatabase()
   const userConfig = createServerAuth({ runtimeConfig, db })
-  const trustedOrigins = withDevLocalhostTrustedOrigin(userConfig.trustedOrigins, Boolean(hasExplicitSiteUrl))
+  const trustedOrigins = withDevTrustedOrigins(userConfig.trustedOrigins, Boolean(hasExplicitSiteUrl))
 
   const auth = betterAuth({
     ...userConfig,
