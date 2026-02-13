@@ -18,7 +18,7 @@ afterEach(() => {
 })
 
 describe('resolveHubSchemaPath', () => {
-  it('prefers .mjs when both .mjs and .ts exist', () => {
+  it('prefers .ts when both .ts and .mjs exist', () => {
     const buildDir = createBuildDir()
     const rootDir = createBuildDir()
     const schemaDir = join(buildDir, 'better-auth')
@@ -30,7 +30,7 @@ describe('resolveHubSchemaPath', () => {
     writeFileSync(mjsPath, 'export {}', { flag: 'w' })
 
     const selected = resolveHubSchemaPath(buildDir, rootDir, 'sqlite')
-    expect(selected).toBe(mjsPath)
+    expect(selected).toBe(tsPath)
   })
 
   it('prefers mirrored root .nuxt schema.ts when buildDir is under node_modules', () => {
@@ -61,6 +61,19 @@ describe('resolveHubSchemaPath', () => {
 
     const selected = resolveHubSchemaPath(buildDir, rootDir, 'sqlite')
     expect(selected).toBe(tsPath)
+  })
+
+  it('falls back to .mjs when .ts does not exist', () => {
+    const buildDir = createBuildDir()
+    const rootDir = createBuildDir()
+    const schemaDir = join(buildDir, 'better-auth')
+    const mjsPath = join(schemaDir, 'schema.sqlite.mjs')
+
+    mkdirSync(schemaDir, { recursive: true })
+    writeFileSync(mjsPath, 'export {}', { flag: 'w' })
+
+    const selected = resolveHubSchemaPath(buildDir, rootDir, 'sqlite')
+    expect(selected).toBe(mjsPath)
   })
 
   it('returns null when no schema files exist', () => {

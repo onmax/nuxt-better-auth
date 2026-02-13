@@ -29,13 +29,13 @@ export function resolveHubSchemaPath(
   if (isInsideNodeModules(buildDir) && exists(rootTsPath))
     return rootTsPath
 
-  const mjsPath = join(buildDir, 'better-auth', `schema.${dialect}.mjs`)
-  if (exists(mjsPath))
-    return mjsPath
-
   const tsPath = join(buildDir, 'better-auth', `schema.${dialect}.ts`)
   if (exists(tsPath))
     return tsPath
+
+  const mjsPath = join(buildDir, 'better-auth', `schema.${dialect}.mjs`)
+  if (exists(mjsPath))
+    return mjsPath
 
   return null
 }
