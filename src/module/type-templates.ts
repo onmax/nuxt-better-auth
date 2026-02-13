@@ -82,13 +82,12 @@ interface _AugmentedServerAuthContext {
 }
 
 declare module '@onmax/nuxt-better-auth/config' {
-  import type { BetterAuthOptions } from 'better-auth'
-  type ServerAuthConfigBase = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL' | 'plugins'>
-  type ServerAuthConfigWithPlugins = ServerAuthConfigBase & { plugins: readonly unknown[] }
-  export function defineServerAuth<const R extends ServerAuthConfigWithPlugins>(config: R): (ctx: _AugmentedServerAuthContext) => R
-  export function defineServerAuth<const R extends ServerAuthConfigWithPlugins>(config: (ctx: _AugmentedServerAuthContext) => R): (ctx: _AugmentedServerAuthContext) => R
-  export function defineServerAuth<const R extends ServerAuthConfigBase>(config: R): (ctx: _AugmentedServerAuthContext) => R
-  export function defineServerAuth<const R extends ServerAuthConfigBase>(config: (ctx: _AugmentedServerAuthContext) => R): (ctx: _AugmentedServerAuthContext) => R
+  import type { BetterAuthOptions, BetterAuthPlugin } from 'better-auth'
+  type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'> & {
+    plugins?: readonly BetterAuthPlugin[]
+  }
+  export function defineServerAuth<const R extends ServerAuthConfig>(config: R): (ctx: _AugmentedServerAuthContext) => R
+  export function defineServerAuth<const R extends ServerAuthConfig>(config: (ctx: _AugmentedServerAuthContext) => R): (ctx: _AugmentedServerAuthContext) => R
 }
 `,
   }, { nuxt: true, nitro: true, node: true })

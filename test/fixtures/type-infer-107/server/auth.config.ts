@@ -4,7 +4,10 @@ function customAdminLikePlugin() {
   return {
     id: 'custom-admin-like',
     $ERROR_CODES: {
-      BROKEN: 'Broken',
+      BROKEN: {
+        code: 'BROKEN',
+        message: 'Broken',
+      },
     },
     schema: {
       user: {

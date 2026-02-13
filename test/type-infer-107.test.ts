@@ -17,11 +17,12 @@ describe('type inference regression #107', () => {
     })
     expect(prepare.status, `nuxi prepare failed:\n${prepare.stdout}\n${prepare.stderr}`).toBe(0)
 
-    const typecheck = spawnSync('npx', ['vue-tsc', '--noEmit', '--pretty', 'false', '-p', 'tsconfig.json'], {
+    const typecheck = spawnSync('npx', ['vue-tsc', '--noEmit', '--pretty', 'false', '-p', 'tsconfig.type-check.json'], {
       cwd: fixtureDir,
       env,
       encoding: 'utf8',
     })
+    expect(typecheck.status, `vue-tsc failed:\n${typecheck.stdout}\n${typecheck.stderr}`).toBe(0)
     const output = `${typecheck.stdout}\n${typecheck.stderr}`
 
     expect(output).not.toContain(`is not assignable to type 'BetterAuthPlugin'`)

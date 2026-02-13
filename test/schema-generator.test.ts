@@ -140,6 +140,13 @@ describe('loadUserAuthConfig', () => {
     const result = await loadUserAuthConfig(configPath, false)
     expect(result).toEqual({ appName: 'Test', plugins: [] })
   })
+
+  it('accepts readonly plugin tuples in object syntax defineServerAuth', async () => {
+    const configPath = join(TEST_DIR, 'readonly-object-config.ts')
+    writeFileSync(configPath, `const plugin = { id: 'test-plugin', schema: { user: { fields: {} } } } as const\nexport default defineServerAuth({ appName: 'Readonly', plugins: [plugin] as const })`)
+    const result = await loadUserAuthConfig(configPath, false)
+    expect(result).toEqual({ appName: 'Readonly', plugins: [{ id: 'test-plugin', schema: { user: { fields: {} } } }] })
+  })
 })
 
 describe('defineServerAuth', () => {
