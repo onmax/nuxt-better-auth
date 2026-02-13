@@ -1,10 +1,15 @@
 import type { H3Event } from 'h3'
-import type { AuthSession, AuthUser, RequireSessionOptions } from '../../types'
+import type { AuthSession, AuthUser } from '#nuxt-better-auth'
+import type { UserMatch } from '../../types'
 import { createError } from 'h3'
 import { matchesUser } from '../../utils/match-user'
 import { serverAuth } from './auth'
 
 interface FullSession { user: AuthUser, session: AuthSession }
+interface RequireUserSessionOptions {
+  user?: UserMatch<AuthUser>
+  rule?: (ctx: { user: AuthUser, session: AuthSession }) => boolean | Promise<boolean>
+}
 
 export async function getUserSession(event: H3Event): Promise<FullSession | null> {
   const auth = serverAuth(event)
@@ -12,7 +17,7 @@ export async function getUserSession(event: H3Event): Promise<FullSession | null
   return session as FullSession | null
 }
 
-export async function requireUserSession(event: H3Event, options?: RequireSessionOptions): Promise<FullSession> {
+export async function requireUserSession(event: H3Event, options?: RequireUserSessionOptions): Promise<FullSession> {
   const session = await getUserSession(event)
 
   if (!session)
