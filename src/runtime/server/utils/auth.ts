@@ -48,12 +48,36 @@ function validateURL(url: string): string {
   }
 }
 
+function resolveConfiguredSiteUrl(config: ReturnType<typeof useRuntimeConfig>): string | undefined {
+  if (typeof config.public.siteUrl !== 'string' || !config.public.siteUrl)
+    return undefined
+
+  return validateURL(config.public.siteUrl)
+}
+
+function resolveEventOrigin(event?: H3Event): string | undefined {
+  if (!event)
+    return undefined
+
+  const host = getRequestHost(event, { xForwardedHost: true })
+  const protocol = getRequestProtocol(event, { xForwardedProto: true })
+  if (!host || !protocol)
+    return undefined
+
+  try {
+    return validateURL(`${protocol}://${host}`)
+  }
+  catch {
+    return undefined
+  }
+}
+
 /**
  * Get the Nitro origin URL.
  * Adapted from nuxt-site-config by @harlan-zw
  * @see https://github.com/harlan-zw/nuxt-site-config/blob/main/packages/kit/src/util.ts
  */
-function getNitroOrigin(e?: H3Event): string | undefined {
+function getNitroOrigin(): string | undefined {
   const cert = process.env.NITRO_SSL_CERT
   const key = process.env.NITRO_SSL_KEY
   let host: string | undefined = process.env.NITRO_HOST || process.env.HOST
@@ -72,10 +96,6 @@ function getNitroOrigin(e?: H3Event): string | undefined {
       const origin = JSON.parse(process.env.NUXT_VITE_NODE_OPTIONS).baseURL.replace('/__nuxt_vite_node__', '')
       host = withoutProtocol(origin)
       protocol = origin.includes('https') ? 'https' : 'http'
-    }
-    else if (e) {
-      host = getRequestHost(e, { xForwardedHost: true }) || host
-      protocol = getRequestProtocol(e, { xForwardedProto: true }) || protocol
     }
   }
   catch {
@@ -102,43 +122,52 @@ function getNitroOrigin(e?: H3Event): string | undefined {
   return `${protocol}://${host}${portSuffix}`
 }
 
+function resolveEnvironmentOrigin(): { origin: string, source: string } | undefined {
+  const nitroOrigin = getNitroOrigin()
+  if (nitroOrigin)
+    return { origin: validateURL(nitroOrigin), source: 'Nitro environment detection' }
+
+  if (process.env.VERCEL_URL)
+    return { origin: validateURL(`https://${process.env.VERCEL_URL}`), source: 'VERCEL_URL' }
+
+  if (process.env.CF_PAGES_URL)
+    return { origin: validateURL(`https://${process.env.CF_PAGES_URL}`), source: 'CF_PAGES_URL' }
+
+  if (process.env.URL)
+    return { origin: validateURL(process.env.URL.startsWith('http') ? process.env.URL : `https://${process.env.URL}`), source: 'URL' }
+
+  return undefined
+}
+
+function resolveDevFallback(): { origin: string, source: string } | undefined {
+  if (!import.meta.dev)
+    return undefined
+
+  return { origin: 'http://localhost:3000', source: 'development fallback' }
+}
+
 function getBaseURL(event?: H3Event): string {
   const config = useRuntimeConfig()
+  const configuredSiteUrl = resolveConfiguredSiteUrl(config)
+  if (configuredSiteUrl)
+    return configuredSiteUrl
 
-  // 1. Explicit config (highest priority)
-  if (config.public.siteUrl && typeof config.public.siteUrl === 'string')
-    return validateURL(config.public.siteUrl)
-
-  // 2. Nitro origin detection (handles dev proxy, request headers)
-  const nitroOrigin = getNitroOrigin(event)
-  if (nitroOrigin) {
-    const inferredBaseURL = validateURL(nitroOrigin)
-    logInferredBaseURL(inferredBaseURL, 'Nitro/request origin detection')
-    return inferredBaseURL
+  const eventOrigin = resolveEventOrigin(event)
+  if (eventOrigin) {
+    logInferredBaseURL(eventOrigin, 'request origin')
+    return eventOrigin
   }
 
-  // 3. Platform env vars (fallback for non-request contexts)
-  if (process.env.VERCEL_URL) {
-    const inferredBaseURL = validateURL(`https://${process.env.VERCEL_URL}`)
-    logInferredBaseURL(inferredBaseURL, 'VERCEL_URL')
-    return inferredBaseURL
-  }
-  if (process.env.CF_PAGES_URL) {
-    const inferredBaseURL = validateURL(`https://${process.env.CF_PAGES_URL}`)
-    logInferredBaseURL(inferredBaseURL, 'CF_PAGES_URL')
-    return inferredBaseURL
-  }
-  if (process.env.URL) {
-    const inferredBaseURL = validateURL(process.env.URL.startsWith('http') ? process.env.URL : `https://${process.env.URL}`)
-    logInferredBaseURL(inferredBaseURL, 'URL')
-    return inferredBaseURL
+  const environmentOrigin = resolveEnvironmentOrigin()
+  if (environmentOrigin) {
+    logInferredBaseURL(environmentOrigin.origin, environmentOrigin.source)
+    return environmentOrigin.origin
   }
 
-  // 4. Dev fallback
-  if (import.meta.dev) {
-    const inferredBaseURL = 'http://localhost:3000'
-    logInferredBaseURL(inferredBaseURL, 'development fallback')
-    return inferredBaseURL
+  const devFallback = resolveDevFallback()
+  if (devFallback) {
+    logInferredBaseURL(devFallback.origin, devFallback.source)
+    return devFallback.origin
   }
 
   throw new Error('siteUrl required. Set NUXT_PUBLIC_SITE_URL.')

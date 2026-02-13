@@ -31,13 +31,27 @@ interface GetNitroOriginOptions {
   requestProtocol?: string
 }
 
-/**
- * Mock of getNitroOrigin for unit testing.
- * Adapted from nuxt-site-config by @harlan-zw
- * @see https://github.com/harlan-zw/nuxt-site-config/blob/main/packages/kit/src/util.ts
- */
+function resolveConfiguredSiteUrl(config: { public: { siteUrl?: unknown } }, isDev: boolean): string | undefined {
+  if (typeof config.public.siteUrl !== 'string' || !config.public.siteUrl)
+    return undefined
+
+  return validateURL(config.public.siteUrl, isDev)
+}
+
+function resolveEventOrigin(options: GetNitroOriginOptions): string | undefined {
+  if (!options.requestHost || !options.requestProtocol)
+    return undefined
+
+  try {
+    return validateURL(`${options.requestProtocol}://${options.requestHost}`, options.isDev)
+  }
+  catch {
+    return undefined
+  }
+}
+
 function getNitroOrigin(options: GetNitroOriginOptions): string | undefined {
-  const { isDev, isPrerender, env, requestHost, requestProtocol } = options
+  const { isDev, isPrerender, env } = options
   const cert = env.NITRO_SSL_CERT
   const key = env.NITRO_SSL_KEY
   let host: string | undefined = env.NITRO_HOST || env.HOST
@@ -56,10 +70,6 @@ function getNitroOrigin(options: GetNitroOriginOptions): string | undefined {
       const origin = JSON.parse(env.NUXT_VITE_NODE_OPTIONS).baseURL.replace('/__nuxt_vite_node__', '')
       host = withoutProtocol(origin)
       protocol = origin.includes('https') ? 'https' : 'http'
-    }
-    else if (requestHost) {
-      host = requestHost || host
-      protocol = requestProtocol || protocol
     }
   }
   catch {
@@ -86,25 +96,44 @@ function getNitroOrigin(options: GetNitroOriginOptions): string | undefined {
   return `${protocol}://${host}${portSuffix}`
 }
 
-// Mock of getBaseURL logic for unit testing
-function getBaseURL(config: { public: { siteUrl?: unknown } }, nitroOriginOptions: GetNitroOriginOptions): string {
-  if (config.public.siteUrl && typeof config.public.siteUrl === 'string')
-    return validateURL(config.public.siteUrl, nitroOriginOptions.isDev)
-
-  const nitroOrigin = getNitroOrigin(nitroOriginOptions)
+function resolveEnvironmentOrigin(options: GetNitroOriginOptions): string | undefined {
+  const nitroOrigin = getNitroOrigin(options)
   if (nitroOrigin)
-    return validateURL(nitroOrigin, nitroOriginOptions.isDev)
+    return validateURL(nitroOrigin, options.isDev)
 
-  const env = nitroOriginOptions.env
-  if (env.VERCEL_URL)
-    return validateURL(`https://${env.VERCEL_URL}`, nitroOriginOptions.isDev)
-  if (env.CF_PAGES_URL)
-    return validateURL(`https://${env.CF_PAGES_URL}`, nitroOriginOptions.isDev)
-  if (env.URL)
-    return validateURL(env.URL.startsWith('http') ? env.URL : `https://${env.URL}`, nitroOriginOptions.isDev)
+  if (options.env.VERCEL_URL)
+    return validateURL(`https://${options.env.VERCEL_URL}`, options.isDev)
+  if (options.env.CF_PAGES_URL)
+    return validateURL(`https://${options.env.CF_PAGES_URL}`, options.isDev)
+  if (options.env.URL)
+    return validateURL(options.env.URL.startsWith('http') ? options.env.URL : `https://${options.env.URL}`, options.isDev)
 
-  if (nitroOriginOptions.isDev)
+  return undefined
+}
+
+function resolveDevFallback(options: GetNitroOriginOptions): string | undefined {
+  if (options.isDev)
     return 'http://localhost:3000'
+
+  return undefined
+}
+
+function getBaseURL(config: { public: { siteUrl?: unknown } }, options: GetNitroOriginOptions): string {
+  const configuredSiteUrl = resolveConfiguredSiteUrl(config, options.isDev)
+  if (configuredSiteUrl)
+    return configuredSiteUrl
+
+  const eventOrigin = resolveEventOrigin(options)
+  if (eventOrigin)
+    return eventOrigin
+
+  const environmentOrigin = resolveEnvironmentOrigin(options)
+  if (environmentOrigin)
+    return environmentOrigin
+
+  const devFallback = resolveDevFallback(options)
+  if (devFallback)
+    return devFallback
 
   throw new Error('siteUrl required. Set NUXT_PUBLIC_SITE_URL.')
 }
@@ -188,6 +217,15 @@ describe('getBaseURL', () => {
 
   it('requestHost used when no explicit config', () => {
     expect(getBaseURL({ public: {} }, { isDev: false, isPrerender: false, env: {}, requestHost: 'myapp.com', requestProtocol: 'https' })).toBe('https://myapp.com')
+  })
+
+  it('requestHost takes priority over dev proxy env when siteUrl is unset', () => {
+    const nuxtDev = JSON.stringify({ proxy: { url: 'http://localhost:3000' } })
+    expect(getBaseURL({ public: {} }, { isDev: true, isPrerender: false, env: { __NUXT_DEV__: nuxtDev }, requestHost: 'lan-host.local:3000', requestProtocol: 'http' })).toBe('http://lan-host.local:3000')
+  })
+
+  it('requestHost takes priority over platform env vars when siteUrl is unset', () => {
+    expect(getBaseURL({ public: {} }, { isDev: false, isPrerender: false, env: { VERCEL_URL: 'my-app.vercel.app' }, requestHost: 'request.com', requestProtocol: 'https' })).toBe('https://request.com')
   })
 
   it('uses NITRO_HOST/PORT in dev mode', () => {
