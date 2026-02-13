@@ -50,9 +50,6 @@ importers:
       '@libsql/client':
         specifier: ^0.15.15
         version: 0.15.15
-      '@libsql/linux-x64-gnu':
-        specifier: 0.5.22
-        version: 0.5.22
       '@nuxt/devtools':
         specifier: ^3.1.1
         version: 3.1.1(vite@7.2.7(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
@@ -10397,7 +10394,8 @@ snapshots:
   '@libsql/linux-arm64-musl@0.5.22':
     optional: true
 
-  '@libsql/linux-x64-gnu@0.5.22': {}
+  '@libsql/linux-x64-gnu@0.5.22':
+    optional: true
 
   '@libsql/linux-x64-musl@0.5.22':
     optional: true
