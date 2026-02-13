@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 describe('no-db mode (NuxtHub without database)', async () => {
   await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/no-db', import.meta.url)),
+    rootDir: fileURLToPath(new URL('./cases/database-less', import.meta.url)),
   })
 
   it('renders home page without database', async () => {

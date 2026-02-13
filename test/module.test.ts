@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 describe('nuxt-better-auth module', async () => {
   await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
+    rootDir: fileURLToPath(new URL('./cases/core-auth', import.meta.url)),
   })
 
   describe('page rendering', () => {

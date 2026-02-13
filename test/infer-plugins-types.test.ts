@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
-const fixtureDir = fileURLToPath(new URL('./fixtures/type-infer-107', import.meta.url))
+const fixtureDir = fileURLToPath(new URL('./cases/plugins-type-inference', import.meta.url))
 const env = {
   ...process.env,
   BETTER_AUTH_SECRET: 'test-secret-for-testing-only-32chars',

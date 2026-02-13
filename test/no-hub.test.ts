@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 describe('no-hub mode (without NuxtHub)', async () => {
   await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/no-hub', import.meta.url)),
+    rootDir: fileURLToPath(new URL('./cases/without-nuxthub', import.meta.url)),
   })
 
   it('renders home page without NuxtHub', async () => {
