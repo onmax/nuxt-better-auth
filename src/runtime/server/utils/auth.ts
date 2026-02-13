@@ -1,4 +1,4 @@
-import type { Auth } from 'better-auth'
+import type { Auth, BetterAuthOptions } from 'better-auth'
 import type { H3Event } from 'h3'
 import { createDatabase, db } from '#auth/database'
 import { createSecondaryStorage } from '#auth/secondary-storage'
@@ -144,6 +144,50 @@ function getBaseURL(event?: H3Event): string {
   throw new Error('siteUrl required. Set NUXT_PUBLIC_SITE_URL.')
 }
 
+function dedupeOrigins(origins: readonly string[]): string[] {
+  return [...new Set(origins)]
+}
+
+function getDevLocalhostOrigin(): string {
+  const fallbackOrigin = 'http://localhost:3000'
+  const nitroOrigin = getNitroOrigin()
+  if (!nitroOrigin)
+    return fallbackOrigin
+
+  try {
+    const url = new URL(nitroOrigin)
+    const protocol = url.protocol === 'https:' ? 'https' : 'http'
+    const port = url.port || '3000'
+    return `${protocol}://localhost:${port}`
+  }
+  catch {
+    return fallbackOrigin
+  }
+}
+
+function withDevLocalhostTrustedOrigin(
+  trustedOrigins: BetterAuthOptions['trustedOrigins'] | undefined,
+  hasExplicitSiteUrl: boolean,
+): BetterAuthOptions['trustedOrigins'] | undefined {
+  if (!import.meta.dev || !hasExplicitSiteUrl)
+    return trustedOrigins
+
+  const localhostOrigin = getDevLocalhostOrigin()
+
+  if (Array.isArray(trustedOrigins))
+    return dedupeOrigins([...trustedOrigins, localhostOrigin])
+
+  if (typeof trustedOrigins === 'function') {
+    return async (request?: Request) => {
+      const resolvedOrigins = await trustedOrigins(request)
+      const validOrigins = resolvedOrigins.filter((origin): origin is string => typeof origin === 'string')
+      return dedupeOrigins([...validOrigins, localhostOrigin])
+    }
+  }
+
+  return [localhostOrigin]
+}
+
 /** Returns Better Auth instance. Caches per resolved host (or single instance when siteUrl is explicit). */
 export function serverAuth(event?: H3Event): AuthInstance {
   const runtimeConfig = useRuntimeConfig()
@@ -157,6 +201,7 @@ export function serverAuth(event?: H3Event): AuthInstance {
 
   const database = createDatabase()
   const userConfig = createServerAuth({ runtimeConfig, db })
+  const trustedOrigins = withDevLocalhostTrustedOrigin(userConfig.trustedOrigins, Boolean(hasExplicitSiteUrl))
 
   const auth = betterAuth({
     ...userConfig,
@@ -164,6 +209,7 @@ export function serverAuth(event?: H3Event): AuthInstance {
     secondaryStorage: createSecondaryStorage(),
     secret: runtimeConfig.betterAuthSecret,
     baseURL: siteUrl,
+    trustedOrigins,
   })
 
   _authCache.set(cacheKey, auth)
