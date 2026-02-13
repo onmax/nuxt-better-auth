@@ -7,7 +7,7 @@ import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { addTemplate } from '@nuxt/kit'
 import { join } from 'pathe'
-import { generateConvexSchema, generateDrizzleSchema, loadUserAuthConfig } from '../schema-generator'
+import { generateDrizzleSchema, loadUserAuthConfig } from '../schema-generator'
 import { getHubCasing, getHubDialect } from './hub'
 
 interface SchemaContext {
@@ -88,32 +88,5 @@ export async function setupBetterAuthSchema(
     if (isProduction)
       throw error
     consola.error('Failed to generate schema:', error)
-  }
-}
-
-export async function setupConvexAuthSchema(nuxt: Nuxt, serverConfigPath: string, consola: ConsolaInstance): Promise<void> {
-  const context: SchemaContext = { nuxt, serverConfigPath }
-
-  try {
-    const { userConfig, plugins } = await loadAuthOptions(context)
-    const authOptions = { ...userConfig, plugins }
-    const schemaCode = await generateConvexSchema(authOptions)
-
-    const schemaDir = join(nuxt.options.buildDir, 'better-auth')
-    const schemaPath = join(schemaDir, 'auth-tables.convex.ts')
-
-    await mkdir(schemaDir, { recursive: true })
-    await writeFile(schemaPath, schemaCode)
-
-    addTemplate({ filename: 'better-auth/auth-tables.convex.ts', getContents: () => schemaCode, write: true })
-    nuxt.options.alias['#auth/convex-schema'] = schemaPath
-
-    consola.info('Generated Convex auth schema at .nuxt/better-auth/auth-tables.convex.ts')
-  }
-  catch (error) {
-    const isProduction = !nuxt.options.dev
-    if (isProduction)
-      throw error
-    consola.error('Failed to generate Convex schema:', error)
   }
 }
