@@ -8,7 +8,6 @@ definePageMeta({ layout: false })
 const toast = useToast()
 const devtoolsClient = useDevtoolsClient()
 const runtimeConfig = useRuntimeConfig()
-const hasDb = computed(() => (runtimeConfig.public.auth as { useDatabase?: boolean } | undefined)?.useDatabase ?? false)
 
 // Sync color mode with host app
 const isDark = computed(() => devtoolsClient.value?.host?.app?.colorMode?.value === 'dark')
@@ -42,10 +41,27 @@ const sessionsQuery = computed(() => ({ page: sessionsPage.value, limit: 20, sea
 const usersQuery = computed(() => ({ page: usersPage.value, limit: 20, search: usersSearch.value }))
 const accountsQuery = computed(() => ({ page: accountsPage.value, limit: 20, search: accountsSearch.value }))
 
-const { data: sessionsData, refresh: refreshSessions } = await useFetch('/api/_better-auth/sessions', { query: sessionsQuery, immediate: hasDb.value })
-const { data: usersData, refresh: refreshUsers } = await useFetch('/api/_better-auth/users', { query: usersQuery, immediate: hasDb.value })
-const { data: accountsData, refresh: refreshAccounts } = await useFetch('/api/_better-auth/accounts', { query: accountsQuery, immediate: hasDb.value })
 const { data: configData } = await useFetch('/api/_better-auth/config')
+const hasDb = computed(() => {
+  const provider = configData.value?.config?.module?.databaseProvider
+  if (typeof provider === 'string')
+    return provider !== 'none'
+
+  const fallbackProvider = (runtimeConfig.public.auth as { databaseProvider?: string } | undefined)?.databaseProvider
+  return (fallbackProvider ?? 'none') !== 'none'
+})
+
+const { data: sessionsData, refresh: refreshSessions } = await useFetch('/api/_better-auth/sessions', { query: sessionsQuery, immediate: false })
+const { data: usersData, refresh: refreshUsers } = await useFetch('/api/_better-auth/users', { query: usersQuery, immediate: false })
+const { data: accountsData, refresh: refreshAccounts } = await useFetch('/api/_better-auth/accounts', { query: accountsQuery, immediate: false })
+
+watch(hasDb, (enabled, previouslyEnabled) => {
+  if (!enabled || previouslyEnabled)
+    return
+  refreshSessions()
+  refreshUsers()
+  refreshAccounts()
+}, { immediate: true })
 
 const tabs = computed(() => {
   const dbTabs = [

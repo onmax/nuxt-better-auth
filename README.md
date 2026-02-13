@@ -22,6 +22,11 @@
 
 **[nuxt-better-auth.onmax.me](https://nuxt-better-auth.onmax.me/)**
 
+## Alpha Migration Notes
+
+- `auth.database.*` module options are removed. This now fails fast during module setup.
+- Configure Better Auth's `database` directly in `server/auth.config.ts`, or use a module that registers `better-auth:database:providers`.
+
 ## Development Notes
 
 - `@libsql/linux-x64-gnu` is temporarily pinned in dev dependencies to avoid Nitro test build `ENOENT` issues with optional libsql platform packages.

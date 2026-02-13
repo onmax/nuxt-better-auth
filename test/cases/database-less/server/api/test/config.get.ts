@@ -2,12 +2,11 @@ import { getDatabaseProvider, getDatabaseSource, serverAuth } from '../../../../
 
 export default defineEventHandler((event) => {
   serverAuth(event)
-  const runtimeConfig = useRuntimeConfig()
-  const auth = runtimeConfig.public.auth as { useDatabase?: boolean, databaseProvider?: string, databaseSource?: 'module' | 'user' } | undefined
+  const databaseProvider = getDatabaseProvider()
 
   return {
-    useDatabase: auth?.useDatabase ?? false,
-    databaseProvider: getDatabaseProvider(),
+    useDatabase: databaseProvider !== 'none',
+    databaseProvider,
     databaseSource: getDatabaseSource(),
   }
 })

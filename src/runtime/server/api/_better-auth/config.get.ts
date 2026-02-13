@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     const options = auth.options
     const authContext = await ((auth as { $context?: Promise<{ trustedOrigins?: string[] }> | { trustedOrigins?: string[] } }).$context)
     const runtimeConfig = useRuntimeConfig()
-    const publicAuth = runtimeConfig.public?.auth as { redirects?: { login?: string, guest?: string }, useDatabase?: boolean, databaseProvider?: string, databaseSource?: 'module' | 'user' } | undefined
+    const publicAuth = runtimeConfig.public?.auth as { redirects?: { login?: string, guest?: string } } | undefined
     const privateAuth = runtimeConfig.auth as { secondaryStorage?: boolean } | undefined
     const databaseProvider = getDatabaseProvider()
     const databaseSource = getDatabaseSource()
@@ -23,13 +23,13 @@ export default defineEventHandler(async (event) => {
     return {
       config: {
         // Module config (nuxt.config.ts)
-          module: {
-            redirects: publicAuth?.redirects || { login: '/login', guest: '/' },
-            secondaryStorage: privateAuth?.secondaryStorage ?? false,
-            useDatabase: databaseProvider !== 'none',
-            databaseProvider,
-            databaseSource,
-          },
+        module: {
+          redirects: publicAuth?.redirects || { login: '/login', guest: '/' },
+          secondaryStorage: privateAuth?.secondaryStorage ?? false,
+          useDatabase: databaseProvider !== 'none',
+          databaseProvider,
+          databaseSource,
+        },
         // Server config (server/auth.config.ts)
         server: {
           baseURL: options.baseURL,
