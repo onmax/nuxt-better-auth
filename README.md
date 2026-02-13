@@ -20,7 +20,7 @@
 
 ## Documentation
 
-**[nuxt-better-auth.onmax.me](https://nuxt-better-auth.onmax.me/)**
+**[better-auth.nuxt.dev](https://better-auth.nuxt.dev/)**
 
 ## License
 
