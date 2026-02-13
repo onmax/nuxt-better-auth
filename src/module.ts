@@ -25,6 +25,17 @@ import './types/hooks'
 
 const consola = _consola.withTag('nuxt-better-auth')
 
+function resolveRemovedDatabaseOptions(options: BetterAuthModuleOptions): string[] {
+  const database = (options as { database?: Record<string, unknown> }).database
+  if (!database || typeof database !== 'object')
+    return []
+
+  return Object.entries(database)
+    .filter(([, value]) => value !== undefined)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key]) => `auth.database.${key}`)
+}
+
 function resolveDefaultClientConfig(options: BetterAuthModuleOptions, rootDir: string, srcDir: string): void {
   if (options.clientConfig !== 'app/auth.config')
     return
@@ -105,10 +116,10 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
     const hasHubDbAvailable = !clientOnly && hasNuxtHub && !!hub?.db
-    const deprecatedProvider = (options as { database?: { provider?: string } }).database?.provider
-    if (deprecatedProvider) {
+    const removedDatabaseOptions = resolveRemovedDatabaseOptions(options)
+    if (removedDatabaseOptions.length) {
       throw new Error(
-        `[nuxt-better-auth] auth.database.provider has been removed. Remove auth.database.provider="${deprecatedProvider}". To configure a database, either set "database" directly in server/auth.config.ts (defineServerAuth) or install a provider module that registers better-auth:database:providers.`,
+        `[nuxt-better-auth] auth.database options have been removed. Remove: ${removedDatabaseOptions.join(', ')}. To configure a database, either set "database" directly in server/auth.config.ts (defineServerAuth) or install a provider module that registers better-auth:database:providers.`,
       )
     }
 
