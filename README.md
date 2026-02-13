@@ -22,6 +22,11 @@
 
 **[nuxt-better-auth.onmax.me](https://nuxt-better-auth.onmax.me/)**
 
+## Development Notes
+
+- `@libsql/linux-x64-gnu` is temporarily pinned in dev dependencies to avoid Nitro test build `ENOENT` issues with optional libsql platform packages.
+- TODO: remove this pin once upstream Nitro/libsql optional dependency resolution is stable across local and CI environments.
+
 ## License
 
 MIT

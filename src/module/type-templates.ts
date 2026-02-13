@@ -27,9 +27,9 @@ declare module '#auth/secondary-storage' {
     filename: 'types/auth-database.d.ts',
     getContents: () => `
 declare module '#auth/database' {
-  import type { drizzleAdapter } from 'better-auth/adapters/drizzle'
-  export function createDatabase(): ReturnType<typeof drizzleAdapter> | undefined
-  export const db: unknown
+  import type { BetterAuthOptions } from 'better-auth'
+  export function createDatabase(): BetterAuthOptions['database']
+  export const db: ${hasHubDb ? `typeof import('@nuxthub/db')['db']` : 'undefined'}
 }
 `,
   }, { nitro: true, node: true })
@@ -71,19 +71,19 @@ declare module '#nuxt-better-auth' {
   interface AuthSession extends _SessionFallback {}
   interface ServerAuthContext {
     runtimeConfig: RuntimeConfig
-    db: ${hasHubDb ? `typeof import('@nuxthub/db')['db']` : 'unknown'}
+    db: ${hasHubDb ? `typeof import('@nuxthub/db')['db']` : 'undefined'}
   }
   type PluginTypes = InferPluginTypes<_Config>
 }
 
 interface _AugmentedServerAuthContext {
   runtimeConfig: RuntimeConfig
-  db: ${hasHubDb ? `typeof import('@nuxthub/db')['db']` : 'unknown'}
+  db: ${hasHubDb ? `typeof import('@nuxthub/db')['db']` : 'undefined'}
 }
 
 declare module '@onmax/nuxt-better-auth/config' {
   import type { BetterAuthOptions, BetterAuthPlugin } from 'better-auth'
-  type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'> & {
+  type ServerAuthConfig = Omit<BetterAuthOptions, 'secret' | 'baseURL'> & {
     plugins?: readonly BetterAuthPlugin[]
   }
   export function defineServerAuth<const R extends ServerAuthConfig>(config: R): (ctx: _AugmentedServerAuthContext) => R

@@ -1,7 +1,4 @@
-import type { Nuxt } from '@nuxt/schema'
-import type { DatabaseProvider } from '../database-provider'
 import type { DbDialect } from './hub'
-import { defu } from 'defu'
 
 export function buildSecondaryStorageCode(enabled: boolean): string {
   if (!enabled)
@@ -18,7 +15,7 @@ export function createSecondaryStorage() {
 }
 
 interface BuildDatabaseCodeInput {
-  provider: DatabaseProvider
+  provider: 'none' | 'nuxthub'
   hubDialect: DbDialect
   usePlural: boolean
   camelCase: boolean
@@ -34,27 +31,6 @@ export function createDatabase() { return drizzleAdapter(db, { provider: dialect
 export { db }`
   }
 
-  if (input.provider === 'convex') {
-    return `import { useRuntimeConfig } from '#imports'
-import { createConvexHttpAdapter } from '@onmax/nuxt-better-auth/adapters/convex'
-import { api } from '#convex/api'
-
-export function createDatabase() {
-  const config = useRuntimeConfig()
-  const convexUrl = config.betterAuth?.convexUrl || config.public?.convex?.url
-  if (!convexUrl) throw new Error('[nuxt-better-auth] CONVEX_URL not configured')
-  return createConvexHttpAdapter({ url: convexUrl, api: api.auth })
-}
-export const db = undefined`
-  }
-
   return `export function createDatabase() { return undefined }
 export const db = undefined`
-}
-
-export function applyConvexRuntimeConfig(nuxt: Nuxt, convexUrl: string): void {
-  nuxt.options.runtimeConfig.betterAuth = defu(
-    nuxt.options.runtimeConfig.betterAuth as Record<string, unknown> || {},
-    { convexUrl },
-  )
 }

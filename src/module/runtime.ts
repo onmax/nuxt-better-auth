@@ -1,7 +1,6 @@
 import type { Nuxt } from '@nuxt/schema'
 import type { ConsolaInstance } from 'consola'
-import type { DatabaseProvider } from '../database-provider'
-import type { AuthPrivateRuntimeConfig, AuthRuntimeConfig, BetterAuthModuleOptions } from '../runtime/config'
+import type { AuthPrivateRuntimeConfig, AuthRuntimeConfig, BetterAuthModuleOptions, ModuleDatabaseProviderId } from '../runtime/config'
 import type { NuxtHubOptions } from './hub'
 import { defu } from 'defu'
 
@@ -9,7 +8,7 @@ interface SetupRuntimeConfigInput {
   nuxt: Nuxt
   options: BetterAuthModuleOptions
   clientOnly: boolean
-  databaseProvider: DatabaseProvider
+  databaseProvider: ModuleDatabaseProviderId
   hasNuxtHub: boolean
   hub?: NuxtHubOptions
   consola: ConsolaInstance
@@ -44,6 +43,7 @@ export function setupRuntimeConfig(input: SetupRuntimeConfigInput): { secondaryS
     redirects: { login: options.redirects?.login ?? '/login', guest: options.redirects?.guest ?? '/' },
     useDatabase: databaseProvider !== 'none',
     databaseProvider,
+    databaseSource: 'module',
     clientOnly,
     session: {
       skipHydratedSsrGetSession: options.session?.skipHydratedSsrGetSession ?? false,

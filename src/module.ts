@@ -1,5 +1,11 @@
 import type { NuxtHubOptions } from './module/hub'
-import type { BetterAuthModuleOptions } from './runtime/config'
+import type { BetterAuthModuleOptions, ModuleDatabaseProviderId } from './runtime/config'
+import type {
+  BetterAuthDatabaseProviderBuildContext,
+  BetterAuthDatabaseProviderDefinition,
+  BetterAuthDatabaseProviderEnabledContext,
+  BetterAuthDatabaseProviderSetupContext,
+} from './types/hooks'
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { addTemplate, createResolver, defineNuxtModule, hasNuxtModule } from '@nuxt/kit'
@@ -7,13 +13,12 @@ import { consola as _consola } from 'consola'
 import { dirname, join } from 'pathe'
 import { version } from '../package.json'
 import { resolveDatabaseProvider } from './database-provider'
-import { resolveConvexUrl } from './module/convex'
 import { registerAuthMiddlewareHook, registerDevtools, registerRouteRulesMetaHook, registerServerRuntime, registerTemplateHmrHook } from './module/hooks'
 import { getHubCasing, getHubDialect } from './module/hub'
 import { setupRuntimeConfig } from './module/runtime'
-import { setupBetterAuthSchema, setupConvexAuthSchema } from './module/schema'
+import { setupBetterAuthSchema } from './module/schema'
 import { promptForSecret } from './module/secret'
-import { applyConvexRuntimeConfig, buildDatabaseCode, buildSecondaryStorageCode } from './module/templates'
+import { buildDatabaseCode, buildSecondaryStorageCode } from './module/templates'
 import { registerServerTypeTemplates, registerSharedTypeTemplates } from './module/type-templates'
 
 import './types/hooks'
@@ -100,40 +105,75 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as { hub?: NuxtHubOptions }).hub : undefined
     const hasHubDbAvailable = !clientOnly && hasNuxtHub && !!hub?.db
-    const hasConvexModule = hasNuxtModule('nuxt-convex', nuxt)
-    const detectedConvexUrl = resolveConvexUrl(nuxt, options.database?.convexUrl)
+    const deprecatedProvider = (options as { database?: { provider?: string } }).database?.provider
+    if (deprecatedProvider) {
+      throw new Error(
+        `[nuxt-better-auth] auth.database.provider has been removed. Remove auth.database.provider="${deprecatedProvider}". To configure a database, either set "database" directly in server/auth.config.ts (defineServerAuth) or install a provider module that registers better-auth:database:providers.`,
+      )
+    }
 
-    const resolvedDatabase = resolveDatabaseProvider({
-      clientOnly,
-      hasHubDb: hasHubDbAvailable,
-      hasConvexModule,
-      convexUrl: detectedConvexUrl,
-      selectedProvider: options.database?.provider,
-    })
-
-    const databaseProvider = resolvedDatabase.provider
-    const hasHubDb = databaseProvider === 'nuxthub'
-    const hasConvexDb = databaseProvider === 'convex'
-
-    if (hasConvexDb)
-      consola.info('Using Convex HTTP adapter for Better Auth database')
-
-    const { secondaryStorageEnabled } = setupRuntimeConfig({
-      nuxt,
-      options,
-      clientOnly,
-      databaseProvider,
-      hasNuxtHub,
-      hub,
-      consola,
-    })
+    let databaseProvider: ModuleDatabaseProviderId = 'none'
+    let hasHubDb = false
 
     nuxt.options.alias['#nuxt-better-auth'] = resolver.resolve('./runtime/types/augment')
     if (!clientOnly)
       nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
-    if (!clientOnly) {
+    if (clientOnly) {
+      setupRuntimeConfig({
+        nuxt,
+        options,
+        clientOnly,
+        databaseProvider,
+        hasNuxtHub,
+        hub,
+        consola,
+      })
+    }
+    else {
+      const hubDialect = getHubDialect(hub) ?? 'sqlite'
+      const usePlural = options.schema?.usePlural ?? false
+      const camelCase = (options.schema?.casing ?? getHubCasing(hub)) !== 'snake_case'
+
+      const providers: Record<string, BetterAuthDatabaseProviderDefinition> = {
+        nuxthub: {
+          priority: 100,
+          isEnabled: ({ hasHubDbAvailable }) => hasHubDbAvailable,
+          buildDatabaseCode: () => buildDatabaseCode({
+            provider: 'nuxthub',
+            hubDialect,
+            usePlural,
+            camelCase,
+          }),
+        },
+        none: {
+          priority: 0,
+          buildDatabaseCode: () => buildDatabaseCode({
+            provider: 'none',
+            hubDialect,
+            usePlural,
+            camelCase,
+          }),
+        },
+      }
+
+      const enabledCtx: BetterAuthDatabaseProviderEnabledContext = { nuxt, options, clientOnly, hasHubDbAvailable }
+      await nuxt.callHook('better-auth:database:providers', providers)
+      const resolvedProvider = resolveDatabaseProvider({ providers, context: enabledCtx })
+      databaseProvider = resolvedProvider.id
+      hasHubDb = databaseProvider === 'nuxthub'
+
+      const { secondaryStorageEnabled } = setupRuntimeConfig({
+        nuxt,
+        options,
+        clientOnly,
+        databaseProvider,
+        hasNuxtHub,
+        hub,
+        consola,
+      })
+
       if (secondaryStorageEnabled && !nuxt.options.alias['hub:kv']) {
         throw new Error('[nuxt-better-auth] hub:kv not found. Ensure @nuxthub/core is loaded before this module and hub.kv is enabled.')
       }
@@ -149,16 +189,13 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
         throw new Error('[nuxt-better-auth] hub:db not found. Ensure @nuxthub/core is loaded before this module and hub.db is configured.')
       }
 
-      const hubDialect = getHubDialect(hub) ?? 'sqlite'
-      const usePlural = options.schema?.usePlural ?? false
-      const camelCase = (options.schema?.casing ?? getHubCasing(hub)) !== 'snake_case'
+      const setupCtx: BetterAuthDatabaseProviderSetupContext = { nuxt, options, clientOnly }
+      await resolvedProvider.definition.setup?.(setupCtx)
 
-      if (hasConvexDb)
-        applyConvexRuntimeConfig(nuxt, resolvedDatabase.convexUrl)
-
+      const buildCtx: BetterAuthDatabaseProviderBuildContext = { hubDialect, usePlural, camelCase }
       const databaseTemplate = addTemplate({
         filename: 'better-auth/database.mjs',
-        getContents: () => buildDatabaseCode({ provider: databaseProvider, hubDialect, usePlural, camelCase }),
+        getContents: () => resolvedProvider.definition.buildDatabaseCode(buildCtx),
         write: true,
       })
       nuxt.options.alias['#auth/database'] = databaseTemplate.dst
@@ -168,6 +205,9 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
         hasHubDb,
         runtimeTypesPath: resolver.resolve('./runtime/types'),
       })
+
+      if (hasHubDb)
+        await setupBetterAuthSchema(nuxt, serverConfigPath, options, consola)
     }
 
     registerSharedTypeTemplates({
@@ -179,12 +219,6 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     registerTemplateHmrHook(nuxt)
     registerServerRuntime({ clientOnly, resolve: resolver.resolve })
     registerAuthMiddlewareHook(nuxt, resolver.resolve)
-
-    if (hasHubDb)
-      await setupBetterAuthSchema(nuxt, serverConfigPath, options, consola)
-
-    if (hasConvexDb)
-      await setupConvexAuthSchema(nuxt, serverConfigPath, consola)
 
     await registerDevtools({ nuxt, clientOnly, hasHubDb, resolve: resolver.resolve })
     registerRouteRulesMetaHook(nuxt)

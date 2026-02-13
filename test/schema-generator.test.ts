@@ -1,10 +1,9 @@
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { getAuthTables } from 'better-auth/db'
-import { twoFactor } from 'better-auth/plugins'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { defineClientAuth, defineServerAuth } from '../src/runtime/config'
-import { generateConvexSchema, generateDrizzleSchema, loadUserAuthConfig } from '../src/schema-generator'
+import { generateDrizzleSchema, loadUserAuthConfig } from '../src/schema-generator'
 
 const TEST_DIR = join(import.meta.dirname, '.test-configs')
 
@@ -93,17 +92,6 @@ describe('getAuthTables with secondaryStorage', () => {
   })
 })
 
-describe('generateConvexSchema', () => {
-  it('includes plugin tables when plugin config is merged', async () => {
-    const userConfig = {}
-    const extendedPlugins = [twoFactor()]
-    const authOptions = { ...userConfig, plugins: extendedPlugins }
-    const schema = await generateConvexSchema(authOptions)
-
-    expect(schema).toContain('twoFactor: defineTable')
-  })
-})
-
 describe('loadUserAuthConfig', () => {
   it('returns empty object for non-existent file (dev mode)', async () => {
     const result = await loadUserAuthConfig(join(TEST_DIR, 'nonexistent.ts'), false)
@@ -153,21 +141,21 @@ describe('defineServerAuth', () => {
   it('accepts object syntax and returns config factory', () => {
     const factory = defineServerAuth({ appName: 'Test', emailAndPassword: { enabled: true } })
     expect(typeof factory).toBe('function')
-    const config = factory({ runtimeConfig: {} as any, db: null })
+    const config = factory({ runtimeConfig: {} as any, db: undefined })
     expect(config).toEqual({ appName: 'Test', emailAndPassword: { enabled: true } })
   })
 
   it('accepts function syntax and returns config factory', () => {
     const factory = defineServerAuth(ctx => ({ appName: 'Dynamic', runtimeBased: !!ctx.runtimeConfig }))
     expect(typeof factory).toBe('function')
-    const config = factory({ runtimeConfig: { public: {} } as any, db: null })
+    const config = factory({ runtimeConfig: { public: {} } as any, db: undefined })
     expect(config).toEqual({ appName: 'Dynamic', runtimeBased: true })
   })
 
   it('function syntax receives context', () => {
-    const factory = defineServerAuth(({ db }) => ({ hasDb: db !== null }))
+    const factory = defineServerAuth(({ db }) => ({ hasDb: db !== undefined }))
     expect(factory({ runtimeConfig: {} as any, db: {} as any })).toEqual({ hasDb: true })
-    expect(factory({ runtimeConfig: {} as any, db: null })).toEqual({ hasDb: false })
+    expect(factory({ runtimeConfig: {} as any, db: undefined })).toEqual({ hasDb: false })
   })
 })
 

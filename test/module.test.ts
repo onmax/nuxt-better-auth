@@ -20,9 +20,10 @@ describe('nuxt-better-auth module', async () => {
     })
 
     it('exposes runtime database metadata as nuxthub', async () => {
-      const response = await $fetch('/api/test/config') as { useDatabase: boolean, databaseProvider: string }
+      const response = await $fetch('/api/test/config') as { useDatabase: boolean, databaseProvider: string, databaseSource: 'module' | 'user' }
       expect(response.useDatabase).toBe(true)
       expect(response.databaseProvider).toBe('nuxthub')
+      expect(response.databaseSource).toBe('module')
     })
   })
 
