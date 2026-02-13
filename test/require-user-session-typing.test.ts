@@ -1,8 +1,8 @@
+import { spawnSync } from 'node:child_process'
 import { copyFileSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'pathe'
-import { spawnSync } from 'node:child_process'
 import { describe, expect, it } from 'vitest'
 
 describe('requireUserSession typing regression #130', () => {

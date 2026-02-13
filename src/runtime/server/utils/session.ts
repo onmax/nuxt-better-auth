@@ -1,5 +1,5 @@
-import type { H3Event } from 'h3'
 import type { AuthSession, AuthUser } from '#nuxt-better-auth'
+import type { H3Event } from 'h3'
 import type { UserMatch } from '../../types'
 import { createError } from 'h3'
 import { matchesUser } from '../../utils/match-user'
