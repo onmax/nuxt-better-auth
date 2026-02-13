@@ -27,11 +27,6 @@
 - `auth.database.*` module options are removed. This now fails fast during module setup.
 - Configure Better Auth's `database` directly in `server/auth.config.ts`, or use a module that registers `better-auth:database:providers`.
 
-## Development Notes
-
-- `@libsql/linux-x64-gnu` is temporarily pinned in dev dependencies to avoid Nitro test build `ENOENT` issues with optional libsql platform packages.
-- TODO: remove this pin once upstream Nitro/libsql optional dependency resolution is stable across local and CI environments.
-
 ## License
 
 MIT

@@ -1,8 +1,20 @@
 import { defineEventHandler, getQuery } from 'h3'
+import { isDevtoolsDatabaseEligible } from '../../../utils/devtools-database'
+import { getDatabaseProvider, getDatabaseSource } from '../../utils/auth'
 import { paginationQuerySchema, sanitizeSearchPattern } from './_schema'
 
 export default defineEventHandler(async (event) => {
   try {
+    const databaseProvider = getDatabaseProvider()
+    const databaseSource = getDatabaseSource()
+    if (!isDevtoolsDatabaseEligible({ databaseProvider, databaseSource })) {
+      return {
+        users: [],
+        total: 0,
+        error: 'DevTools DB routes are only available for module-managed nuxthub database mode.',
+      }
+    }
+
     const { db, schema } = await import('@nuxthub/db')
     if (!schema.user)
       return { users: [], total: 0, error: 'User table not found' }

@@ -2,6 +2,7 @@
 import type { TableColumn } from '@nuxt/ui'
 import { useDevtoolsClient } from '@nuxt/devtools-kit/iframe-client'
 import { refDebounced } from '@vueuse/core'
+import { isDevtoolsDatabaseEligible } from '../../utils/devtools-database'
 
 definePageMeta({ layout: false })
 
@@ -43,12 +44,11 @@ const accountsQuery = computed(() => ({ page: accountsPage.value, limit: 20, sea
 
 const { data: configData } = await useFetch('/api/_better-auth/config')
 const hasDb = computed(() => {
-  const provider = configData.value?.config?.module?.databaseProvider
-  if (typeof provider === 'string')
-    return provider !== 'none'
-
-  const fallbackProvider = (runtimeConfig.public.auth as { databaseProvider?: string } | undefined)?.databaseProvider
-  return (fallbackProvider ?? 'none') !== 'none'
+  return isDevtoolsDatabaseEligible({
+    databaseProvider: configData.value?.config?.module?.databaseProvider,
+    databaseSource: configData.value?.config?.module?.databaseSource,
+    fallbackModuleProvider: (runtimeConfig.public.auth as { databaseProvider?: string } | undefined)?.databaseProvider,
+  })
 })
 
 const { data: sessionsData, refresh: refreshSessions } = await useFetch('/api/_better-auth/sessions', { query: sessionsQuery, immediate: false })
