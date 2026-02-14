@@ -86,8 +86,8 @@ declare module '@onmax/nuxt-better-auth/config' {
   type ServerAuthConfig = Omit<BetterAuthOptions, 'secret' | 'baseURL'> & {
     plugins?: readonly BetterAuthPlugin[]
   }
-  export function defineServerAuth<const R extends ServerAuthConfig>(config: R): (ctx: _AugmentedServerAuthContext) => R
-  export function defineServerAuth<const R extends ServerAuthConfig>(config: (ctx: _AugmentedServerAuthContext) => R): (ctx: _AugmentedServerAuthContext) => R
+  export function defineServerAuth<const R>(config: (ctx: _AugmentedServerAuthContext) => R & ServerAuthConfig): (ctx: _AugmentedServerAuthContext) => R
+  export function defineServerAuth<const R>(config: R & ServerAuthConfig): (ctx: _AugmentedServerAuthContext) => R
 }
 `,
   }, { nuxt: true, nitro: true, node: true })

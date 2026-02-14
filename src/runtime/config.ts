@@ -70,9 +70,9 @@ export interface AuthPrivateRuntimeConfig {
   secondaryStorage: boolean
 }
 
-export function defineServerAuth<const R extends ServerAuthConfig>(config: R): (ctx: ServerAuthContext) => R
-export function defineServerAuth<const R extends ServerAuthConfig>(config: (ctx: ServerAuthContext) => R): (ctx: ServerAuthContext) => R
-export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T {
+export function defineServerAuth<const R>(config: (ctx: ServerAuthContext) => R & ServerAuthConfig): (ctx: ServerAuthContext) => R
+export function defineServerAuth<const R>(config: R & ServerAuthConfig): (ctx: ServerAuthContext) => R
+export function defineServerAuth(config: ServerAuthConfig | ((ctx: ServerAuthContext) => ServerAuthConfig)): (ctx: ServerAuthContext) => ServerAuthConfig {
   return typeof config === 'function' ? config : () => config
 }
 
